@@ -52,3 +52,10 @@ http://landscape.io
 Não é bem uma ferramenta, mas sim uma plataforma web para monitoramento de
 repositórios de projetos Python, roda o Prospector, talvez tenha outras
 ferramentas "por baixo".
+
+Cadastrei o Colab nele e notei que apenas faz checagem de estilo, erros,
+bad smells, e dá uma série de alertas sobre o código-fonte. Mas não fornece
+métricas ou nenhuma representação do projeto em árvore ou grafo, alguns
+screenshots dos relatórios gerados para o projeto Colab foram adicionados
+no diretório `landscape` deste repositório. Pode também ser acessado online
+publicamente em https://landscape.io/github/joenio/colab/
