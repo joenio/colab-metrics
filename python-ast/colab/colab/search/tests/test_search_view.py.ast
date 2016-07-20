@@ -1,0 +1,375 @@
+Module(body=[
+    Import(names=[
+        alias(name='mock', asname=None),
+      ]),
+    ImportFrom(module='colab.plugins.utils', names=[
+        alias(name='filters_importer', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.management', names=[
+        alias(name='call_command', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.search.forms', names=[
+        alias(name='ColabSearchForm', asname=None),
+      ], level=0),
+    ClassDef(name='SearchViewTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='fixtures', ctx=Store()),
+          ], value=List(elts=[
+            Str(s='test_data.json'),
+          ], ctx=Load())),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Name(id='call_command', ctx=Load()), args=[
+                Str(s='rebuild_index'),
+              ], keywords=[
+                keyword(arg='interactive', value=NameConstant(value=False)),
+                keyword(arg='verbosity', value=Num(n=0)),
+              ])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Name(id='call_command', ctx=Load()), args=[
+                Str(s='clear_index'),
+              ], keywords=[
+                keyword(arg='interactive', value=NameConstant(value=False)),
+                keyword(arg='verbosity', value=Num(n=0)),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_search_thread', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/search/?q=thread'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='thread_list', ctx=Store()),
+              ], value=Attribute(value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='page')), ctx=Load()), attr='object_list', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=3),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='thread_list', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='condition', ctx=Store()),
+              ], value=Call(func=Name(id='any', ctx=Load()), args=[
+                GeneratorExp(elt=Compare(left=Str(s='This is a repply to Thread 1 on list A'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='t', ctx=Load()), attr='description', ctx=Load()),
+                  ]), generators=[
+                    comprehension(target=Name(id='t', ctx=Store()), iter=Name(id='thread_list', ctx=Load()), ifs=[]),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Name(id='condition', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='condition', ctx=Store()),
+              ], value=Call(func=Name(id='any', ctx=Load()), args=[
+                GeneratorExp(elt=Compare(left=Str(s='This is a repply to Thread 1 on list B'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='t', ctx=Load()), attr='description', ctx=Load()),
+                  ]), generators=[
+                    comprehension(target=Name(id='t', ctx=Store()), iter=Name(id='thread_list', ctx=Load()), ifs=[]),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Name(id='condition', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='condition', ctx=Store()),
+              ], value=Call(func=Name(id='any', ctx=Load()), args=[
+                GeneratorExp(elt=Compare(left=Str(s='This is a repply to Thread 1 on list C'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='t', ctx=Load()), attr='description', ctx=Load()),
+                  ]), generators=[
+                    comprehension(target=Name(id='t', ctx=Store()), iter=Name(id='thread_list', ctx=Load()), ifs=[]),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Name(id='condition', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_search_account_by_firstName', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/search/?q=Chuck'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='user_list', ctx=Store()),
+              ], value=Attribute(value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='page')), ctx=Load()), attr='object_list', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='user_list', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='chucknorris@mail.com'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='email', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Chuck'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='first_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Norris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='last_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='chucknorris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='username', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_search_account_by_lastName', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/search/?q=Norris'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='user_list', ctx=Store()),
+              ], value=Attribute(value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='page')), ctx=Load()), attr='object_list', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=2),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='user_list', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='heisenberg@mail.com'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='email', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Heisenberg'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='first_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Norris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='last_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='heisenbergnorris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='username', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='chucknorris@mail.com'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='email', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Chuck'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='first_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Norris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='last_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='chucknorris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='username', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_search_plugin_filters', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='plugin_filter', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='plugin_name'),
+              ], values=[
+                Dict(keys=[
+                    Str(s='name'),
+                    Str(s='icon'),
+                    Str(s='fields'),
+                  ], values=[
+                    Str(s='PluginData'),
+                    Str(s='plugin_icon'),
+                    Tuple(elts=[
+                        Tuple(elts=[
+                            Str(s='field_1'),
+                            Str(s='Field1'),
+                            Str(s=''),
+                          ], ctx=Load()),
+                        Tuple(elts=[
+                            Str(s='field_2'),
+                            Str(s='Field2'),
+                            Str(s=''),
+                          ], ctx=Load()),
+                      ], ctx=Load()),
+                  ]),
+              ])),
+            Assign(targets=[
+                Attribute(value=Name(id='filters_importer', ctx=Load()), attr='import_plugin_filters', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='mock', ctx=Load()), attr='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='return_value', value=Name(id='plugin_filter', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/search/?q='),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='value', ctx=Store()),
+              ], value=List(elts=[
+                Tuple(elts=[
+                    Str(s='plugin_name'),
+                    Str(s='PluginData'),
+                    Str(s='plugin_icon'),
+                  ], ctx=Load()),
+              ], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='filters_options')), ctx=Load()),
+                Name(id='value', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_search_dynamic_form_fields', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='plugin_filter', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='plugin_name'),
+              ], values=[
+                Dict(keys=[
+                    Str(s='name'),
+                    Str(s='icon'),
+                    Str(s='fields'),
+                  ], values=[
+                    Str(s='PluginData'),
+                    Str(s='plugin_icon'),
+                    Tuple(elts=[
+                        Tuple(elts=[
+                            Str(s='field_1'),
+                            Str(s='Field1'),
+                            Str(s=''),
+                          ], ctx=Load()),
+                        Tuple(elts=[
+                            Str(s='field_2'),
+                            Str(s='Field2'),
+                            Str(s=''),
+                          ], ctx=Load()),
+                      ], ctx=Load()),
+                  ]),
+              ])),
+            Assign(targets=[
+                Attribute(value=Name(id='filters_importer', ctx=Load()), attr='import_plugin_filters', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='mock', ctx=Load()), attr='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='return_value', value=Name(id='plugin_filter', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='ColabSearchForm', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='field_1'),
+                Call(func=Attribute(value=Attribute(value=Name(id='form', ctx=Load()), attr='fields', ctx=Load()), attr='keys', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='field_2'),
+                Call(func=Attribute(value=Attribute(value=Name(id='form', ctx=Load()), attr='fields', ctx=Load()), attr='keys', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_search_multiple_filters', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/search/?q=&type=thread+user'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='user_list', ctx=Store()),
+              ], value=Attribute(value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='page')), ctx=Load()), attr='object_list', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=6),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='user_list', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='admin@mail.com'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='email', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='admin'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='object', ctx=Load()), attr='username', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='chucknorris@mail.com'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='email', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Chuck'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='first_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Norris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='last_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='chucknorris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='object', ctx=Load()), attr='username', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='heisenberg@mail.com'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=2)), ctx=Load()), attr='object', ctx=Load()), attr='email', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Heisenberg'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=2)), ctx=Load()), attr='object', ctx=Load()), attr='first_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Norris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=2)), ctx=Load()), attr='object', ctx=Load()), attr='last_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='heisenbergnorris'),
+                Attribute(value=Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=2)), ctx=Load()), attr='object', ctx=Load()), attr='username', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Admin Administrator'),
+                Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=3)), ctx=Load()), attr='author', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Response to Thread 1A'),
+                Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=3)), ctx=Load()), attr='title', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Admin Administrator'),
+                Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=4)), ctx=Load()), attr='author', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Message 1 on Thread 1B'),
+                Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=4)), ctx=Load()), attr='title', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Admin Administrator'),
+                Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=5)), ctx=Load()), attr='author', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Message 1 on Thread 1C'),
+                Attribute(value=Subscript(value=Name(id='user_list', ctx=Load()), slice=Index(value=Num(n=5)), ctx=Load()), attr='title', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

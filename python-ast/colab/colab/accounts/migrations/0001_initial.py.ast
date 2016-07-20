@@ -1,0 +1,244 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='django.db', names=[
+        alias(name='models', asname=None),
+        alias(name='migrations', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='django.utils.timezone', asname=None),
+      ]),
+    Import(names=[
+        alias(name='django.core.validators', asname=None),
+      ]),
+    ClassDef(name='Migration', bases=[
+        Attribute(value=Name(id='migrations', ctx=Load()), attr='Migration', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='dependencies', ctx=Store()),
+          ], value=List(elts=[
+            Tuple(elts=[
+                Str(s='auth'),
+                Str(s='0001_initial'),
+              ], ctx=Load()),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='operations', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='User')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='password'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=128)),
+                            keyword(arg='verbose_name', value=Str(s='password')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='last_login'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='DateTimeField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Attribute(value=Attribute(value=Attribute(value=Name(id='django', ctx=Load()), attr='utils', ctx=Load()), attr='timezone', ctx=Load()), attr='now', ctx=Load())),
+                            keyword(arg='verbose_name', value=Str(s='last login')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='is_superuser'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='BooleanField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=NameConstant(value=False)),
+                            keyword(arg='help_text', value=Str(s='Designates that this user has all permissions without explicitly assigning them.')),
+                            keyword(arg='verbose_name', value=Str(s='superuser status')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='username'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='help_text', value=Str(s='Required. 30 characters or fewer. Letters, digits and ./+/-/_ only.')),
+                            keyword(arg='unique', value=NameConstant(value=True)),
+                            keyword(arg='max_length', value=Num(n=30)),
+                            keyword(arg='verbose_name', value=Str(s='username')),
+                            keyword(arg='validators', value=List(elts=[
+                                Call(func=Attribute(value=Attribute(value=Attribute(value=Name(id='django', ctx=Load()), attr='core', ctx=Load()), attr='validators', ctx=Load()), attr='RegexValidator', ctx=Load()), args=[
+                                    Str(s='^[\\w.@+-]+$'),
+                                    Str(s='Enter a valid username.'),
+                                    Str(s='invalid'),
+                                  ], keywords=[]),
+                              ], ctx=Load())),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='first_name'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=30)),
+                            keyword(arg='verbose_name', value=Str(s='first name')),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='last_name'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=30)),
+                            keyword(arg='verbose_name', value=Str(s='last name')),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='email'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='EmailField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='unique', value=NameConstant(value=True)),
+                            keyword(arg='max_length', value=Num(n=75)),
+                            keyword(arg='verbose_name', value=Str(s='email address')),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='is_staff'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='BooleanField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=NameConstant(value=False)),
+                            keyword(arg='help_text', value=Str(s='Designates whether the user can log into this admin site.')),
+                            keyword(arg='verbose_name', value=Str(s='staff status')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='is_active'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='BooleanField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=NameConstant(value=True)),
+                            keyword(arg='help_text', value=Str(s='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.')),
+                            keyword(arg='verbose_name', value=Str(s='active')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='date_joined'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='DateTimeField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Attribute(value=Attribute(value=Attribute(value=Name(id='django', ctx=Load()), attr='utils', ctx=Load()), attr='timezone', ctx=Load()), attr='now', ctx=Load())),
+                            keyword(arg='verbose_name', value=Str(s='date joined')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='institution'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=128)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='role'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=128)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='twitter'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=128)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='facebook'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=128)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='google_talk'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='EmailField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=75)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='github'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=128)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='verbose_name', value=Str(s='github')),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='webpage'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=256)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='verification_hash'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=32)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='modified'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='DateTimeField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='auto_now', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='bio'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=200)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='groups'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ManyToManyField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='related_query_name', value=Str(s='user')),
+                            keyword(arg='related_name', value=Str(s='user_set')),
+                            keyword(arg='to', value=Str(s='auth.Group')),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                            keyword(arg='help_text', value=Str(s='The groups this user belongs to. A user will get all permissions granted to each of his/her group.')),
+                            keyword(arg='verbose_name', value=Str(s='groups')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='user_permissions'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ManyToManyField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='related_query_name', value=Str(s='user')),
+                            keyword(arg='related_name', value=Str(s='user_set')),
+                            keyword(arg='to', value=Str(s='auth.Permission')),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                            keyword(arg='help_text', value=Str(s='Specific permissions for this user.')),
+                            keyword(arg='verbose_name', value=Str(s='user permissions')),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[
+                    Str(s='abstract'),
+                    Str(s='verbose_name'),
+                    Str(s='verbose_name_plural'),
+                  ], values=[
+                    NameConstant(value=False),
+                    Str(s='user'),
+                    Str(s='users'),
+                  ])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+          ], ctx=Load())),
+      ], decorator_list=[]),
+  ])

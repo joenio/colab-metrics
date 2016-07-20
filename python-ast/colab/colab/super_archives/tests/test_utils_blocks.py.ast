@@ -1,0 +1,67 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='utils.blocks', names=[
+        alias(name='EmailBlock', asname=None),
+      ], level=2),
+    ClassDef(name='TestEmailBlock', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='email_block', ctx=Store()),
+              ], value=Call(func=Name(id='EmailBlock', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_html2text_without_br_tag', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='html', ctx=Store()),
+              ], value=Str(s='<a>Hello, world!</a>')),
+            Assign(targets=[
+                Name(id='text', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='email_block', ctx=Load()), attr='_html2text', ctx=Load()), args=[
+                Name(id='html', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Name(id='text', ctx=Load()),
+                Str(s='Hello, world!'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_html2text_with_br_tag', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='html', ctx=Store()),
+              ], value=Str(s='<a>Hello, world</a>!<br><p>Test with br tag</p>!')),
+            Assign(targets=[
+                Name(id='text', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='email_block', ctx=Load()), attr='_html2text', ctx=Load()), args=[
+                Name(id='html', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Name(id='text', ctx=Load()),
+                Str(s='Hello, world!\nTest with br tag!'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_mark_links', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='html', ctx=Store()),
+              ], value=Str(s='http://test.org/')),
+            Assign(targets=[
+                Name(id='text', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='email_block', ctx=Load()), attr='_mark_links', ctx=Load()), args=[
+                Name(id='html', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Name(id='text', ctx=Load()),
+                BinOp(left=Str(s='<a target="_blank" href='), op=Add(), right=Str(s='"http://test.org/">http://test.org/</a>')),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

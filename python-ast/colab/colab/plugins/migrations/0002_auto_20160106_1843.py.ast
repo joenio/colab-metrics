@@ -1,0 +1,36 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='django.db', names=[
+        alias(name='models', asname=None),
+        alias(name='migrations', asname=None),
+      ], level=0),
+    ClassDef(name='Migration', bases=[
+        Attribute(value=Name(id='migrations', ctx=Load()), attr='Migration', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='dependencies', ctx=Store()),
+          ], value=List(elts=[
+            Tuple(elts=[
+                Str(s='plugins'),
+                Str(s='0001_initial'),
+              ], ctx=Load()),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='operations', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AlterField', ctx=Load()), args=[], keywords=[
+                keyword(arg='model_name', value=Str(s='timestampplugin')),
+                keyword(arg='name', value=Str(s='id')),
+                keyword(arg='field', value=Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                    keyword(arg='verbose_name', value=Str(s='ID')),
+                    keyword(arg='serialize', value=NameConstant(value=False)),
+                    keyword(arg='auto_created', value=NameConstant(value=True)),
+                    keyword(arg='primary_key', value=NameConstant(value=True)),
+                  ])),
+                keyword(arg='preserve_default', value=NameConstant(value=True)),
+              ]),
+          ], ctx=Load())),
+      ], decorator_list=[]),
+  ])

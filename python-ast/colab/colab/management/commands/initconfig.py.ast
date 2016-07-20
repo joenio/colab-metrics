@@ -1,0 +1,36 @@
+Module(body=[
+    ImportFrom(module='django.core.management.base', names=[
+        alias(name='BaseCommand', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils.crypto', names=[
+        alias(name='get_random_string', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='CONFIG_TEMPLATE', ctx=Store()),
+      ], value=Str(s='\n## Set to false in production\nDEBUG = True\nTEMPLATE_DEBUG = True\n\n## System admins\nADMINS = [[\'John Foo\', \'john@example.com\'], [\'Mary Bar\', \'mary@example.com\']]\n\nMANAGERS = ADMINS\n\nCOLAB_FROM_ADDRESS = \'"Colab" <noreply@example.com>\'\nSERVER_EMAIL = \'"Colab" <noreply@example.com>\'\n\nEMAIL_HOST = \'localhost\'\nEMAIL_PORT = 25\nEMAIL_SUBJECT_PREFIX = \'[colab]\'\n\nSECRET_KEY = \'{secret_key}\'\n\nALLOWED_HOSTS = [\n    \'localhost\',\n#    \'example.com\',\n#    \'example.org\',\n#    \'example.net\',\n]\n\n### Uncomment to enable social networks fields profile\n# SOCIAL_NETWORK_ENABLED = True\n\n## Database settings\n##\n##     When DEBUG is True colab will create the DB on\n##     the repository root. In case of production settings\n##     (DEBUG False) the DB settings must be set.\n##\n# DATABASES = {{\n#     \'default\': {{\n#         \'ENGINE\': \'django.db.backends.sqlite3\',\n#         \'NAME\': \'/path/to/colab.sqlite3\',\n#     }}\n# }}\n\n## Disable indexing\nROBOTS_NOINDEX = False\n\nimport sys\nimport os\nif os.environ.get(\'COLAB_DEBUG\') and not os.environ.get(\'COLAB_LOGLEVEL\'):\n    os.environ[\'COLAB_LOGLEVEL\'] = \'DEBUG\'\n\nLOGGING = {{\n    \'version\': 1,\n    \'formatters\': {{\n        \'simple\': {{\n            \'format\': \'%(levelname)s: %(message)s\'\n        }}\n    }},\n    \'handlers\': {{\n        \'console\': {{\n            \'level\': \'DEBUG\',\n            \'formatter\': \'simple\',\n            \'class\': \'logging.StreamHandler\',\n            \'stream\': sys.stdout,\n        }}\n    }},\n    \'loggers\': {{\n        \'colab\': {{\n            \'handlers\': [\'console\'],\n            \'level\': os.environ.get(\'COLAB_LOGLEVEL\', \'ERROR\'),\n        }},\n    \'django\': {{\n        \'handlers\': [\'console\'],\n            \'level\': os.environ.get(\'COLAB_LOGLEVEL\', \'ERROR\'),\n        \'revproxy\': {{\n            \'handlers\': [\'console\'],\n            \'level\': os.environ.get(\'COLAB_LOGLEVEL\', \'ERROR\'),\n        }},\n      }},\n        \'haystack\': {{\n            \'handlers\': [\'console\'],\n            \'propagate\': False,\n            \'level\': os.environ.get(\'COLAB_LOGLEVEL\', \'ERROR\'),\n        }},\n        \'pysolr\': {{\n            \'handlers\': [\'console\'],\n            \'propagate\': False,\n            \'level\': os.environ.get(\'COLAB_LOGLEVEL\', \'ERROR\'),\n        }},\n    }},\n}}\n')),
+    ClassDef(name='Command', bases=[
+        Name(id='BaseCommand', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='help', ctx=Store()),
+          ], value=Str(s='Returns an example config file for Colab')),
+        FunctionDef(name='handle', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=arg(arg='args', annotation=None), kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+            Assign(targets=[
+                Name(id='chars', ctx=Store()),
+              ], value=Str(s='abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')),
+            Assign(targets=[
+                Name(id='secret_key', ctx=Store()),
+              ], value=Call(func=Name(id='get_random_string', ctx=Load()), args=[
+                Num(n=50),
+                Name(id='chars', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Name(id='print', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='CONFIG_TEMPLATE', ctx=Load()), attr='format', ctx=Load()), args=[], keywords=[
+                    keyword(arg='secret_key', value=Name(id='secret_key', ctx=Load())),
+                  ]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

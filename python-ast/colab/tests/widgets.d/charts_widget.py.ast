@@ -1,0 +1,19 @@
+Module(body=[
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='WidgetManager', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.widgets.collaboration_chart', names=[
+        alias(name='CollaborationChart', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.widgets.participation_chart', names=[
+        alias(name='ParticipationChart', asname=None),
+      ], level=0),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='charts'),
+        Call(func=Name(id='CollaborationChart', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='charts'),
+        Call(func=Name(id='ParticipationChart', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+  ])

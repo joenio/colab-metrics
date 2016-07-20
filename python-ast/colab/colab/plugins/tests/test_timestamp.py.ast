@@ -1,0 +1,175 @@
+Module(body=[
+    Import(names=[
+        alias(name='mock', asname=None),
+      ]),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils', names=[
+        alias(name='timezone', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.plugins.models', names=[
+        alias(name='TimeStampPlugin', asname=None),
+      ], level=0),
+    ClassDef(name='UserTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_update_timestamp_without_last_updated', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Call(func=Attribute(value=Name(id='timezone', ctx=Load()), attr='datetime', ctx=Load()), args=[
+                Num(n=2009),
+                Num(n=1),
+                Num(n=1),
+              ], keywords=[]), attr='replace', ctx=Load()), args=[], keywords=[
+                keyword(arg='tzinfo', value=Attribute(value=Name(id='timezone', ctx=Load()), attr='utc', ctx=Load())),
+              ])),
+            With(items=[
+                withitem(context_expr=Call(func=Attribute(value=Attribute(value=Name(id='mock', ctx=Load()), attr='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                    Name(id='timezone', ctx=Load()),
+                    Str(s='datetime'),
+                    Call(func=Attribute(value=Name(id='mock', ctx=Load()), attr='Mock', ctx=Load()), args=[], keywords=[
+                        keyword(arg='wraps', value=Attribute(value=Name(id='timezone', ctx=Load()), attr='datetime', ctx=Load())),
+                      ]),
+                  ], keywords=[]), optional_vars=Name(id='mock_', ctx=Store())),
+              ], body=[
+                Assign(targets=[
+                    Attribute(value=Attribute(value=Name(id='mock_', ctx=Load()), attr='now', ctx=Load()), attr='return_value', ctx=Store()),
+                  ], value=Name(id='result', ctx=Load())),
+                Expr(value=Call(func=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='get_last_updated', ctx=Load()), args=[
+                    Str(s='TestPluginUpdate'),
+                  ], keywords=[])),
+                Expr(value=Call(func=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='update_timestamp', ctx=Load()), args=[
+                    Str(s='TestPluginUpdate'),
+                  ], keywords=[])),
+                Assign(targets=[
+                    Name(id='timestamp', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='get_last_updated', ctx=Load()), args=[
+                    Str(s='TestPluginUpdate'),
+                  ], keywords=[])),
+              ]),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Name(id='result', ctx=Load()),
+                Name(id='timestamp', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_timestamp_with_last_updated', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='date', ctx=Store()),
+              ], value=Str(s='2015/12/23 00:00:00')),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_sample_timestamp', ctx=Load()), args=[
+                Str(s='TestPluginUpdate'),
+                Name(id='date', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='timestamp', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='get_last_updated', ctx=Load()), args=[
+                Str(s='TestPluginUpdate'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_timestamp_object', ctx=Load()), args=[
+                    Name(id='date', ctx=Load()),
+                  ], keywords=[]),
+                Name(id='timestamp', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_first_get_last_update', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='timestamp', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='get_last_updated', ctx=Load()), args=[
+                Str(s='Test'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Attribute(value=Name(id='timezone', ctx=Load()), attr='datetime', ctx=Load()), attr='min', ctx=Load()),
+                Name(id='timestamp', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_sample_timestamp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='class_name', annotation=None),
+            arg(arg='date', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='get_last_updated', ctx=Load()), args=[
+                Name(id='class_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='update_timestamp', ctx=Load()), args=[
+                Name(id='class_name', ctx=Load()),
+              ], keywords=[
+                keyword(arg='last_updated', value=Name(id='date', ctx=Load())),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_timestamp_object', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='date', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='timezone', ctx=Load()), attr='datetime', ctx=Load()), attr='strptime', ctx=Load()), args=[
+                Name(id='date', ctx=Load()),
+                Str(s='%Y/%m/%d %H:%M:%S'),
+              ], keywords=[]), attr='replace', ctx=Load()), args=[], keywords=[
+                keyword(arg='tzinfo', value=Attribute(value=Name(id='timezone', ctx=Load()), attr='utc', ctx=Load())),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_verify_fields_of_timestamp_plugin', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='objects', ctx=Store()),
+              ], value=List(elts=[
+                Tuple(elts=[
+                    Str(s='TestPluginUpdate'),
+                    Str(s='2015/12/23 00:00:00'),
+                  ], ctx=Load()),
+                Tuple(elts=[
+                    Str(s='NewPluginUpdate'),
+                    Str(s='2015/09/10 00:00:00'),
+                  ], ctx=Load()),
+                Tuple(elts=[
+                    Str(s='OldPluginUpdate'),
+                    Str(s='2014/10/01 00:00:00'),
+                  ], ctx=Load()),
+                Tuple(elts=[
+                    Str(s='ExamplePluginUpdate'),
+                    Str(s='2013/11/03 00:00:00'),
+                  ], ctx=Load()),
+              ], ctx=Load())),
+            For(target=Name(id='object', ctx=Store()), iter=Name(id='objects', ctx=Load()), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_sample_timestamp', ctx=Load()), args=[
+                    Subscript(value=Name(id='object', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()),
+                    Subscript(value=Name(id='object', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+            Assign(targets=[
+                Name(id='all_timestamps', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='objects', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='all_timestamps', ctx=Load()),
+                  ], keywords=[]),
+                Num(n=4),
+              ], keywords=[])),
+            For(target=Name(id='object', ctx=Store()), iter=Name(id='objects', ctx=Load()), body=[
+                Assign(targets=[
+                    Name(id='result', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Attribute(value=Name(id='TimeStampPlugin', ctx=Load()), attr='objects', ctx=Load()), attr='filter', ctx=Load()), args=[], keywords=[
+                    keyword(arg='name', value=Subscript(value=Name(id='object', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load())),
+                  ])),
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                    Subscript(value=Name(id='object', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()),
+                    Attribute(value=Subscript(value=Name(id='result', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='name', ctx=Load()),
+                  ], keywords=[])),
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                    Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_timestamp_object', ctx=Load()), args=[
+                        Subscript(value=Name(id='object', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()),
+                      ], keywords=[]),
+                    Attribute(value=Subscript(value=Name(id='result', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='timestamp', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

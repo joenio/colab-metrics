@@ -1,0 +1,33 @@
+Module(body=[
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='WidgetManager', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.widgets.dashboard_latest_collaborations', names=[
+        alias(name='DashboardLatestCollaborationsWidget', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.widgets.dashboard_most_relevant_threads', names=[
+        alias(name='DashboardMostRelevantThreadsWidget', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.widgets.dashboard_latest_threads', names=[
+        alias(name='DashboardLatestThreadsWidget', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.widgets.dashboard_collaboration_graph', names=[
+        alias(name='DashboardCollaborationGraphWidget', asname=None),
+      ], level=0),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='dashboard'),
+        Call(func=Name(id='DashboardLatestCollaborationsWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='dashboard'),
+        Call(func=Name(id='DashboardCollaborationGraphWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='dashboard'),
+        Call(func=Name(id='DashboardMostRelevantThreadsWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='dashboard'),
+        Call(func=Name(id='DashboardLatestThreadsWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+  ])

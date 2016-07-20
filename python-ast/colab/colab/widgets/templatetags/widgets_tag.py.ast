@@ -1,0 +1,44 @@
+Module(body=[
+    ImportFrom(module='django', names=[
+        alias(name='template', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='WidgetManager', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='register', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='template', ctx=Load()), attr='Library', ctx=Load()), args=[], keywords=[])),
+    FunctionDef(name='import_widgets', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='area_id', annotation=None),
+        arg(arg='widget_var', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+        NameConstant(value=None),
+      ]), body=[
+        If(test=UnaryOp(op=Not(), operand=Name(id='widget_var', ctx=Load())), body=[
+            Assign(targets=[
+                Name(id='widget_var', ctx=Store()),
+              ], value=Call(func=Attribute(value=Str(s='widgets_{}'), attr='format', ctx=Load()), args=[
+                Name(id='area_id', ctx=Load()),
+              ], keywords=[])),
+          ], orelse=[]),
+        Assign(targets=[
+            Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Name(id='widget_var', ctx=Load())), ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='get_widgets', ctx=Load()), args=[
+            Name(id='area_id', ctx=Load()),
+          ], keywords=[
+            keyword(arg='context', value=Name(id='context', ctx=Load())),
+          ])),
+        Assign(targets=[
+            Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='bootstrap_conflict')), ctx=Store()),
+          ], value=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='bootstrap_conflict', ctx=Load())),
+        Assign(targets=[
+            Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='jquery_conflict')), ctx=Store()),
+          ], value=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='jquery_conflict', ctx=Load())),
+        Return(value=Str(s='')),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='simple_tag', ctx=Load()), args=[], keywords=[
+            keyword(arg='takes_context', value=NameConstant(value=True)),
+          ]),
+      ], returns=None),
+  ])

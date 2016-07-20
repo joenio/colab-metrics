@@ -1,0 +1,224 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='override_settings', asname=None),
+      ], level=0),
+    ImportFrom(module='django.http', names=[
+        alias(name='HttpRequest', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.plugins', names=[
+        alias(name='context_processors', asname=None),
+      ], level=0),
+    ClassDef(name='ContextProcessorTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Store()),
+              ], value=Call(func=Name(id='HttpRequest', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_colab_apps', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='context_processors', ctx=Load()), attr='colab_apps', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='plugins'),
+                  ], values=[
+                    Dict(keys=[
+                        Str(s='plugin'),
+                      ], values=[
+                        Str(s='plugin-data'),
+                      ]),
+                  ]),
+                Name(id='response', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Dict(keys=[
+                    Str(s='plugin'),
+                  ], values=[
+                    Str(s='plugin-data'),
+                  ])),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_get_prefixes_change_header', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='prefixes', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='context_processors', ctx=Load()), attr='get_prefixes', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                List(elts=[
+                    Str(s='^plugin/'),
+                  ], ctx=Load()),
+                Name(id='prefixes', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Dict(keys=[
+                    Str(s='plugin'),
+                  ], values=[
+                    Dict(keys=[
+                        Str(s='urls'),
+                        Str(s='change_header'),
+                      ], values=[
+                        Dict(keys=[
+                            Str(s='prefix'),
+                          ], values=[
+                            Str(s='^plugin/'),
+                          ]),
+                        NameConstant(value=True),
+                      ]),
+                  ])),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_get_prefixes_maintain_header', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='prefixes', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='context_processors', ctx=Load()), attr='get_prefixes', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                List(elts=[], ctx=Load()),
+                Name(id='prefixes', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Dict(keys=[
+                    Str(s='plugin'),
+                  ], values=[
+                    Dict(keys=[
+                        Str(s='urls'),
+                      ], values=[
+                        Dict(keys=[
+                            Str(s='prefix'),
+                          ], values=[
+                            Str(s='^plugin/'),
+                          ]),
+                      ]),
+                  ])),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_change_header', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()), attr='path', ctx=Store()),
+              ], value=Str(s='/plugin/')),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='context_processors', ctx=Load()), attr='change_header', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='change_header'),
+                  ], values=[
+                    NameConstant(value=True),
+                  ]),
+                Name(id='response', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Dict(keys=[
+                    Str(s='plugin'),
+                  ], values=[
+                    Dict(keys=[
+                        Str(s='urls'),
+                        Str(s='change_header'),
+                      ], values=[
+                        Dict(keys=[
+                            Str(s='prefix'),
+                          ], values=[
+                            Str(s='^plugin/'),
+                          ]),
+                        NameConstant(value=True),
+                      ]),
+                  ])),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_change_header_other_url', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()), attr='path', ctx=Store()),
+              ], value=Str(s='/otherurl/')),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='context_processors', ctx=Load()), attr='change_header', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='change_header'),
+                  ], values=[
+                    NameConstant(value=False),
+                  ]),
+                Name(id='response', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Dict(keys=[
+                    Str(s='plugin'),
+                  ], values=[
+                    Dict(keys=[
+                        Str(s='urls'),
+                        Str(s='change_header'),
+                      ], values=[
+                        Dict(keys=[
+                            Str(s='prefix'),
+                          ], values=[
+                            Str(s='^plugin/'),
+                          ]),
+                        NameConstant(value=True),
+                      ]),
+                  ])),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_change_header_false', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()), attr='path', ctx=Store()),
+              ], value=Str(s='/plugin/')),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='context_processors', ctx=Load()), attr='change_header', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='change_header'),
+                  ], values=[
+                    NameConstant(value=False),
+                  ]),
+                Name(id='response', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Dict(keys=[
+                    Str(s='plugin'),
+                  ], values=[
+                    Dict(keys=[
+                        Str(s='urls'),
+                        Str(s='change_header'),
+                      ], values=[
+                        Dict(keys=[
+                            Str(s='prefix'),
+                          ], values=[
+                            Str(s='^plugin/'),
+                          ]),
+                        NameConstant(value=False),
+                      ]),
+                  ])),
+              ]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

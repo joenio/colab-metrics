@@ -1,0 +1,87 @@
+Module(body=[
+    ImportFrom(module='django.db.models', names=[
+        alias(name='Q', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.utils', names=[
+        alias(name='mailman', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.models', names=[
+        alias(name='Thread', asname=None),
+        alias(name='Message', asname=None),
+      ], level=0),
+    FunctionDef(name='count_threads', args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Return(value=Call(func=Attribute(value=Attribute(value=Name(id='Thread', ctx=Load()), attr='objects', ctx=Load()), attr='count', ctx=Load()), args=[], keywords=[])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='get_visible_threads_queryset', args=arguments(args=[
+        arg(arg='logged_user', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='queryset', ctx=Store()),
+          ], value=Attribute(value=Name(id='Thread', ctx=Load()), attr='objects', ctx=Load())),
+        Assign(targets=[
+            Name(id='listnames_for_user', ctx=Store()),
+          ], value=List(elts=[], ctx=Load())),
+        If(test=Name(id='logged_user', ctx=Load()), body=[
+            Assign(targets=[
+                Name(id='lists_for_user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='mailman', ctx=Load()), attr='get_user_mailinglists', ctx=Load()), args=[
+                Name(id='logged_user', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='listnames_for_user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='mailman', ctx=Load()), attr='extract_listname_from_list', ctx=Load()), args=[
+                Name(id='lists_for_user', ctx=Load()),
+              ], keywords=[])),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='user_lists', ctx=Store()),
+          ], value=Call(func=Name(id='Q', ctx=Load()), args=[], keywords=[
+            keyword(arg='mailinglist__name__in', value=Name(id='listnames_for_user', ctx=Load())),
+          ])),
+        Assign(targets=[
+            Name(id='public_lists', ctx=Store()),
+          ], value=Call(func=Name(id='Q', ctx=Load()), args=[], keywords=[
+            keyword(arg='mailinglist__is_private', value=NameConstant(value=False)),
+          ])),
+        Assign(targets=[
+            Name(id='queryset', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='Thread', ctx=Load()), attr='objects', ctx=Load()), attr='filter', ctx=Load()), args=[
+            BinOp(left=Name(id='user_lists', ctx=Load()), op=BitOr(), right=Name(id='public_lists', ctx=Load())),
+          ], keywords=[])),
+        Return(value=Name(id='queryset', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='get_visible_threads', args=arguments(args=[
+        arg(arg='logged_user', annotation=None),
+        arg(arg='filter_by_user', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+        NameConstant(value=None),
+      ]), body=[
+        Assign(targets=[
+            Name(id='thread_qs', ctx=Store()),
+          ], value=Call(func=Name(id='get_visible_threads_queryset', ctx=Load()), args=[
+            Name(id='logged_user', ctx=Load()),
+          ], keywords=[])),
+        If(test=Name(id='filter_by_user', ctx=Load()), body=[
+            Assign(targets=[
+                Name(id='message_qs', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='Message', ctx=Load()), attr='objects', ctx=Load()), attr='filter', ctx=Load()), args=[], keywords=[
+                keyword(arg='thread__in', value=Name(id='thread_qs', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Name(id='messages', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='message_qs', ctx=Load()), attr='filter', ctx=Load()), args=[], keywords=[
+                keyword(arg='from_address__user__pk', value=Attribute(value=Name(id='filter_by_user', ctx=Load()), attr='pk', ctx=Load())),
+              ])),
+          ], orelse=[
+            Assign(targets=[
+                Name(id='latest_threads', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='thread_qs', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='messages', ctx=Store()),
+              ], value=ListComp(elt=Attribute(value=Name(id='t', ctx=Load()), attr='latest_message', ctx=Load()), generators=[
+                comprehension(target=Name(id='t', ctx=Store()), iter=Name(id='latest_threads', ctx=Load()), ifs=[]),
+              ])),
+          ]),
+        Return(value=Name(id='messages', ctx=Load())),
+      ], decorator_list=[], returns=None),
+  ])

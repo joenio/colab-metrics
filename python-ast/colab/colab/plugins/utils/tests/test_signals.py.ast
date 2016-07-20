@@ -1,0 +1,52 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+        alias(name='MagicMock', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.plugins.utils', names=[
+        alias(name='signals', asname=None),
+      ], level=0),
+    ClassDef(name='SignalsTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_init_signals', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock_app', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='method_name', ctx=Store()),
+              ], value=Str(s='test')),
+            Assign(targets=[
+                Name(id='app_mock', ctx=Store()),
+              ], value=Call(func=Name(id='MagicMock', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='apps_list', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='a'),
+                Str(s='b'),
+                Name(id='app_mock', ctx=Load()),
+              ], ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='mock_app', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='apps_list', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='signals', ctx=Load()), attr='_init_signals', ctx=Load()), args=[
+                Name(id='method_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='app_mock', ctx=Load()), attr='test', ctx=Load()), attr='assert_called_with', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Attribute(value=Attribute(value=Name(id='app_mock', ctx=Load()), attr='test', ctx=Load()), attr='call_count', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Attribute(value=Name(id='app_mock', ctx=Load()), attr='test', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.plugins.utils.signals.apps.get_app_configs'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

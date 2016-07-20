@@ -1,0 +1,166 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.models', names=[
+        alias(name='EmailAddressValidation', asname=None),
+        alias(name='EmailAddress', asname=None),
+      ], level=0),
+    ClassDef(name='EmailValidationTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='fixtures', ctx=Store()),
+          ], value=List(elts=[
+            Str(s='test_user.json'),
+          ], ctx=Load())),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='authenticate_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='chucknorris')),
+                keyword(arg='password', value=Str(s='123colab4')),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_send_verification_email_successfuly', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock_send_verification_email', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='chucknorris')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='EmailAddressValidation', ctx=Load()), attr='create', ctx=Load()), args=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Load()),
+                Name(id='user', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='email_addr', ctx=Store()),
+                    Name(id='created', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='EmailAddress', ctx=Load()), attr='objects', ctx=Load()), attr='get_or_create', ctx=Load()), args=[], keywords=[
+                keyword(arg='address', value=Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Attribute(value=Name(id='email_addr', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Name(id='user', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='email_addr', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/archives/manage/email/validate/'),
+                Dict(keys=[
+                    Str(s='user'),
+                    Str(s='email'),
+                  ], values=[
+                    Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Load()),
+                    Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+                Num(n=204),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='mock_send_verification_email', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.send_verification_email'),
+              ], keywords=[
+                keyword(arg='return_value', value=Str(s='')),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_send_verification_email_with_not_verified_email', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='send_verification_email', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='chucknorris')),
+              ])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/archives/manage/email/validate/'),
+                Dict(keys=[
+                    Str(s='user'),
+                    Str(s='email'),
+                  ], values=[
+                    Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Load()),
+                    Str(s='email@mail.com'),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+                Num(n=404),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Attribute(value=Name(id='send_verification_email', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.send_verification_email'),
+              ], keywords=[
+                keyword(arg='return_value', value=Str(s='')),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_send_verification_email_with_not_valid_user_id', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='send_verification_email', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='chucknorris')),
+              ])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/archives/manage/email/validate/'),
+                Dict(keys=[
+                    Str(s='user'),
+                    Str(s='email'),
+                  ], values=[
+                    BinOp(left=Call(func=Name(id='len', ctx=Load()), args=[
+                        Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[]),
+                      ], keywords=[]), op=Add(), right=Num(n=1)),
+                    Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+                Num(n=404),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Attribute(value=Name(id='send_verification_email', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.send_verification_email'),
+              ], keywords=[
+                keyword(arg='return_value', value=Str(s='')),
+              ]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

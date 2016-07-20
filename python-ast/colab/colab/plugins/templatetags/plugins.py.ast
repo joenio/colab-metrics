@@ -1,0 +1,121 @@
+Module(body=[
+    ImportFrom(module='collections', names=[
+        alias(name='OrderedDict', asname=None),
+      ], level=0),
+    ImportFrom(module='django', names=[
+        alias(name='template', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.cache', names=[
+        alias(name='cache', asname=None),
+      ], level=0),
+    ImportFrom(module='django.template.loader', names=[
+        alias(name='render_to_string', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils.translation', names=[
+        alias(name='get_language', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='register', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='template', ctx=Load()), attr='Library', ctx=Load()), args=[], keywords=[])),
+    FunctionDef(name='plugins_menu', args=arguments(args=[
+        arg(arg='context', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        If(test=Call(func=Attribute(value=Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='user')), ctx=Load()), attr='is_authenticated', ctx=Load()), args=[], keywords=[]), body=[
+            Assign(targets=[
+                Name(id='cache_key', ctx=Store()),
+              ], value=Str(s='colab-plugin-menu-authenticated')),
+          ], orelse=[
+            Assign(targets=[
+                Name(id='cache_key', ctx=Store()),
+              ], value=Str(s='colab-plugin-menu-anonymous')),
+          ]),
+        Assign(targets=[
+            Name(id='lang', ctx=Store()),
+          ], value=Call(func=Name(id='get_language', ctx=Load()), args=[], keywords=[])),
+        AugAssign(target=Name(id='cache_key', ctx=Store()), op=Add(), value=Call(func=Attribute(value=Str(s='-{}'), attr='format', ctx=Load()), args=[
+            Name(id='lang', ctx=Load()),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='menu_from_cache', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='cache', ctx=Load()), attr='get', ctx=Load()), args=[
+            Name(id='cache_key', ctx=Load()),
+          ], keywords=[])),
+        If(test=Name(id='menu_from_cache', ctx=Load()), body=[
+            Return(value=Name(id='menu_from_cache', ctx=Load())),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='menu_links', ctx=Store()),
+          ], value=Call(func=Name(id='OrderedDict', ctx=Load()), args=[], keywords=[])),
+        Assign(targets=[
+            Name(id='colab_apps', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='context', ctx=Load()), attr='get', ctx=Load()), args=[
+            Str(s='plugins'),
+            Dict(keys=[], values=[]),
+          ], keywords=[])),
+        For(target=Tuple(elts=[
+            Name(id='app_name', ctx=Store()),
+            Name(id='app', ctx=Store()),
+          ], ctx=Store()), iter=Call(func=Attribute(value=Name(id='colab_apps', ctx=Load()), attr='items', ctx=Load()), args=[], keywords=[]), body=[
+            If(test=UnaryOp(op=Not(), operand=Call(func=Attribute(value=Name(id='app', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='menu_urls'),
+              ], keywords=[])), body=[
+                Continue(),
+              ], orelse=[]),
+            Assign(targets=[
+                Name(id='menu', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='app', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='menu_urls'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='title', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='app', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='menu_title'),
+                Name(id='app_name', ctx=Load()),
+              ], keywords=[])),
+            If(test=Compare(left=Name(id='title', ctx=Load()), ops=[
+                NotIn(),
+              ], comparators=[
+                Name(id='menu_links', ctx=Load()),
+              ]), body=[
+                Assign(targets=[
+                    Subscript(value=Name(id='menu_links', ctx=Load()), slice=Index(value=Name(id='title', ctx=Load())), ctx=Store()),
+                  ], value=List(elts=[], ctx=Load())),
+              ], orelse=[]),
+            For(target=Name(id='colab_url', ctx=Store()), iter=Name(id='menu', ctx=Load()), body=[
+                If(test=BoolOp(op=And(), values=[
+                    UnaryOp(op=Not(), operand=Attribute(value=Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='user')), ctx=Load()), attr='is_active', ctx=Load())),
+                    Attribute(value=Name(id='colab_url', ctx=Load()), attr='auth', ctx=Load()),
+                  ]), body=[
+                    Continue(),
+                  ], orelse=[]),
+                Expr(value=Call(func=Attribute(value=Subscript(value=Name(id='menu_links', ctx=Load()), slice=Index(value=Name(id='title', ctx=Load())), ctx=Load()), attr='append', ctx=Load()), args=[
+                    Name(id='colab_url', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+            If(test=UnaryOp(op=Not(), operand=Subscript(value=Name(id='menu_links', ctx=Load()), slice=Index(value=Name(id='title', ctx=Load())), ctx=Load())), body=[
+                Delete(targets=[
+                    Subscript(value=Name(id='menu_links', ctx=Load()), slice=Index(value=Name(id='title', ctx=Load())), ctx=Del()),
+                  ]),
+              ], orelse=[]),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='menu', ctx=Store()),
+          ], value=Call(func=Name(id='render_to_string', ctx=Load()), args=[
+            Str(s='plugins/menu_template.html'),
+            Dict(keys=[
+                Str(s='menu_links'),
+              ], values=[
+                Name(id='menu_links', ctx=Load()),
+              ]),
+          ], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Name(id='cache', ctx=Load()), attr='set', ctx=Load()), args=[
+            Name(id='cache_key', ctx=Load()),
+            Name(id='menu', ctx=Load()),
+          ], keywords=[])),
+        Return(value=Name(id='menu', ctx=Load())),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='simple_tag', ctx=Load()), args=[], keywords=[
+            keyword(arg='takes_context', value=NameConstant(value=True)),
+          ]),
+      ], returns=None),
+  ])

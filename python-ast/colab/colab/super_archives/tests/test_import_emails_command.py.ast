@@ -1,0 +1,250 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='Mock', asname=None),
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='StringIO', names=[
+        alias(name='StringIO', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.management.base', names=[
+        alias(name='OutputWrapper', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.management.commands.import_emails', names=[
+        alias(name='Command', asname=None),
+      ], level=0),
+    ClassDef(name='ImportEmailsCommandTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='TEST_LOCK_FILE', ctx=Store()),
+          ], value=Str(s='/tmp/lock_import_emails_test_files.lock')),
+        Assign(targets=[
+            Name(id='MAILINGLISTS_DIR', ctx=Store()),
+          ], value=Str(s='tests/mailman_lists/')),
+        Assign(targets=[
+            Name(id='MAILINGLIST_FILE', ctx=Store()),
+          ], value=BinOp(left=Str(s='tests/mailman_lists/mock_maillist.mbox/'), op=Add(), right=Str(s='mock_maillist.mbox'))),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Store()),
+              ], value=Call(func=Name(id='Command', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='stdout', ctx=Store()),
+              ], value=Call(func=Name(id='OutputWrapper', ctx=Load()), args=[
+                Call(func=Name(id='StringIO', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='stderr', ctx=Store()),
+              ], value=Call(func=Name(id='OutputWrapper', ctx=Load()), args=[
+                Call(func=Name(id='StringIO', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='lock_file', ctx=Store()),
+              ], value=Attribute(value=Name(id='self', ctx=Load()), attr='TEST_LOCK_FILE', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_log', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='msg', ctx=Store()),
+              ], value=Str(s='Test out message')),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='log', ctx=Load()), args=[
+                Name(id='msg', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='msg', ctx=Load()),
+                Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='stdout', ctx=Load()), attr='getvalue', ctx=Load()), args=[], keywords=[]), attr='strip', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='msg_error', ctx=Store()),
+              ], value=Str(s='Test error message')),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='log', ctx=Load()), args=[
+                Name(id='msg_error', ctx=Load()),
+                NameConstant(value=True),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='msg_error', ctx=Load()),
+                Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='stderr', ctx=Load()), attr='getvalue', ctx=Load()), args=[], keywords=[]), attr='strip', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_parse_emails', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='bodies', ctx=Store()),
+              ], value=Str(s='')),
+            Assign(targets=[
+                Name(id='count_emails', ctx=Store()),
+              ], value=Num(n=0)),
+            For(target=Tuple(elts=[
+                Name(id='index', ctx=Store()),
+                Name(id='email', ctx=Store()),
+              ], ctx=Store()), iter=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='parse_emails', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='MAILINGLIST_FILE', ctx=Load()),
+              ], keywords=[]), body=[
+                AugAssign(target=Name(id='bodies', ctx=Store()), op=Add(), value=Call(func=Attribute(value=Name(id='email', ctx=Load()), attr='get_body', ctx=Load()), args=[], keywords=[])),
+                AugAssign(target=Name(id='count_emails', ctx=Store()), op=Add(), value=Num(n=1)),
+              ], orelse=[]),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock test'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertNotIn', ctx=Load()), args=[
+                Str(s='not in this test'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=2),
+                Name(id='count_emails', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_all_emails', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='bodies', ctx=Store()),
+              ], value=Dict(keys=[], values=[])),
+            Assign(targets=[
+                Name(id='get_emails', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='get_emails', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='MAILINGLISTS_DIR', ctx=Load()),
+                NameConstant(value=True),
+                List(elts=[
+                    Str(s='mock_maillist_again'),
+                  ], ctx=Load()),
+              ], keywords=[])),
+            For(target=Tuple(elts=[
+                Name(id='name', ctx=Store()),
+                Name(id='email', ctx=Store()),
+                Name(id='index', ctx=Store()),
+              ], ctx=Store()), iter=Name(id='get_emails', ctx=Load()), body=[
+                Assign(targets=[
+                    Subscript(value=Name(id='bodies', ctx=Load()), slice=Index(value=Name(id='name', ctx=Load())), ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='email', ctx=Load()), attr='get_body', ctx=Load()), args=[], keywords=[])),
+              ], orelse=[]),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock_maillist'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock test'),
+                Subscript(value=Name(id='bodies', ctx=Load()), slice=Index(value=Str(s='mock_maillist')), ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertNotIn', ctx=Load()), args=[
+                Str(s='mock_maillist_again'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_emails_from_the_last_import_without_valid_list', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='bodies', ctx=Store()),
+              ], value=Dict(keys=[], values=[])),
+            Assign(targets=[
+                Name(id='get_emails', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='get_emails', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='MAILINGLISTS_DIR', ctx=Load()),
+                NameConstant(value=False),
+                List(elts=[
+                    Str(s='mock_maillist_again'),
+                  ], ctx=Load()),
+              ], keywords=[])),
+            For(target=Tuple(elts=[
+                Name(id='name', ctx=Store()),
+                Name(id='email', ctx=Store()),
+                Name(id='index', ctx=Store()),
+              ], ctx=Store()), iter=Name(id='get_emails', ctx=Load()), body=[
+                Assign(targets=[
+                    Subscript(value=Name(id='bodies', ctx=Load()), slice=Index(value=Name(id='name', ctx=Load())), ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='email', ctx=Load()), attr='get_body', ctx=Load()), args=[], keywords=[])),
+              ], orelse=[]),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock_maillist'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock test'),
+                Subscript(value=Name(id='bodies', ctx=Load()), slice=Index(value=Str(s='mock_maillist')), ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertNotIn', ctx=Load()), args=[
+                Str(s='mock_maillist_again'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_emails_from_the_last_import_with_valid_list', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='get_list_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='get_list_mock', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='last_imported_index', value=Num(n=1)),
+              ])),
+            Assign(targets=[
+                Name(id='bodies', ctx=Store()),
+              ], value=Dict(keys=[], values=[])),
+            Assign(targets=[
+                Name(id='msg_count', ctx=Store()),
+              ], value=Dict(keys=[], values=[])),
+            Assign(targets=[
+                Name(id='get_emails', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cmd', ctx=Load()), attr='get_emails', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='MAILINGLISTS_DIR', ctx=Load()),
+                NameConstant(value=False),
+                List(elts=[
+                    Str(s='mock_maillist_again'),
+                  ], ctx=Load()),
+              ], keywords=[])),
+            For(target=Tuple(elts=[
+                Name(id='name', ctx=Store()),
+                Name(id='email', ctx=Store()),
+                Name(id='index', ctx=Store()),
+              ], ctx=Store()), iter=Name(id='get_emails', ctx=Load()), body=[
+                Assign(targets=[
+                    Subscript(value=Name(id='bodies', ctx=Load()), slice=Index(value=Name(id='name', ctx=Load())), ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='email', ctx=Load()), attr='get_body', ctx=Load()), args=[], keywords=[])),
+                If(test=Compare(left=Name(id='name', ctx=Load()), ops=[
+                    NotIn(),
+                  ], comparators=[
+                    Name(id='msg_count', ctx=Load()),
+                  ]), body=[
+                    Assign(targets=[
+                        Subscript(value=Name(id='msg_count', ctx=Load()), slice=Index(value=Name(id='name', ctx=Load())), ctx=Store()),
+                      ], value=Num(n=1)),
+                  ], orelse=[
+                    AugAssign(target=Subscript(value=Name(id='msg_count', ctx=Load()), slice=Index(value=Name(id='name', ctx=Load())), ctx=Store()), op=Add(), value=Num(n=1)),
+                  ]),
+              ], orelse=[]),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock_maillist'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock test'),
+                Subscript(value=Name(id='bodies', ctx=Load()), slice=Index(value=Str(s='mock_maillist')), ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='mock_maillist'),
+                Name(id='msg_count', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=1),
+                Subscript(value=Name(id='msg_count', ctx=Load()), slice=Index(value=Str(s='mock_maillist')), ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertNotIn', ctx=Load()), args=[
+                Str(s='mock_maillist_again'),
+                Name(id='bodies', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                BinOp(left=Str(s='colab.super_archives.management.commands.import_emails.'), op=Add(), right=Str(s='MailingList.objects.get')),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

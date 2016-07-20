@@ -1,0 +1,303 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='WidgetManager', asname=None),
+        alias(name='Widget', asname=None),
+      ], level=0),
+    ClassDef(name='WigetMock', bases=[
+        Name(id='Widget', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='__init__', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='content', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+            Str(s=''),
+          ]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='content', ctx=Store()),
+              ], value=Name(id='content', ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='WidgetManagerTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='html_content', ctx=Store()),
+          ], value=Str(s="<head><meta charset='UTF-8'></head><body><p>T</p></body>")),
+        Assign(targets=[
+            Name(id='widget_area', ctx=Store()),
+          ], value=Str(s='profile')),
+        Assign(targets=[
+            Name(id='widget_id', ctx=Store()),
+          ], value=Str(s='widget_id')),
+        FunctionDef(name='overwritten_widget_instance', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='content', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+            Str(s=''),
+          ]), body=[
+            ClassDef(name='WidgetOverwritten', bases=[
+                Name(id='Widget', ctx=Load()),
+              ], keywords=[], body=[
+                Assign(targets=[
+                    Name(id='identifier', ctx=Store()),
+                  ], value=Str(s='widget_id')),
+                FunctionDef(name='generate_content', args=arguments(args=[
+                    arg(arg='self', annotation=None),
+                    arg(arg='request', annotation=None),
+                  ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+                    NameConstant(value=None),
+                  ]), body=[
+                    Assign(targets=[
+                        Attribute(value=Name(id='self', ctx=Load()), attr='content', ctx=Store()),
+                      ], value=Name(id='content', ctx=Load())),
+                  ], decorator_list=[], returns=None),
+              ], decorator_list=[]),
+            Return(value=Call(func=Name(id='WidgetOverwritten', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='default_widget_instance', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            ClassDef(name='WidgetDefault', bases=[
+                Name(id='Widget', ctx=Load()),
+              ], keywords=[], body=[
+                Pass(),
+              ], decorator_list=[]),
+            Return(value=Call(func=Name(id='WidgetDefault', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='overwritten_widget_instance', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='html_content', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget_area', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='unregister_widget', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget_area', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget_id', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='bootstrap_conflict', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Assign(targets=[
+                Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='jquery_conflict', ctx=Store()),
+              ], value=NameConstant(value=False)),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_widget_default_values', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='default_widget_instance', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='widget', ctx=Load()), attr='identifier', ctx=Load()),
+                NameConstant(value=None),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='widget', ctx=Load()), attr='name', ctx=Load()),
+                NameConstant(value=None),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='widget', ctx=Load()), attr='content', ctx=Load()),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='widget', ctx=Load()), attr='template', ctx=Load()),
+                Str(s=''),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_add_widgets_to_key_area', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='get_widgets', ctx=Load()), args=[
+                        Attribute(value=Name(id='self', ctx=Load()), attr='widget_area', ctx=Load()),
+                      ], keywords=[]),
+                  ], keywords=[]),
+                Num(n=1),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_remove_widgets_in_key_area', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='area', ctx=Store()),
+              ], value=Str(s='admin')),
+            Assign(targets=[
+                Name(id='widget_instance', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='overwritten_widget_instance', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='html_content', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+                Name(id='area', ctx=Load()),
+                Name(id='widget_instance', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='unregister_widget', ctx=Load()), args=[
+                Name(id='area', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget_id', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='get_widgets', ctx=Load()), args=[
+                        Name(id='area', ctx=Load()),
+                      ], keywords=[]),
+                  ], keywords=[]),
+                Num(n=0),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_body', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='overwritten_widget_instance', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='html_content', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Load()), attr='generate_content', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Load()), attr='get_body', ctx=Load()), args=[], keywords=[]),
+                Str(s='<p>T</p>'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_header', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='overwritten_widget_instance', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='html_content', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Load()), attr='generate_content', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Load()), attr='get_header', ctx=Load()), args=[], keywords=[]),
+                Str(s="<meta charset='UTF-8'>"),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_header_wrong', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='default_widget_instance', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='widget', ctx=Load()), attr='content', ctx=Store()),
+              ], value=Str(s='<head> Teste <head>')),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='widget', ctx=Load()), attr='get_header', ctx=Load()), args=[], keywords=[]),
+                Str(s=''),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_without_body', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='default_widget_instance', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='widget', ctx=Load()), attr='content', ctx=Store()),
+              ], value=Str(s='Teste')),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='widget', ctx=Load()), attr='get_body', ctx=Load()), args=[], keywords=[]),
+                Attribute(value=Name(id='widget', ctx=Load()), attr='content', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_generate_content', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='widgets', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='get_widgets', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget_area', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Subscript(value=Name(id='widgets', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='content', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='html_content', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_widget_with_invalid_area', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='get_widgets', ctx=Load()), args=[
+                    Str(s='area'),
+                  ], keywords=[]),
+                List(elts=[], ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_generate_content_without_template', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='default_widget_instance', ctx=Load()), args=[], keywords=[])),
+            With(items=[
+                withitem(context_expr=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRaises', ctx=Load()), args=[
+                    Name(id='Exception', ctx=Load()),
+                  ], keywords=[]), optional_vars=None),
+              ], body=[
+                Expr(value=Call(func=Attribute(value=Name(id='widget', ctx=Load()), attr='generate_content', ctx=Load()), args=[], keywords=[])),
+              ]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_generate_content_with_template', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='widget', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='default_widget_instance', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='widget', ctx=Load()), attr='template', ctx=Store()),
+              ], value=Attribute(value=Name(id='self', ctx=Load()), attr='html_content', ctx=Load())),
+            With(items=[
+                withitem(context_expr=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRaises', ctx=Load()), args=[
+                    Name(id='Exception', ctx=Load()),
+                  ], keywords=[]), optional_vars=None),
+              ], body=[
+                Expr(value=Call(func=Attribute(value=Name(id='widget', ctx=Load()), attr='generate_content', ctx=Load()), args=[], keywords=[])),
+              ]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_bootstrap_conflict', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Load()), attr='bootstrap_conflict', ctx=Store()),
+              ], value=NameConstant(value=True)),
+            Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='get_widgets', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget_area', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='bootstrap_conflict', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='jquery_conflict', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_jquery_conflict', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='widget', ctx=Load()), attr='jquery_conflict', ctx=Store()),
+              ], value=NameConstant(value=True)),
+            Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='get_widgets', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='widget_area', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='jquery_conflict', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='bootstrap_conflict', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

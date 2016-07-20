@@ -1,0 +1,184 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.models', names=[
+        alias(name='EmailAddress', asname=None),
+        alias(name='EmailAddressValidation', asname=None),
+      ], level=0),
+    ClassDef(name='TestResendEmailVerification', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user_django', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_user_django', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[
+                Str(s='USERtestCoLaB'),
+                Str(s='usertest@colab.com.br'),
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='EmailAddress', ctx=Load()), attr='objects', ctx=Load()), attr='create', ctx=Load()), args=[], keywords=[
+                keyword(arg='address', value=Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Load())),
+                keyword(arg='user', value=Name(id='user', ctx=Load())),
+              ])),
+            Return(value=Name(id='user', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_request_in_resend_email_verification', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/account/resend-email-verification/'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_resend_email_verification_with_not_existing_email', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='options', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='email'),
+              ], values=[
+                Str(s='nonexistent_email@gmail.com'),
+              ])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/account/resend-email-verification/'),
+                Name(id='options', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='msg', ctx=Store()),
+              ], value=Str(s='This emails is not registered yet.')),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='msg', ctx=Load()),
+                Attribute(value=Name(id='response', ctx=Load()), attr='content', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_resend_email_verification_sending_email', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='verify_email_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='verify_email_mock', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=NameConstant(value=True)),
+            Assign(targets=[
+                Name(id='options', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='email'),
+              ], values=[
+                Str(s='usertest@colab.com.br'),
+              ])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/account/resend-email-verification/'),
+                Name(id='options', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=302),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='msg', ctx=Store()),
+              ], value=Str(s='An email was sent to you. Verify your inbox or spam.')),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/account/resend-email-verification/'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='msg', ctx=Load()),
+                Attribute(value=Name(id='response', ctx=Load()), attr='content', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='EmailAddressValidation', ctx=Load()),
+                Str(s='verify_email'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_resend_email_verification_not_sending_email', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='verify_email_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='verify_email_mock', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Assign(targets=[
+                Name(id='options', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='email'),
+              ], values=[
+                Str(s='usertest@colab.com.br'),
+              ])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/account/resend-email-verification/'),
+                Name(id='options', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=302),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='msg', ctx=Store()),
+              ], value=Str(s='An error occurred while sending mail.')),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/account/resend-email-verification/'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='msg', ctx=Load()),
+                Attribute(value=Name(id='response', ctx=Load()), attr='content', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='EmailAddressValidation', ctx=Load()),
+                Str(s='verify_email'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

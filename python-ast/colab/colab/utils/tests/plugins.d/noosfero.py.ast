@@ -1,0 +1,33 @@
+Module(body=[
+    ImportFrom(module='colab.plugins.utils.menu', names=[
+        alias(name='colab_url_factory', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='name', ctx=Store()),
+      ], value=Str(s='noosfero')),
+    Assign(targets=[
+        Name(id='verbose_name', ctx=Store()),
+      ], value=Str(s='Noosfero')),
+    Assign(targets=[
+        Name(id='private_token', ctx=Store()),
+      ], value=Str(s='ef9a334177c620b68e75a89844e8a402')),
+    Assign(targets=[
+        Name(id='upstream', ctx=Store()),
+      ], value=Str(s='http://localhost/social/')),
+    Assign(targets=[
+        Name(id='urls', ctx=Store()),
+      ], value=Dict(keys=[
+        Str(s='include'),
+        Str(s='prefix'),
+        Str(s='namespace'),
+      ], values=[
+        Str(s='noosfero.urls'),
+        Str(s='^social/'),
+        Str(s='social'),
+      ])),
+    Assign(targets=[
+        Name(id='url', ctx=Store()),
+      ], value=Call(func=Name(id='colab_url_factory', ctx=Load()), args=[
+        Str(s='social'),
+      ], keywords=[])),
+  ])

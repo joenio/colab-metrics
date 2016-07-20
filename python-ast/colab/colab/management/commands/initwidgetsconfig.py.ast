@@ -1,0 +1,22 @@
+Module(body=[
+    ImportFrom(module='django.core.management.base', names=[
+        alias(name='BaseCommand', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='CONFIG_TEMPLATE', ctx=Store()),
+      ], value=Str(s="\nfrom colab.widgets.widget_manager import WidgetManager\n\nfrom colab.super_archives.widgets.dashboard_latest_collaborations import \\\n    DashboardLatestCollaborationsWidget\nfrom colab.super_archives.widgets.dashboard_most_relevant_threads import \\\n    DashboardMostRelevantThreadsWidget\nfrom colab.super_archives.widgets.dashboard_latest_threads import \\\n    DashboardLatestThreadsWidget\nfrom colab.super_archives.widgets.dashboard_collaboration_graph import \\\n    DashboardCollaborationGraphWidget\n\nfrom colab.accounts.widgets.group import GroupWidget\nfrom colab.accounts.widgets.group_membership import GroupMembershipWidget\nfrom colab.accounts.widgets.latest_posted import LatestPostedWidget\nfrom colab.accounts.widgets.latest_contributions import \\\n    LatestContributionsWidget\n\nfrom colab.accounts.widgets.collaboration_chart import CollaborationChart\nfrom colab.accounts.widgets.participation_chart import ParticipationChart\n\n# Dashboard Widgets\nWidgetManager.register_widget('dashboard',\n                              DashboardLatestCollaborationsWidget())\nWidgetManager.register_widget('dashboard',\n                              DashboardCollaborationGraphWidget())\nWidgetManager.register_widget('dashboard',\n                              DashboardMostRelevantThreadsWidget())\nWidgetManager.register_widget('dashboard',\n                              DashboardLatestThreadsWidget())\n\n# Profile Widgets\nWidgetManager.register_widget('group', GroupWidget())\nWidgetManager.register_widget('button', GroupMembershipWidget())\nWidgetManager.register_widget('list', LatestPostedWidget())\nWidgetManager.register_widget('list', LatestContributionsWidget())\nWidgetManager.register_widget('charts', CollaborationChart())\nWidgetManager.register_widget('charts', ParticipationChart())\n")),
+    ClassDef(name='Command', bases=[
+        Name(id='BaseCommand', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='help', ctx=Store()),
+          ], value=Str(s='Returns the default widget configuration, including the core widgets.')),
+        FunctionDef(name='handle', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=arg(arg='args', annotation=None), kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+            Expr(value=Call(func=Name(id='print', ctx=Load()), args=[
+                Name(id='CONFIG_TEMPLATE', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

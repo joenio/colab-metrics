@@ -1,0 +1,71 @@
+Module(body=[
+    ImportFrom(module='django.core', names=[
+        alias(name='mail', asname=None),
+      ], level=0),
+    ImportFrom(module='django.conf', names=[
+        alias(name='settings', asname=None),
+      ], level=0),
+    ImportFrom(module='django.template', names=[
+        alias(name='Context', asname=None),
+        alias(name='loader', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils.translation', names=[
+        alias(name='ugettext', asname='_'),
+      ], level=0),
+    FunctionDef(name='colab_send_email', args=arguments(args=[
+        arg(arg='subject', annotation=None),
+        arg(arg='message', annotation=None),
+        arg(arg='to', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='from_email', ctx=Store()),
+          ], value=Attribute(value=Name(id='settings', ctx=Load()), attr='COLAB_FROM_ADDRESS', ctx=Load())),
+        Return(value=Call(func=Attribute(value=Name(id='mail', ctx=Load()), attr='send_mail', ctx=Load()), args=[
+            Name(id='subject', ctx=Load()),
+            Name(id='message', ctx=Load()),
+            Name(id='from_email', ctx=Load()),
+            List(elts=[
+                Name(id='to', ctx=Load()),
+              ], ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='send_verification_email', args=arguments(args=[
+        arg(arg='to', annotation=None),
+        arg(arg='user', annotation=None),
+        arg(arg='validation_key', annotation=None),
+        arg(arg='verification_url', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='subject', ctx=Store()),
+          ], value=BinOp(left=Call(func=Name(id='_', ctx=Load()), args=[
+            Str(s='Please verify your email '),
+          ], keywords=[]), op=Add(), right=Call(func=Attribute(value=Str(s='{}'), attr='format', ctx=Load()), args=[
+            Name(id='to', ctx=Load()),
+          ], keywords=[]))),
+        Assign(targets=[
+            Name(id='msg_tmpl', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='loader', ctx=Load()), attr='get_template', ctx=Load()), args=[
+            Str(s='superarchives/emails/email_verification.txt'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='message', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='msg_tmpl', ctx=Load()), attr='render', ctx=Load()), args=[
+            Call(func=Name(id='Context', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='to'),
+                    Str(s='user'),
+                    Str(s='verification_url'),
+                  ], values=[
+                    Name(id='to', ctx=Load()),
+                    Name(id='user', ctx=Load()),
+                    Name(id='verification_url', ctx=Load()),
+                  ]),
+              ], keywords=[]),
+          ], keywords=[])),
+        Return(value=Call(func=Name(id='colab_send_email', ctx=Load()), args=[
+            Name(id='subject', ctx=Load()),
+            Name(id='message', ctx=Load()),
+            Name(id='to', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[], returns=None),
+  ])

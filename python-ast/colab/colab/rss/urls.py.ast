@@ -1,0 +1,32 @@
+Module(body=[
+    ImportFrom(module='django.conf.urls', names=[
+        alias(name='patterns', asname=None),
+        alias(name='url', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='feeds', asname=None),
+      ]),
+    Assign(targets=[
+        Name(id='urlpatterns', ctx=Store()),
+      ], value=Call(func=Name(id='patterns', ctx=Load()), args=[
+        Str(s=''),
+        Call(func=Name(id='url', ctx=Load()), args=[
+            Str(s='threads/latest/$'),
+            Call(func=Attribute(value=Name(id='feeds', ctx=Load()), attr='LatestThreadsFeeds', ctx=Load()), args=[], keywords=[]),
+          ], keywords=[
+            keyword(arg='name', value=Str(s='rss_latest_threads')),
+          ]),
+        Call(func=Name(id='url', ctx=Load()), args=[
+            Str(s='colab/latest/$'),
+            Call(func=Attribute(value=Name(id='feeds', ctx=Load()), attr='LatestColabFeeds', ctx=Load()), args=[], keywords=[]),
+          ], keywords=[
+            keyword(arg='name', value=Str(s='rss_latest_colab')),
+          ]),
+        Call(func=Name(id='url', ctx=Load()), args=[
+            Str(s='threads/hottest/$'),
+            Call(func=Attribute(value=Name(id='feeds', ctx=Load()), attr='HottestThreadsFeeds', ctx=Load()), args=[], keywords=[]),
+          ], keywords=[
+            keyword(arg='name', value=Str(s='rss_hottest_threads')),
+          ]),
+      ], keywords=[])),
+  ])

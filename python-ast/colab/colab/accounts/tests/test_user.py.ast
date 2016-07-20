@@ -1,0 +1,1026 @@
+Module(body=[
+    Expr(value=Str(s='\nTest User class.\nObjective: Test parameters, and behavior.\n')),
+    Import(names=[
+        alias(name='mock', asname=None),
+      ]),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts', names=[
+        alias(name='forms', asname='accounts_forms'),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ClassDef(name='UserTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='accounts_forms', ctx=Load()), attr='validate_social_account', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='mock', ctx=Load()), attr='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='return_value', value=NameConstant(value=True)),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Pass(),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='User', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Store()),
+              ], value=Str(s='usertest@colab.com.br')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Store()),
+              ], value=Num(n=1)),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='twitter', ctx=Store()),
+              ], value=Str(s='usertestcolab')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='facebook', ctx=Store()),
+              ], value=Str(s='usertestcolab')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='first_name', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='last_name', ctx=Store()),
+              ], value=Str(s='COLAB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Return(value=Name(id='user', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='authenticate_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='needs_update', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())),
+                keyword(arg='password', value=Str(s='123colab4')),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='validate_mandatory_fields', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='expected_first_name', annotation=None),
+            arg(arg='expected_last_name', annotation=None),
+            arg(arg='first_name', annotation=None),
+            arg(arg='last_name', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='colab_form'),
+              ], values=[
+                Name(id='first_name', ctx=Load()),
+                Name(id='last_name', ctx=Load()),
+                Str(s='true'),
+              ])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                BinOp(left=BinOp(left=Str(s='/account/'), op=Add(), right=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())), op=Add(), right=Str(s='/edit')),
+                Name(id='data', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='id', value=Num(n=1)),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='expected_first_name', ctx=Load()),
+                Attribute(value=Name(id='user', ctx=Load()), attr='first_name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='expected_last_name', ctx=Load()),
+                Attribute(value=Name(id='user', ctx=Load()), attr='last_name', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='validate_non_mandatory_fields', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='field_name', annotation=None),
+            arg(arg='expected_value', annotation=None),
+            arg(arg='value', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Name(id='field_name', ctx=Load()),
+                Str(s='colab_form'),
+              ], values=[
+                Str(s='usertestcolab'),
+                Str(s='colab'),
+                Name(id='value', ctx=Load()),
+                Str(s='true'),
+              ])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                BinOp(left=BinOp(left=Str(s='/account/'), op=Add(), right=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())), op=Add(), right=Str(s='/edit')),
+                Name(id='data', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='id', value=Num(n=1)),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='expected_value', ctx=Load()),
+                Call(func=Name(id='getattr', ctx=Load()), args=[
+                    Name(id='user', ctx=Load()),
+                    Name(id='field_name', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_check_password', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='check_password', ctx=Load()), args=[
+                    Str(s='123colab4'),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='check_password', ctx=Load()), args=[
+                    Str(s='1234'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_absolute_url', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='url', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='get_absolute_url', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='/account/usertestcolab'),
+                Name(id='url', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_twitter_link', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='link_twitter', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='twitter_link', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='https://twitter.com/usertestcolab'),
+                Name(id='link_twitter', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_facebook_link', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='link_facebook', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='facebook_link', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='https://www.facebook.com/usertestcolab'),
+                Name(id='link_facebook', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_mailinglists', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='empty_list', ctx=Store()),
+              ], value=Tuple(elts=[], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='empty_list', ctx=Load()),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='mailinglists', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_save', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='username_test', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Assign(targets=[
+                Name(id='user_db', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='id', value=Num(n=1)),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='user_db', ctx=Load()), attr='username', ctx=Load()),
+                Call(func=Attribute(value=Name(id='username_test', ctx=Load()), attr='lower', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_mandatory_information', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_mandatory_fields', ctx=Load()), args=[
+                Str(s='usertestcolab'),
+                Str(s='colabtest'),
+                Str(s='usertestcolab'),
+                Str(s='colabtest'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_mandatory_max_leght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_mandatory_fields', ctx=Load()), args=[
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=30)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=30)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=30)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=30)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_mandatory_max_leght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_mandatory_fields', ctx=Load()), args=[
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=29)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=29)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=29)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=29)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_mandatory_max_leght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_mandatory_fields', ctx=Load()), args=[
+                Str(s='USERtestCoLaB'),
+                Str(s='COLAB'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=31)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=31)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_mandatory_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_mandatory_fields', ctx=Load()), args=[
+                Str(s='USERtestCoLaB'),
+                Str(s='COLAB'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_mandatory_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_mandatory_fields', ctx=Load()), args=[
+                Str(s='USERtestCoLaB'),
+                Str(s='COLAB'),
+                Str(s=' '),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_institution', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='institution'),
+                Str(s='fga'),
+                Str(s='fga'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_institution_max_lenght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='institution'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=128)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=128)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_institution_max_lenght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='institution'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=127)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=127)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_institution_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='institution'),
+                NameConstant(value=None),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=129)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_institution_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='institution'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_institution_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='institution'),
+                Str(s=''),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_role', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='role'),
+                Str(s='studenty'),
+                Str(s='studenty'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_role_max_lenght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='role'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=128)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=128)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_role_max_lenght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='role'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=127)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=127)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_role_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='role'),
+                NameConstant(value=None),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=129)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_role_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='role'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_role_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='role'),
+                Str(s=''),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_twitter', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='twitter'),
+                Str(s='twitter'),
+                Str(s='twitter'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        Expr(value=Str(s="\n    Max_lenght is the maximmum size accept by Twitter.\n    Tests related with twitter should have internet connection,\n    because it's need username authentication.\n    ")),
+        FunctionDef(name='test_update_user_twitter_max_lenght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='twitter'),
+                BinOp(left=Str(s='t'), op=Mult(), right=Num(n=15)),
+                BinOp(left=Str(s='t'), op=Mult(), right=Num(n=15)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_twitter_max_lenght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='twitter'),
+                BinOp(left=Str(s='t'), op=Mult(), right=Num(n=14)),
+                BinOp(left=Str(s='t'), op=Mult(), right=Num(n=14)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_twitter_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='twitter'),
+                Str(s='usertestcolab'),
+                BinOp(left=Str(s='t'), op=Mult(), right=Num(n=16)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_twitter_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='twitter'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_twitter_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='twitter'),
+                Str(s='usertestcolab'),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        Expr(value=Str(s="\n    Max_lenght is the maximmum size accept by Faceebook.\n    Tests related with twitter should have internet connection,\n    because it's need username authentication.\n    ")),
+        FunctionDef(name='test_update_user_facebook', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='facebook'),
+                Str(s='facebook'),
+                Str(s='facebook'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_facebook_max_lenght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='facebook'),
+                BinOp(left=Str(s='f'), op=Mult(), right=Num(n=15)),
+                BinOp(left=Str(s='f'), op=Mult(), right=Num(n=15)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_facebook_max_lenght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='facebook'),
+                BinOp(left=Str(s='f'), op=Mult(), right=Num(n=14)),
+                BinOp(left=Str(s='f'), op=Mult(), right=Num(n=14)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_facebook_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='facebook'),
+                Str(s='usertestcolab'),
+                BinOp(left=Str(s='f'), op=Mult(), right=Num(n=16)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_facebook_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='facebook'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_facebook_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='facebook'),
+                Str(s='usertestcolab'),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_gtalk', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='google_talk'),
+                Str(s='gtalk@colab.com.br'),
+                Str(s='gtalk@colab.com.br'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_gtalk_email_invalid_caracters', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='google_talk'),
+                NameConstant(value=None),
+                Str(s='@@@'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_gtalk_email_without_arroba', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='google_talk'),
+                NameConstant(value=None),
+                Str(s='usercolab.hotmail.com'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_gtalk_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='google_talk'),
+                NameConstant(value=None),
+                Str(s='usercolab@hotmail'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_gtalk_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='google_talk'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_gtalk_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='google_talk'),
+                Str(s=''),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_github', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='github'),
+                Str(s='github'),
+                Str(s='github'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_github_max_lenght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='github'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=39)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=39)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_github_max_lenght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='github'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=38)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=38)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_github_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='github'),
+                NameConstant(value=None),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=40)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_github_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='github'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_github_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='github'),
+                Str(s=''),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_webpage', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='webpage'),
+                Str(s='webpage'),
+                Str(s='webpage'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_webpage_max_lenght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='webpage'),
+                BinOp(left=Str(s='p'), op=Mult(), right=Num(n=256)),
+                BinOp(left=Str(s='p'), op=Mult(), right=Num(n=256)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_webpage_max_lenght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='webpage'),
+                BinOp(left=Str(s='p'), op=Mult(), right=Num(n=255)),
+                BinOp(left=Str(s='p'), op=Mult(), right=Num(n=255)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_webpage_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='webpage'),
+                NameConstant(value=None),
+                BinOp(left=Str(s='p'), op=Mult(), right=Num(n=257)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_webpage_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='webpage'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_webpage_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='webpage'),
+                Str(s=''),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_bio', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='bio'),
+                Str(s='bio'),
+                Str(s='bio'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_bio_max_lenght_limit', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='bio'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=200)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=200)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_bio_max_lenght_limit_one_less', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='bio'),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=199)),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=199)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_bio_max_lenght_overflow', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='bio'),
+                NameConstant(value=None),
+                BinOp(left=Str(s='a'), op=Mult(), right=Num(n=201)),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_bio_invalid_empty_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='bio'),
+                Str(s=''),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_bio_invalid_whitespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate_non_mandatory_fields', ctx=Load()), args=[
+                Str(s='bio'),
+                Str(s=''),
+                Str(s=' '),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_user_without_login', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                BinOp(left=BinOp(left=Str(s='/account/'), op=Add(), right=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())), op=Add(), right=Str(s='/edit')),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+                Num(n=403),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_signup_with_post_not_success', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='data_user', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='username'),
+                Str(s='password1'),
+                Str(s='password2'),
+              ], values=[
+                Str(s='username'),
+                Str(s='safepassword'),
+                Str(s='safepassword'),
+              ])),
+            Assign(targets=[
+                Name(id='before', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='count', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/account/register'),
+              ], keywords=[
+                keyword(arg='data', value=Name(id='data_user', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Name(id='after', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='count', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='before', ctx=Load()),
+                Name(id='after', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_signup_with_post_with_success', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='data_user', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='username'),
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='email'),
+                Str(s='password1'),
+                Str(s='password2'),
+              ], values=[
+                Str(s='username'),
+                Str(s='first name'),
+                Str(s='last name'),
+                Str(s='mail@mail.com'),
+                Str(s='safepassword'),
+                Str(s='safepassword'),
+              ])),
+            Assign(targets=[
+                Name(id='before', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='count', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/account/register'),
+              ], keywords=[
+                keyword(arg='data', value=Name(id='data_user', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Name(id='after', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='count', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                BinOp(left=Name(id='before', ctx=Load()), op=Add(), right=Num(n=1)),
+                Name(id='after', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_user_logged_in_profile', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                BinOp(left=Str(s='/account/'), op=Add(), right=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Subscript(value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='session', ctx=Load()), slice=Index(value=Str(s='_auth_user_id')), ctx=Load()),
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='id', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_user_not_logged_in_profile', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                BinOp(left=Str(s='/account/'), op=Add(), right=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='session', ctx=Load()),
+                Dict(keys=[], values=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_password_changed_message', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='message_test', ctx=Load()), args=[
+                Str(s='Your password was changed.'),
+                Str(s='/account/change-password-done'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_password_reset_done_custom_message', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='message_test', ctx=Load()), args=[
+                BinOp(left=BinOp(left=Str(s="We've emailed you instructions for setting "), op=Add(), right=Str(s='your password. You should be receiving them ')), op=Add(), right=Str(s='shortly.')),
+                Str(s='/account/password-reset-done/'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_password_rest_complete_message', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='message_test', ctx=Load()), args=[
+                BinOp(left=Str(s='Your password has been set. You may go ahead and '), op=Add(), right=Str(s='log in now.')),
+                Str(s='/account/password-reset-complete/'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='message_test', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='message', annotation=None),
+            arg(arg='url', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+              ], keywords=[
+                keyword(arg='follow', value=NameConstant(value=True)),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='message', ctx=Load()),
+                Attribute(value=Name(id='response', ctx=Load()), attr='content', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_user_created_signal', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='user_created_send', annotation=None),
+            arg(arg='user_password_changed_send', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='test_user')),
+                keyword(arg='password', value=Str(s='12345')),
+                keyword(arg='email', value=Str(s='test@example.com')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='user_created_send', ctx=Load()), attr='assert_called_with', ctx=Load()), args=[
+                Name(id='User', ctx=Load()),
+              ], keywords=[
+                keyword(arg='user', value=Name(id='user', ctx=Load())),
+                keyword(arg='password', value=Str(s='12345')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='user_password_changed_send', ctx=Load()), attr='assert_not_called', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='mock', ctx=Load()), attr='patch', ctx=Load()), args=[
+                Str(s='colab.accounts.signals.user_password_changed.send'),
+              ], keywords=[]),
+            Call(func=Attribute(value=Name(id='mock', ctx=Load()), attr='patch', ctx=Load()), args=[
+                Str(s='colab.accounts.signals.user_created.send'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_user_password_changed_signal', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='user_password_changed_send', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='first', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='54321'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='user_password_changed_send', ctx=Load()), attr='assert_called_with', ctx=Load()), args=[
+                Name(id='User', ctx=Load()),
+              ], keywords=[
+                keyword(arg='user', value=Name(id='user', ctx=Load())),
+                keyword(arg='password', value=Str(s='54321')),
+              ])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='mock', ctx=Load()), attr='patch', ctx=Load()), args=[
+                Str(s='colab.accounts.signals.user_password_changed.send'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

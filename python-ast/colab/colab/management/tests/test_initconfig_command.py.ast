@@ -1,0 +1,53 @@
+Module(body=[
+    ImportFrom(module='StringIO', names=[
+        alias(name='StringIO', asname=None),
+      ], level=0),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.management.commands.initconfig', names=[
+        alias(name='Command', asname=None),
+      ], level=0),
+    ClassDef(name='InitConfigCommandTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_initconfig_command', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='stdout_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='cmd', ctx=Store()),
+              ], value=Call(func=Name(id='Command', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='cmd', ctx=Load()), attr='handle', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='DEBUG'),
+                Call(func=Attribute(value=Name(id='stdout_mock', ctx=Load()), attr='getvalue', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='SECRET_KEY'),
+                Call(func=Attribute(value=Name(id='stdout_mock', ctx=Load()), attr='getvalue', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='MANAGERS'),
+                Call(func=Attribute(value=Name(id='stdout_mock', ctx=Load()), attr='getvalue', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='LOGGING'),
+                Call(func=Attribute(value=Name(id='stdout_mock', ctx=Load()), attr='getvalue', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertNotIn', ctx=Load()), args=[
+                Str(s='AVOCADO'),
+                Call(func=Attribute(value=Name(id='stdout_mock', ctx=Load()), attr='getvalue', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='sys.stdout'),
+              ], keywords=[
+                keyword(arg='new_callable', value=Name(id='StringIO', ctx=Load())),
+              ]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

@@ -1,0 +1,245 @@
+Module(body=[
+    Import(names=[
+        alias(name='re', asname=None),
+      ]),
+    ImportFrom(module='django.utils.html', names=[
+        alias(name='strip_tags', asname=None),
+      ], level=0),
+    ImportFrom(module='html2text', names=[
+        alias(name='html2text', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='EXTENDED_PUNCTUATION', ctx=Store()),
+      ], value=Str(s='!"#$%&\'()*+,-./:;=?@[\\]^_`{|}~ \t\n\r\x0b\x0c')),
+    Assign(targets=[
+        Name(id='RE_WRAPPED_BY_HTML', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='re', ctx=Load()), attr='compile', ctx=Load()), args=[
+        Str(s='^<[a-z]+[^>]*>.*</[a-z]+[^>]*>$'),
+        BinOp(left=BinOp(left=Attribute(value=Name(id='re', ctx=Load()), attr='MULTILINE', ctx=Load()), op=BitOr(), right=Attribute(value=Name(id='re', ctx=Load()), attr='IGNORECASE', ctx=Load())), op=BitOr(), right=Attribute(value=Name(id='re', ctx=Load()), attr='DOTALL', ctx=Load())),
+      ], keywords=[])),
+    Assign(targets=[
+        Name(id='RE_LINKS', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='re', ctx=Load()), attr='compile', ctx=Load()), args=[
+        Str(s='(?P<link>https?://[^ \\t\\r\\n\\<]+)'),
+      ], keywords=[])),
+    Assign(targets=[
+        Name(id='LINK_MARKUP', ctx=Store()),
+      ], value=Str(s='<a target="_blank" href="\\g<link>">\\g<link></a>')),
+    Assign(targets=[
+        Name(id='RE_REPLY_LINE', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='re', ctx=Load()), attr='compile', ctx=Load()), args=[
+        Str(s='^[\\s\\t>]*>[\\s\\t]*'),
+      ], keywords=[])),
+    Assign(targets=[
+        Name(id='RE_BR_TO_LINEBREAK', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='re', ctx=Load()), attr='compile', ctx=Load()), args=[
+        Str(s='<\\s*/?\\s*br\\s*/?\\s*>'),
+      ], keywords=[])),
+    ClassDef(name='EmailBlock', bases=[
+        Name(id='list', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='__init__', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='is_reply', annotation=None),
+            arg(arg='mark_links', annotation=None),
+            arg(arg='html2text', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+            NameConstant(value=False),
+            NameConstant(value=True),
+            NameConstant(value=True),
+          ]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='mark_links', ctx=Store()),
+              ], value=Name(id='mark_links', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='html2text', ctx=Store()),
+              ], value=Name(id='html2text', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='is_reply', ctx=Store()),
+              ], value=Name(id='is_reply', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='_html2text', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='text', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            If(test=Call(func=Attribute(value=Name(id='RE_WRAPPED_BY_HTML', ctx=Load()), attr='match', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='text', ctx=Load()), attr='strip', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[]), body=[
+                Return(value=Call(func=Attribute(value=Call(func=Name(id='html2text', ctx=Load()), args=[
+                    Name(id='text', ctx=Load()),
+                  ], keywords=[]), attr='strip', ctx=Load()), args=[], keywords=[])),
+              ], orelse=[]),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='text', ctx=Store()),
+                    Name(id='n', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='RE_BR_TO_LINEBREAK', ctx=Load()), attr='subn', ctx=Load()), args=[
+                Str(s='\n'),
+                Name(id='text', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='text', ctx=Store()),
+              ], value=Call(func=Name(id='strip_tags', ctx=Load()), args=[
+                Name(id='text', ctx=Load()),
+              ], keywords=[])),
+            Return(value=Name(id='text', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='_mark_links', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='text', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='text', ctx=Store()),
+                    Name(id='n', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='RE_LINKS', ctx=Load()), attr='subn', ctx=Load()), args=[
+                Name(id='LINK_MARKUP', ctx=Load()),
+                Name(id='text', ctx=Load()),
+              ], keywords=[])),
+            Return(value=Name(id='text', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='text', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='block', ctx=Store()),
+              ], value=Call(func=Attribute(value=Str(s=''), attr='join', ctx=Load()), args=[
+                Name(id='self', ctx=Load()),
+              ], keywords=[])),
+            If(test=Attribute(value=Name(id='self', ctx=Load()), attr='html2text', ctx=Load()), body=[
+                Assign(targets=[
+                    Name(id='block', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='_html2text', ctx=Load()), args=[
+                    Name(id='block', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+            If(test=Attribute(value=Name(id='self', ctx=Load()), attr='mark_links', ctx=Load()), body=[
+                Assign(targets=[
+                    Name(id='block', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='_mark_links', ctx=Load()), args=[
+                    Name(id='block', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+            Return(value=Name(id='block', ctx=Load())),
+          ], decorator_list=[
+            Name(id='property', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='__unicode__', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Name(id='self', ctx=Load()), attr='text', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='__str__', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Name(id='self', ctx=Load()), attr='text', ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='EmailBlockParser', bases=[
+        Name(id='list', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='__init__', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='email', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='email', ctx=Store()),
+              ], value=Name(id='email', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='thread_emails', ctx=Store()),
+              ], value=Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='thread', ctx=Load()), attr='message_set', ctx=Load())),
+            Assign(targets=[
+                Name(id='message', ctx=Store()),
+              ], value=Attribute(value=Name(id='email', ctx=Load()), attr='body', ctx=Load())),
+            Assign(targets=[
+                Name(id='block', ctx=Store()),
+              ], value=Call(func=Name(id='EmailBlock', ctx=Load()), args=[], keywords=[])),
+            For(target=Name(id='line', ctx=Store()), iter=Call(func=Attribute(value=Name(id='message', ctx=Load()), attr='split', ctx=Load()), args=[
+                Str(s='\n'),
+              ], keywords=[]), body=[
+                If(test=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='context_switch', ctx=Load()), args=[
+                    Name(id='line', ctx=Load()),
+                    Name(id='block', ctx=Load()),
+                  ], keywords=[]), body=[
+                    Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='append', ctx=Load()), args=[
+                        Name(id='block', ctx=Load()),
+                      ], keywords=[])),
+                    Assign(targets=[
+                        Name(id='new_block_context', ctx=Store()),
+                      ], value=UnaryOp(op=Not(), operand=Attribute(value=Name(id='block', ctx=Load()), attr='is_reply', ctx=Load()))),
+                    Assign(targets=[
+                        Name(id='block', ctx=Store()),
+                      ], value=Call(func=Name(id='EmailBlock', ctx=Load()), args=[], keywords=[
+                        keyword(arg='is_reply', value=Name(id='new_block_context', ctx=Load())),
+                      ])),
+                  ], orelse=[]),
+                Expr(value=Call(func=Attribute(value=Name(id='block', ctx=Load()), attr='append', ctx=Load()), args=[
+                    BinOp(left=Name(id='line', ctx=Load()), op=Add(), right=Str(s='\n')),
+                  ], keywords=[])),
+              ], orelse=[]),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='append', ctx=Load()), args=[
+                Name(id='block', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='context_switch', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='line', annotation=None),
+            arg(arg='block', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            If(test=Call(func=Attribute(value=Name(id='line', ctx=Load()), attr='strip', ctx=Load()), args=[
+                Name(id='EXTENDED_PUNCTUATION', ctx=Load()),
+              ], keywords=[]), body=[
+                If(test=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='is_reply', ctx=Load()), args=[
+                    Name(id='line', ctx=Load()),
+                  ], keywords=[]), body=[
+                    If(test=UnaryOp(op=Not(), operand=Attribute(value=Name(id='block', ctx=Load()), attr='is_reply', ctx=Load())), body=[
+                        Return(value=NameConstant(value=True)),
+                      ], orelse=[]),
+                  ], orelse=[
+                    If(test=Attribute(value=Name(id='block', ctx=Load()), attr='is_reply', ctx=Load()), body=[
+                        Return(value=NameConstant(value=True)),
+                      ], orelse=[]),
+                  ]),
+              ], orelse=[]),
+            Return(value=NameConstant(value=False)),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='is_reply', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='line', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='stripped_line', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='line', ctx=Load()), attr='strip', ctx=Load()), args=[], keywords=[])),
+            If(test=BoolOp(op=Or(), values=[
+                Call(func=Attribute(value=Name(id='stripped_line', ctx=Load()), attr='startswith', ctx=Load()), args=[
+                    Str(s='>'),
+                  ], keywords=[]),
+                Call(func=Attribute(value=Name(id='RE_REPLY_LINE', ctx=Load()), attr='match', ctx=Load()), args=[
+                    Name(id='line', ctx=Load()),
+                  ], keywords=[]),
+              ]), body=[
+                Return(value=NameConstant(value=True)),
+              ], orelse=[]),
+            Assign(targets=[
+                Name(id='clean_line', ctx=Store()),
+              ], value=Subscript(value=Call(func=Attribute(value=Name(id='RE_REPLY_LINE', ctx=Load()), attr='subn', ctx=Load()), args=[
+                Str(s=''),
+                Name(id='stripped_line', ctx=Load()),
+              ], keywords=[]), slice=Index(value=Num(n=0)), ctx=Load())),
+            Assign(targets=[
+                Name(id='queryset', ctx=Store()),
+              ], value=Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='thread_emails', ctx=Load()), attr='filter', ctx=Load()), args=[], keywords=[
+                keyword(arg='received_time__lt', value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='email', ctx=Load()), attr='received_time', ctx=Load())),
+                keyword(arg='body__contains', value=Name(id='clean_line', ctx=Load())),
+              ]), attr='order_by', ctx=Load()), args=[
+                Str(s='-received_time'),
+              ], keywords=[])),
+            If(test=Subscript(value=Name(id='queryset', ctx=Load()), slice=Slice(lower=None, upper=Num(n=1), step=None), ctx=Load()), body=[
+                Return(value=NameConstant(value=True)),
+              ], orelse=[]),
+            Return(value=NameConstant(value=False)),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

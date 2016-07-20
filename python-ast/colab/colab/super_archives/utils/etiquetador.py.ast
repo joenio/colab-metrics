@@ -1,0 +1,15 @@
+Module(body=[
+    ImportFrom(module='etiquetando', names=[
+        alias(name='Etiquetador', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='etiquetador', ctx=Store()),
+      ], value=Call(func=Name(id='Etiquetador', ctx=Load()), args=[], keywords=[
+        keyword(arg='word_min_size', value=Num(n=3)),
+        keyword(arg='max_tags', value=Num(n=24)),
+        keyword(arg='weight_range', value=Tuple(elts=[
+            Num(n=1),
+            Num(n=4),
+          ], ctx=Load())),
+      ])),
+  ])

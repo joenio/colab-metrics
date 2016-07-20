@@ -1,0 +1,585 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='django.db', names=[
+        alias(name='models', asname=None),
+        alias(name='migrations', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='hitcounter.models', asname=None),
+      ]),
+    Import(names=[
+        alias(name='taggit.managers', asname=None),
+      ]),
+    Import(names=[
+        alias(name='django.db.models.deletion', asname=None),
+      ]),
+    ImportFrom(module='django.conf', names=[
+        alias(name='settings', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='colab.super_archives.models', asname=None),
+      ]),
+    ClassDef(name='Migration', bases=[
+        Attribute(value=Name(id='migrations', ctx=Load()), attr='Migration', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='dependencies', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='swappable_dependency', ctx=Load()), args=[
+                Attribute(value=Name(id='settings', ctx=Load()), attr='AUTH_USER_MODEL', ctx=Load()),
+              ], keywords=[]),
+            Tuple(elts=[
+                Str(s='taggit'),
+                Str(s='0001_initial'),
+              ], ctx=Load()),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='operations', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='EmailAddress')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='address'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='EmailField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='unique', value=NameConstant(value=True)),
+                            keyword(arg='max_length', value=Num(n=75)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='real_name'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='db_index', value=NameConstant(value=True)),
+                            keyword(arg='max_length', value=Num(n=64)),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='md5'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=32)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='user'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='related_name', value=Bytes(s=b'emails')),
+                            keyword(arg='on_delete', value=Attribute(value=Attribute(value=Attribute(value=Attribute(value=Name(id='django', ctx=Load()), attr='db', ctx=Load()), attr='models', ctx=Load()), attr='deletion', ctx=Load()), attr='SET_NULL', ctx=Load())),
+                            keyword(arg='to', value=Attribute(value=Name(id='settings', ctx=Load()), attr='AUTH_USER_MODEL', ctx=Load())),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[
+                    Str(s='ordering'),
+                  ], values=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                      ], ctx=Load()),
+                  ])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='EmailAddressValidation')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='address'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='EmailField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='unique', value=NameConstant(value=True)),
+                            keyword(arg='max_length', value=Num(n=75)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='validation_key'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Attribute(value=Attribute(value=Attribute(value=Name(id='colab', ctx=Load()), attr='super_archives', ctx=Load()), attr='models', ctx=Load()), attr='get_validation_key', ctx=Load())),
+                            keyword(arg='max_length', value=Num(n=32)),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='created'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='DateTimeField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='auto_now_add', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='user'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='related_name', value=Bytes(s=b'emails_not_validated')),
+                            keyword(arg='to', value=Attribute(value=Name(id='settings', ctx=Load()), attr='AUTH_USER_MODEL', ctx=Load())),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[], values=[])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='Keyword')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='keyword'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Bytes(s=b'128')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='weight'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='IntegerField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Num(n=0)),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[
+                    Str(s='ordering'),
+                  ], values=[
+                    Tuple(elts=[
+                        Str(s='?'),
+                      ], ctx=Load()),
+                  ])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='MailingList')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='name'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=80)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='email'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='EmailField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=75)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='description'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='TextField', ctx=Load()), args=[], keywords=[]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='logo'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='FileField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='upload_to', value=Bytes(s=b'list_logo')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='last_imported_index'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='IntegerField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Num(n=0)),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[], values=[])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='MailingListMembership')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='mailinglist'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='to', value=Str(s='super_archives.MailingList')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='user'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='to', value=Attribute(value=Name(id='settings', ctx=Load()), attr='AUTH_USER_MODEL', ctx=Load())),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[], values=[])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='Message')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='subject'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='help_text', value=Str(s='Please enter a message subject')),
+                            keyword(arg='max_length', value=Num(n=512)),
+                            keyword(arg='verbose_name', value=Str(s='Subject')),
+                            keyword(arg='db_index', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='subject_clean'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=512)),
+                            keyword(arg='db_index', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='body'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='TextField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Bytes(s=b'')),
+                            keyword(arg='help_text', value=Str(s='Please enter a message body')),
+                            keyword(arg='verbose_name', value=Str(s='Message body')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='received_time'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='DateTimeField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='db_index', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='message_id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=512)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='spam'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='BooleanField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=NameConstant(value=False)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='from_address'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='to', value=Str(s='super_archives.EmailAddress')),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[
+                    Str(s='ordering'),
+                    Str(s='verbose_name'),
+                    Str(s='verbose_name_plural'),
+                  ], values=[
+                    Tuple(elts=[
+                        Str(s='received_time'),
+                      ], ctx=Load()),
+                    Str(s='Message'),
+                    Str(s='Messages'),
+                  ])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='MessageBlock')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='text'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='TextField', ctx=Load()), args=[], keywords=[]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='is_reply'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='BooleanField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=NameConstant(value=False)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='order'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='IntegerField', ctx=Load()), args=[], keywords=[]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='message'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='related_name', value=Bytes(s=b'blocks')),
+                            keyword(arg='to', value=Str(s='super_archives.Message')),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[
+                    Str(s='ordering'),
+                  ], values=[
+                    Tuple(elts=[
+                        Str(s='order'),
+                      ], ctx=Load()),
+                  ])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='MessageMetadata')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='name'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=512)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='value'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='TextField', ctx=Load()), args=[], keywords=[]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='Message'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='to', value=Str(s='super_archives.Message')),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[], values=[])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='Thread')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='subject_token'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='max_length', value=Num(n=512)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='score'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='IntegerField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Num(n=0)),
+                            keyword(arg='help_text', value=Str(s='Thread score')),
+                            keyword(arg='verbose_name', value=Str(s='Score')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='spam'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='BooleanField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=NameConstant(value=False)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='latest_message'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='OneToOneField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='related_name', value=Bytes(s=b'+')),
+                            keyword(arg='null', value=NameConstant(value=True)),
+                            keyword(arg='to', value=Str(s='super_archives.Message')),
+                            keyword(arg='help_text', value=Str(s='Latest message posted')),
+                            keyword(arg='verbose_name', value=Str(s='Latest message')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='mailinglist'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='Mailing List')),
+                            keyword(arg='to', value=Str(s='super_archives.MailingList')),
+                            keyword(arg='help_text', value=Str(s='The Mailing List where is the thread')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='tags'),
+                        Call(func=Attribute(value=Attribute(value=Name(id='taggit', ctx=Load()), attr='managers', ctx=Load()), attr='TaggableManager', ctx=Load()), args=[], keywords=[
+                            keyword(arg='to', value=Str(s='taggit.Tag')),
+                            keyword(arg='through', value=Str(s='taggit.TaggedItem')),
+                            keyword(arg='help_text', value=Str(s='A comma-separated list of tags.')),
+                            keyword(arg='verbose_name', value=Str(s='Tags')),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[
+                    Str(s='ordering'),
+                    Str(s='verbose_name'),
+                    Str(s='verbose_name_plural'),
+                  ], values=[
+                    Tuple(elts=[
+                        Str(s='-latest_message__received_time'),
+                      ], ctx=Load()),
+                    Str(s='Thread'),
+                    Str(s='Threads'),
+                  ])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                    Attribute(value=Attribute(value=Name(id='hitcounter', ctx=Load()), attr='models', ctx=Load()), attr='HitCounterModelMixin', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='Vote')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='AutoField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='verbose_name', value=Str(s='ID')),
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='auto_created', value=NameConstant(value=True)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='created'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='DateTimeField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='auto_now_add', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='message'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='to', value=Str(s='super_archives.Message')),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='user'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                            keyword(arg='to', value=Attribute(value=Name(id='settings', ctx=Load()), attr='AUTH_USER_MODEL', ctx=Load())),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[], values=[])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AlterUniqueTogether', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='vote')),
+                keyword(arg='unique_together', value=Call(func=Name(id='set', ctx=Load()), args=[
+                    List(elts=[
+                        Tuple(elts=[
+                            Str(s='user'),
+                            Str(s='message'),
+                          ], ctx=Load()),
+                      ], ctx=Load()),
+                  ], keywords=[])),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AlterUniqueTogether', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='thread')),
+                keyword(arg='unique_together', value=Call(func=Name(id='set', ctx=Load()), args=[
+                    List(elts=[
+                        Tuple(elts=[
+                            Str(s='subject_token'),
+                            Str(s='mailinglist'),
+                          ], ctx=Load()),
+                      ], ctx=Load()),
+                  ], keywords=[])),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AddField', ctx=Load()), args=[], keywords=[
+                keyword(arg='model_name', value=Str(s='message')),
+                keyword(arg='name', value=Str(s='thread')),
+                keyword(arg='field', value=Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                    keyword(arg='to', value=Str(s='super_archives.Thread')),
+                    keyword(arg='null', value=NameConstant(value=True)),
+                  ])),
+                keyword(arg='preserve_default', value=NameConstant(value=True)),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AlterUniqueTogether', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='message')),
+                keyword(arg='unique_together', value=Call(func=Name(id='set', ctx=Load()), args=[
+                    List(elts=[
+                        Tuple(elts=[
+                            Str(s='thread'),
+                            Str(s='message_id'),
+                          ], ctx=Load()),
+                      ], ctx=Load()),
+                  ], keywords=[])),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AddField', ctx=Load()), args=[], keywords=[
+                keyword(arg='model_name', value=Str(s='keyword')),
+                keyword(arg='name', value=Str(s='thread')),
+                keyword(arg='field', value=Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='ForeignKey', ctx=Load()), args=[], keywords=[
+                    keyword(arg='to', value=Str(s='super_archives.Thread')),
+                  ])),
+                keyword(arg='preserve_default', value=NameConstant(value=True)),
+              ]),
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AlterUniqueTogether', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='emailaddressvalidation')),
+                keyword(arg='unique_together', value=Call(func=Name(id='set', ctx=Load()), args=[
+                    List(elts=[
+                        Tuple(elts=[
+                            Str(s='user'),
+                            Str(s='address'),
+                          ], ctx=Load()),
+                      ], ctx=Load()),
+                  ], keywords=[])),
+              ]),
+          ], ctx=Load())),
+      ], decorator_list=[]),
+  ])

@@ -1,0 +1,33 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='django.db', names=[
+        alias(name='models', asname=None),
+        alias(name='migrations', asname=None),
+      ], level=0),
+    ClassDef(name='Migration', bases=[
+        Attribute(value=Name(id='migrations', ctx=Load()), attr='Migration', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='dependencies', ctx=Store()),
+          ], value=List(elts=[
+            Tuple(elts=[
+                Str(s='accounts'),
+                Str(s='0002_user_needs_update'),
+              ], ctx=Load()),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='operations', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AlterField', ctx=Load()), args=[], keywords=[
+                keyword(arg='model_name', value=Str(s='user')),
+                keyword(arg='name', value=Str(s='needs_update')),
+                keyword(arg='field', value=Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='BooleanField', ctx=Load()), args=[], keywords=[
+                    keyword(arg='default', value=NameConstant(value=True)),
+                  ])),
+                keyword(arg='preserve_default', value=NameConstant(value=True)),
+              ]),
+          ], ctx=Load())),
+      ], decorator_list=[]),
+  ])

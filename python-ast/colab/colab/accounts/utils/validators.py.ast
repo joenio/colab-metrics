@@ -1,0 +1,41 @@
+Module(body=[
+    Import(names=[
+        alias(name='urllib2', asname=None),
+      ]),
+    Import(names=[
+        alias(name='urlparse', asname=None),
+      ]),
+    FunctionDef(name='validate_social_account', args=arguments(args=[
+        arg(arg='account', annotation=None),
+        arg(arg='url', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Expr(value=Str(s="Verifies if a social account is valid.\n\n    Examples:\n\n    >>> validate_social_account('seocam', 'http://twitter.com')\n    True\n\n    >>> validate_social_account('seocam-fake-should-fail',\n                                'http://twitter.com')\n    False\n\n    ")),
+        Assign(targets=[
+            Name(id='request', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='urllib2', ctx=Load()), attr='Request', ctx=Load()), args=[
+            Call(func=Attribute(value=Name(id='urlparse', ctx=Load()), attr='urljoin', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+                Name(id='account', ctx=Load()),
+              ], keywords=[]),
+          ], keywords=[])),
+        Assign(targets=[
+            Attribute(value=Name(id='request', ctx=Load()), attr='get_method', ctx=Store()),
+          ], value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='HEAD'))),
+        Try(body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='urllib2', ctx=Load()), attr='urlopen', ctx=Load()), args=[
+                Name(id='request', ctx=Load()),
+              ], keywords=[])),
+          ], handlers=[
+            ExceptHandler(type=Attribute(value=Name(id='urllib2', ctx=Load()), attr='HTTPError', ctx=Load()), name=None, body=[
+                Return(value=NameConstant(value=False)),
+              ]),
+          ], orelse=[], finalbody=[]),
+        Return(value=Compare(left=Attribute(value=Name(id='response', ctx=Load()), attr='code', ctx=Load()), ops=[
+            Eq(),
+          ], comparators=[
+            Num(n=200),
+          ])),
+      ], decorator_list=[], returns=None),
+  ])

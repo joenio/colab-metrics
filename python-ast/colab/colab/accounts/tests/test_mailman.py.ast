@@ -1,0 +1,228 @@
+Module(body=[
+    Expr(value=Str(s='\nTest Mailman class.\nObjective: Test parameters, and behavior.\n')),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+        alias(name='Mock', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.utils', names=[
+        alias(name='mailman', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ClassDef(name='TestMailman', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='create_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='User', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Str(s='usertest')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Store()),
+              ], value=Str(s='usertest@colab.com.br')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Store()),
+              ], value=Num(n=1)),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='twitter', ctx=Store()),
+              ], value=Str(s='usertest')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='facebook', ctx=Store()),
+              ], value=Str(s='usertest')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='first_name', ctx=Store()),
+              ], value=Str(s='usertest')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='last_name', ctx=Store()),
+              ], value=Str(s='COLAB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Return(value=Name(id='user', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='request_mock', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='method', annotation=None),
+            arg(arg='value', annotation=None),
+            arg(arg='json_return', annotation=None),
+            arg(arg='mock_requests', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='mock_response', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='mock_response', ctx=Load()), attr='json', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='json_return', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='mock_response', ctx=Load()), attr='status_code', ctx=Store()),
+              ], value=Num(n=201)),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='mock_requests', ctx=Load()), attr='put', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='mock_response', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='mock_requests', ctx=Load()), attr='post', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='mock_response', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='mock_requests', ctx=Load()), attr='get', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='mock_response', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='mock_requests', ctx=Load()), attr='delete', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='mock_response', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='mock_response', ctx=Store()),
+              ], value=Name(id='mock_response', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='mock_requests', ctx=Store()),
+              ], value=Name(id='mock_requests', ctx=Load())),
+            Return(value=Call(func=Call(func=Name(id='getattr', ctx=Load()), args=[
+                Name(id='mailman', ctx=Load()),
+                Name(id='method', ctx=Load()),
+              ], keywords=[]), args=[
+                Starred(value=Name(id='value', ctx=Load()), ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.accounts.utils.mailman.requests'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_subscribe', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='value', ctx=Store()),
+              ], value=Tuple(elts=[
+                Str(s='testlist'),
+                Str(s='address'),
+              ], ctx=Load())),
+            Assign(targets=[
+                Name(id='method', ctx=Store()),
+              ], value=Str(s='subscribe')),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='request_mock', ctx=Load()), args=[
+                Name(id='method', ctx=Load()),
+                Name(id='value', ctx=Load()),
+                Num(n=0),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Str(s='success'), ops=[
+                    In(),
+                  ], comparators=[
+                    Name(id='result', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='request_mock', ctx=Load()), args=[
+                Name(id='method', ctx=Load()),
+                Name(id='value', ctx=Load()),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Compare(left=Str(s='success'), ops=[
+                    In(),
+                  ], comparators=[
+                    Name(id='result', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_unsubscribe', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='value', ctx=Store()),
+              ], value=Tuple(elts=[
+                Str(s='testlist'),
+                Str(s='address'),
+              ], ctx=Load())),
+            Assign(targets=[
+                Name(id='method', ctx=Store()),
+              ], value=Str(s='unsubscribe')),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='request_mock', ctx=Load()), args=[
+                Name(id='method', ctx=Load()),
+                Name(id='value', ctx=Load()),
+                Num(n=0),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Str(s='success'), ops=[
+                    In(),
+                  ], comparators=[
+                    Name(id='result', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='request_mock', ctx=Load()), args=[
+                Name(id='method', ctx=Load()),
+                Name(id='value', ctx=Load()),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Compare(left=Str(s='success'), ops=[
+                    In(),
+                  ], comparators=[
+                    Name(id='result', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_create_list', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='admin', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='admin', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Str(s='usertest')),
+            Assign(targets=[
+                Name(id='value', ctx=Store()),
+              ], value=Tuple(elts=[
+                Str(s='testlist'),
+                Name(id='admin', ctx=Load()),
+              ], ctx=Load())),
+            Assign(targets=[
+                Name(id='method', ctx=Store()),
+              ], value=Str(s='create_list')),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='request_mock', ctx=Load()), args=[
+                Name(id='method', ctx=Load()),
+                Name(id='value', ctx=Load()),
+                Num(n=0),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='success'),
+                Name(id='result', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='value', ctx=Store()),
+              ], value=Tuple(elts=[
+                Str(s='testlist2'),
+                Name(id='admin', ctx=Load()),
+              ], ctx=Load())),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='request_mock', ctx=Load()), args=[
+                Name(id='method', ctx=Load()),
+                Name(id='value', ctx=Load()),
+                Str(s=''),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertNotIn', ctx=Load()), args=[
+                Str(s='success'),
+                Name(id='result', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

@@ -1,0 +1,153 @@
+Module(body=[
+    ImportFrom(module='django.conf', names=[
+        alias(name='settings', asname=None),
+      ], level=0),
+    ImportFrom(module='django.shortcuts', names=[
+        alias(name='render', asname=None),
+      ], level=0),
+    ImportFrom(module='django.http', names=[
+        alias(name='HttpResponse', asname=None),
+        alias(name='Http404', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.plugins.utils.collaborations', names=[
+        alias(name='get_collaboration_data', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.models', names=[
+        alias(name='Thread', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.utils', names=[
+        alias(name='mailman', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    FunctionDef(name='get_user_threads', args=arguments(args=[
+        arg(arg='threads', annotation=None),
+        arg(arg='lists_for_user', annotation=None),
+        arg(arg='key', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='visible_threads', ctx=Store()),
+          ], value=List(elts=[], ctx=Load())),
+        Assign(targets=[
+            Name(id='listnames_for_user', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='mailman', ctx=Load()), attr='extract_listname_from_list', ctx=Load()), args=[
+            Name(id='lists_for_user', ctx=Load()),
+          ], keywords=[])),
+        For(target=Name(id='t', ctx=Store()), iter=Name(id='threads', ctx=Load()), body=[
+            If(test=BoolOp(op=Or(), values=[
+                UnaryOp(op=Not(), operand=Attribute(value=Attribute(value=Name(id='t', ctx=Load()), attr='mailinglist', ctx=Load()), attr='is_private', ctx=Load())),
+                Compare(left=Attribute(value=Attribute(value=Name(id='t', ctx=Load()), attr='mailinglist', ctx=Load()), attr='name', ctx=Load()), ops=[
+                    In(),
+                  ], comparators=[
+                    Name(id='listnames_for_user', ctx=Load()),
+                  ]),
+              ]), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='visible_threads', ctx=Load()), attr='append', ctx=Load()), args=[
+                    Call(func=Name(id='key', ctx=Load()), args=[
+                        Name(id='t', ctx=Load()),
+                      ], keywords=[]),
+                  ], keywords=[])),
+              ], orelse=[]),
+          ], orelse=[]),
+        Return(value=Name(id='visible_threads', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='dashboard', args=arguments(args=[
+        arg(arg='request', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Expr(value=Str(s='Dashboard page')),
+        Assign(targets=[
+            Name(id='highest_score_threads', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='Thread', ctx=Load()), attr='highest_score', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[])),
+        Assign(targets=[
+            Name(id='all_threads', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='Thread', ctx=Load()), attr='objects', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[])),
+        Assign(targets=[
+            Name(id='latest_threads', ctx=Store()),
+          ], value=List(elts=[], ctx=Load())),
+        Assign(targets=[
+            Name(id='lists_for_user', ctx=Store()),
+          ], value=List(elts=[], ctx=Load())),
+        Assign(targets=[
+            Name(id='user', ctx=Store()),
+          ], value=NameConstant(value=None)),
+        If(test=Call(func=Attribute(value=Attribute(value=Name(id='request', ctx=Load()), attr='user', ctx=Load()), attr='is_authenticated', ctx=Load()), args=[], keywords=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Attribute(value=Name(id='request', ctx=Load()), attr='user', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Name(id='lists_for_user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='mailman', ctx=Load()), attr='get_user_mailinglists', ctx=Load()), args=[
+                Name(id='user', ctx=Load()),
+              ], keywords=[])),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='latest_threads', ctx=Store()),
+          ], value=Call(func=Name(id='get_user_threads', ctx=Load()), args=[
+            Name(id='all_threads', ctx=Load()),
+            Name(id='lists_for_user', ctx=Load()),
+            Lambda(args=arguments(args=[
+                arg(arg='t', annotation=None),
+              ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Name(id='t', ctx=Load())),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='hottest_threads', ctx=Store()),
+          ], value=Call(func=Name(id='get_user_threads', ctx=Load()), args=[
+            Name(id='highest_score_threads', ctx=Load()),
+            Name(id='lists_for_user', ctx=Load()),
+            Lambda(args=arguments(args=[
+                arg(arg='t', annotation=None),
+              ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Attribute(value=Name(id='t', ctx=Load()), attr='latest_message', ctx=Load())),
+          ], keywords=[])),
+        Assign(targets=[
+            Tuple(elts=[
+                Name(id='latest_results', ctx=Store()),
+                Name(id='count_types', ctx=Store()),
+              ], ctx=Store()),
+          ], value=Call(func=Name(id='get_collaboration_data', ctx=Load()), args=[
+            Name(id='user', ctx=Load()),
+          ], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Name(id='latest_results', ctx=Load()), attr='sort', ctx=Load()), args=[], keywords=[
+            keyword(arg='key', value=Lambda(args=arguments(args=[
+                arg(arg='elem', annotation=None),
+              ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Attribute(value=Name(id='elem', ctx=Load()), attr='modified', ctx=Load()))),
+            keyword(arg='reverse', value=NameConstant(value=True)),
+          ])),
+        Assign(targets=[
+            Name(id='context', ctx=Store()),
+          ], value=Dict(keys=[
+            Str(s='hottest_threads'),
+            Str(s='latest_threads'),
+            Str(s='type_count'),
+            Str(s='latest_results'),
+          ], values=[
+            Subscript(value=Name(id='hottest_threads', ctx=Load()), slice=Slice(lower=None, upper=Num(n=6), step=None), ctx=Load()),
+            Subscript(value=Name(id='latest_threads', ctx=Load()), slice=Slice(lower=None, upper=Num(n=6), step=None), ctx=Load()),
+            Name(id='count_types', ctx=Load()),
+            Subscript(value=Name(id='latest_results', ctx=Load()), slice=Slice(lower=None, upper=Num(n=6), step=None), ctx=Load()),
+          ])),
+        Return(value=Call(func=Name(id='render', ctx=Load()), args=[
+            Name(id='request', ctx=Load()),
+            Str(s='home.html'),
+            Name(id='context', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='robots', args=arguments(args=[
+        arg(arg='request', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        If(test=Call(func=Name(id='getattr', ctx=Load()), args=[
+            Name(id='settings', ctx=Load()),
+            Str(s='ROBOTS_NOINDEX'),
+            NameConstant(value=False),
+          ], keywords=[]), body=[
+            Return(value=Call(func=Name(id='HttpResponse', ctx=Load()), args=[
+                Str(s='User-agent: *\nDisallow: /'),
+              ], keywords=[
+                keyword(arg='content_type', value=Str(s='text/plain')),
+              ])),
+          ], orelse=[]),
+        Raise(exc=Name(id='Http404', ctx=Load()), cause=None),
+      ], decorator_list=[], returns=None),
+  ])

@@ -1,0 +1,61 @@
+Module(body=[
+    Import(names=[
+        alias(name='urllib2', asname=None),
+      ]),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+        alias(name='Mock', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='utils.validators', names=[
+        alias(name='validate_social_account', asname=None),
+      ], level=2),
+    ClassDef(name='TestValidators', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_validate_social_account_with_fake_account', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='urlopen_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Name(id='validate_social_account', ctx=Load()), args=[
+                    Str(s='john-fake'),
+                    Str(s='http://twitter.com'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='urllib2.urlopen'),
+              ], keywords=[
+                keyword(arg='side_effect', value=Call(func=Attribute(value=Name(id='urllib2', ctx=Load()), attr='HTTPError', ctx=Load()), args=[
+                    Num(n=500),
+                    Str(s='test'),
+                    Num(n=1),
+                    Num(n=2),
+                    NameConstant(value=None),
+                  ], keywords=[])),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_validate_social_account', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='urlopen_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Name(id='validate_social_account', ctx=Load()), args=[
+                    Str(s='john'),
+                    Str(s='http://twitter.com'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='urllib2.urlopen'),
+              ], keywords=[
+                keyword(arg='return_value', value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                    keyword(arg='code', value=Num(n=200)),
+                  ])),
+              ]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

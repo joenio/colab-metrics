@@ -1,0 +1,5 @@
+Module(body=[
+    Assign(targets=[
+        Name(id='default_app_config', ctx=Store()),
+      ], value=Str(s='colab.home.apps.HomeConfig')),
+  ])

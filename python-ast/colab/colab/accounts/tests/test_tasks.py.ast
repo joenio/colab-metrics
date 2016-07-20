@@ -1,0 +1,79 @@
+Module(body=[
+    ImportFrom(module='datetime', names=[
+        alias(name='timedelta', asname=None),
+      ], level=0),
+    ImportFrom(module='time', names=[
+        alias(name='sleep', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.tasks', names=[
+        alias(name='account_verification', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='override_settings', asname=None),
+      ], level=0),
+    ClassDef(name='TasksTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='create_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='name', annotation=None),
+            arg(arg='email', annotation=None),
+            arg(arg='is_active', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+            Str(s='samplename'),
+            Str(s='test@email.com'),
+            NameConstant(value=True),
+          ]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='User', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Name(id='name', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Store()),
+              ], value=Name(id='email', ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='is_active', ctx=Store()),
+              ], value=Name(id='is_active', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_account_verification', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='active_user')),
+                keyword(arg='email', value=Str(s='active_user@email.com')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='inactive_user')),
+                keyword(arg='email', value=Str(s='inactive@email.com')),
+                keyword(arg='is_active', value=NameConstant(value=False)),
+              ])),
+            Expr(value=Call(func=Name(id='sleep', ctx=Load()), args=[
+                Num(n=5),
+              ], keywords=[])),
+            Expr(value=Call(func=Name(id='account_verification', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='count', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=0),
+                Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='filter', ctx=Load()), args=[], keywords=[
+                    keyword(arg='is_active', value=NameConstant(value=False)),
+                  ]), attr='count', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='ACCOUNT_VERIFICATION_TIME', value=Call(func=Name(id='timedelta', ctx=Load()), args=[], keywords=[
+                    keyword(arg='seconds', value=Num(n=1)),
+                  ])),
+              ]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

@@ -1,0 +1,25 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.utils.collaborations', names=[
+        alias(name='count_threads', asname=None),
+      ], level=0),
+    ClassDef(name='CollaborationTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='fixtures', ctx=Store()),
+          ], value=List(elts=[
+            Str(s='mailinglistdata.json'),
+          ], ctx=Load())),
+        FunctionDef(name='test_count_threads', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Call(func=Name(id='count_threads', ctx=Load()), args=[], keywords=[]),
+                Num(n=5),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

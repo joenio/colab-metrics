@@ -1,0 +1,10 @@
+Module(body=[
+    ImportFrom(module='base_importer', names=[
+        alias(name='PluginDataImporter', asname=None),
+      ], level=1),
+    ImportFrom(module='tasks', names=[
+        alias(name='TASKS', asname=None),
+        alias(name='data_import', asname=None),
+        alias(name='register_tasks', asname=None),
+      ], level=1),
+  ])

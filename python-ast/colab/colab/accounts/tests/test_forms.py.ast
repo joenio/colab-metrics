@@ -1,0 +1,1069 @@
+Module(body=[
+    Expr(value=Str(s='\nTest Form class.\nObjective: Test parameters, and behavior.\n')),
+    Import(names=[
+        alias(name='datetime', asname=None),
+      ]),
+    ImportFrom(module='colab.accounts', names=[
+        alias(name='forms', asname='accounts_forms'),
+      ], level=0),
+    ImportFrom(module='colab.accounts.forms', names=[
+        alias(name='ColabPasswordChangeForm', asname=None),
+        alias(name='ColabSetPasswordForm', asname=None),
+        alias(name='ColabSetUsernameForm', asname=None),
+        alias(name='UserChangeForm', asname=None),
+        alias(name='UserCreationForm', asname=None),
+        alias(name='UserForm', asname=None),
+        alias(name='UserUpdateForm', asname=None),
+        alias(name='get_lists_choices', asname=None),
+        alias(name='LoginAuthenticationForm', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.utils', names=[
+        alias(name='mailman', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.urlresolvers', names=[
+        alias(name='reverse', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='override_settings', asname=None),
+      ], level=0),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ClassDef(name='SetPasswordFormTestCase', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='TEST_COLAB_APPS', ctx=Store()),
+          ], value=Dict(keys=[
+            Str(s='test_plugin'),
+          ], values=[
+            Dict(keys=[
+                Str(s='password_validators'),
+              ], values=[
+                Tuple(elts=[
+                    Str(s='colab.accounts.tests.utils.password_validator'),
+                  ], ctx=Load()),
+              ]),
+          ])),
+        FunctionDef(name='user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='test_user')),
+                keyword(arg='email', value=Str(s='test@example.com')),
+              ])),
+          ], decorator_list=[
+            Name(id='property', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='valid_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Dict(keys=[
+                Str(s='new_password1'),
+                Str(s='new_password2'),
+              ], values=[
+                Str(s='12345'),
+                Str(s='12345'),
+              ])),
+          ], decorator_list=[
+            Name(id='property', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='test_no_custom_validators', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='ColabSetPasswordForm', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+              ], keywords=[
+                keyword(arg='data', value=Attribute(value=Name(id='self', ctx=Load()), attr='valid_form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+                NameConstant(value=True),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_custom_validator', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='validator', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='ColabSetPasswordForm', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+              ], keywords=[
+                keyword(arg='data', value=Attribute(value=Name(id='self', ctx=Load()), attr='valid_form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='validator', ctx=Load()), attr='assert_called_with', ctx=Load()), args=[
+                Str(s='12345'),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Name(id='TEST_COLAB_APPS', ctx=Load())),
+              ]),
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.accounts.tests.utils.password_validator'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='SetUsernameFormTestCase', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='TEST_COLAB_APPS', ctx=Store()),
+          ], value=Dict(keys=[
+            Str(s='test_plugin'),
+          ], values=[
+            Dict(keys=[
+                Str(s='username_validators'),
+              ], values=[
+                Tuple(elts=[
+                    Str(s='colab.accounts.tests.utils.username_validator'),
+                  ], ctx=Load()),
+              ]),
+          ])),
+        FunctionDef(name='valid_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Dict(keys=[
+                Str(s='username'),
+                Str(s='email'),
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='password1'),
+                Str(s='password2'),
+              ], values=[
+                Str(s='test_user'),
+                Str(s='test@email.com'),
+                Str(s='test'),
+                Str(s='test'),
+                Str(s='12345'),
+                Str(s='12345'),
+              ])),
+          ], decorator_list=[
+            Name(id='property', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='test_no_custom_validators', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='ColabSetUsernameForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Attribute(value=Name(id='self', ctx=Load()), attr='valid_form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+                NameConstant(value=True),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_custom_validator', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='validator', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='ColabSetUsernameForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Attribute(value=Name(id='self', ctx=Load()), attr='valid_form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='validator', ctx=Load()), attr='assert_called_with', ctx=Load()), args=[
+                Str(s='test_user'),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Name(id='TEST_COLAB_APPS', ctx=Load())),
+              ]),
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.accounts.tests.utils.username_validator'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='FormTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='User', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Store()),
+              ], value=Str(s='usertest@colab.com.br')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Store()),
+              ], value=Num(n=1)),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='twitter', ctx=Store()),
+              ], value=Str(s='usertestcolab')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='facebook', ctx=Store()),
+              ], value=Str(s='usertestcolab')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='first_name', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='last_name', ctx=Store()),
+              ], value=Str(s='COLAB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Pass(),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='email', annotation=None),
+            arg(arg='username', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form_data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='email'),
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+                Str(s='password1'),
+                Str(s='password2'),
+              ], values=[
+                Name(id='email', ctx=Load()),
+                Str(s='colabName'),
+                Str(s='secondName'),
+                Name(id='username', ctx=Load()),
+                Str(s='123colab4'),
+                Str(s='123colab4'),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Name(id='form_data', ctx=Load())),
+              ])),
+            Return(value=Name(id='form', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_update_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='updated_data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='username'),
+                Str(s='email'),
+                Str(s='last_login'),
+                Str(s='date_joined'),
+                Str(s='twitter'),
+                Str(s='first_name'),
+                Str(s='last_name'),
+              ], values=[
+                Str(s='colab'),
+                Str(s='email@email.com'),
+                Call(func=Attribute(value=Attribute(value=Name(id='datetime', ctx=Load()), attr='date', ctx=Load()), attr='today', ctx=Load()), args=[], keywords=[]),
+                Call(func=Attribute(value=Attribute(value=Name(id='datetime', ctx=Load()), attr='date', ctx=Load()), attr='today', ctx=Load()), args=[], keywords=[]),
+                Str(s='nick_twitter'),
+                Str(s='colabName'),
+                Str(s='secondName'),
+              ])),
+            Assign(targets=[
+                Name(id='initial', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='email'),
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+                Str(s='password'),
+              ], values=[
+                Str(s='email@email.com'),
+                Str(s='colabName'),
+                Str(s='secondName'),
+                Str(s='colab'),
+                Str(s='123colab4'),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='UserUpdateForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='initial', value=Name(id='initial', ctx=Load())),
+                keyword(arg='data', value=Name(id='updated_data', ctx=Load())),
+              ])),
+            Return(value=Name(id='form', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_change_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='username', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='updated_data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='username'),
+                Str(s='email'),
+                Str(s='last_login'),
+                Str(s='date_joined'),
+              ], values=[
+                Name(id='username', ctx=Load()),
+                Str(s='email@email.com'),
+                Call(func=Attribute(value=Attribute(value=Name(id='datetime', ctx=Load()), attr='date', ctx=Load()), attr='today', ctx=Load()), args=[], keywords=[]),
+                Call(func=Attribute(value=Attribute(value=Name(id='datetime', ctx=Load()), attr='date', ctx=Load()), attr='today', ctx=Load()), args=[], keywords=[]),
+              ])),
+            Assign(targets=[
+                Name(id='initial', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='email'),
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+                Str(s='password'),
+              ], values=[
+                Str(s='email@email.com'),
+                Str(s='colabName'),
+                Str(s='secondName'),
+                Str(s='colab'),
+                Str(s='123colab4'),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='UserChangeForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='initial', value=Name(id='initial', ctx=Load())),
+                keyword(arg='data', value=Name(id='updated_data', ctx=Load())),
+              ])),
+            Return(value=Name(id='form', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_user_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='initial', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='email'),
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+                Str(s='password'),
+              ], values=[
+                Str(s='email@email.com'),
+                Str(s='colabName'),
+                Str(s='secondName'),
+                Str(s='colab'),
+                Str(s='123colab4'),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='UserForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Name(id='initial', ctx=Load())),
+              ])),
+            Return(value=Name(id='form', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_already_registered_email', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_form_data', ctx=Load()), args=[
+                Str(s='usertest@colab.com.br'),
+                Str(s='colab'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='duplicate_email'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='error_messages', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_registered_email_message', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_form_data', ctx=Load()), args=[
+                Str(s='usertest@colab.com.br'),
+                Str(s='colab'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='msg', ctx=Store()),
+              ], value=BinOp(left=Call(func=Attribute(value=Attribute(value=Name(id='form', ctx=Load()), attr='error_messages', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='duplicate_email'),
+              ], keywords=[]), op=Mod(), right=Dict(keys=[
+                Str(s='url'),
+              ], values=[
+                Call(func=Name(id='reverse', ctx=Load()), args=[
+                    Str(s='login'),
+                  ], keywords=[]),
+              ]))),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='msg', ctx=Load()),
+                Call(func=Name(id='str', ctx=Load()), args=[
+                    Name(id='form', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_valid_username', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_form_data', ctx=Load()), args=[
+                Str(s='user@email.com'),
+                Str(s='colab123'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_already_created_username', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_form_data', ctx=Load()), args=[
+                Str(s='usertest@colab.com.br'),
+                Str(s='USERtestCoLaB'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='duplicate_username'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='error_messages', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_not_valid_username', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_form_data', ctx=Load()), args=[
+                Str(s='user@email.com'),
+                Str(s='colab!'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_valid_username', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_change_form_data', ctx=Load()), args=[
+                Str(s='colab123'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_not_valid_username', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_change_form_data', ctx=Load()), args=[
+                Str(s='colab!'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_validate_social_account', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='validate_social_account', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='validate_social_account', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_update_form_data', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='Social account does not exist'),
+                Subscript(value=Attribute(value=Name(id='form', ctx=Load()), attr='errors', ctx=Load()), slice=Index(value=Str(s='twitter')), ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='accounts_forms', ctx=Load()),
+                Str(s='validate_social_account'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_required_valid_fields_user_form', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form_data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+              ], values=[
+                Str(s='colabName'),
+                Str(s='secondName'),
+                Str(s='colab'),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='UserForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Name(id='form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_required_empty_fields_user_form', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form_data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+              ], values=[
+                Str(s=''),
+                Str(s=''),
+                Str(s=''),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='UserForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Name(id='form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='first_name'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='errors', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='last_name'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='errors', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='username'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='errors', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_blank_required_fields_user_form', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form_data', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+              ], values=[
+                Str(s='  '),
+                Str(s='  '),
+                Str(s='  '),
+              ])),
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='UserForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Name(id='form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='first_name'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='errors', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='last_name'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='errors', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='username'),
+                Attribute(value=Name(id='form', ctx=Load()), attr='errors', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_list_choices', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='all_lists', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='all_lists', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=List(elts=[
+                Dict(keys=[
+                    Str(s='listname'),
+                    Str(s='description'),
+                  ], values=[
+                    Str(s='listA'),
+                    Str(s='A'),
+                  ]),
+                Dict(keys=[
+                    Str(s='listname'),
+                    Str(s='description'),
+                  ], values=[
+                    Str(s='listB'),
+                    Str(s='B'),
+                  ]),
+                Dict(keys=[
+                    Str(s='listname'),
+                    Str(s='description'),
+                  ], values=[
+                    Str(s='listC'),
+                    Str(s='C'),
+                  ]),
+                Dict(keys=[
+                    Str(s='listname'),
+                    Str(s='description'),
+                  ], values=[
+                    Str(s='listD'),
+                    Str(s='D'),
+                  ]),
+              ], ctx=Load())),
+            Assign(targets=[
+                Name(id='lists', ctx=Store()),
+              ], value=Call(func=Name(id='get_lists_choices', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='lists', ctx=Load()),
+                List(elts=[
+                    Tuple(elts=[
+                        Str(s='listA'),
+                        Str(s='listA (A)'),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='listB'),
+                        Str(s='listB (B)'),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='listC'),
+                        Str(s='listC (C)'),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='listD'),
+                        Str(s='listD (D)'),
+                      ], ctx=Load()),
+                  ], ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='mailman', ctx=Load()),
+                Str(s='all_lists'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='ChangePasswordFormTestCase', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='TEST_COLAB_APPS', ctx=Store()),
+          ], value=Dict(keys=[
+            Str(s='test_plugin'),
+          ], values=[
+            Dict(keys=[
+                Str(s='password_validators'),
+              ], values=[
+                Tuple(elts=[
+                    Str(s='colab.accounts.tests.utils.password_validator'),
+                  ], ctx=Load()),
+              ]),
+          ])),
+        FunctionDef(name='user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='u', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='test_user')),
+                keyword(arg='email', value=Str(s='test@example.com')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='u', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Return(value=Name(id='u', ctx=Load())),
+          ], decorator_list=[
+            Name(id='property', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='valid_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Dict(keys=[
+                Str(s='old_password'),
+                Str(s='new_password1'),
+                Str(s='new_password2'),
+              ], values=[
+                Str(s='123colab4'),
+                Str(s='12345'),
+                Str(s='12345'),
+              ])),
+          ], decorator_list=[
+            Name(id='property', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='test_no_custom_validators', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='ColabPasswordChangeForm', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+              ], keywords=[
+                keyword(arg='data', value=Attribute(value=Name(id='self', ctx=Load()), attr='valid_form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+                NameConstant(value=True),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_custom_validator', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='validator', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='form', ctx=Store()),
+              ], value=Call(func=Name(id='ColabPasswordChangeForm', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+              ], keywords=[
+                keyword(arg='data', value=Attribute(value=Name(id='self', ctx=Load()), attr='valid_form_data', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='validator', ctx=Load()), attr='assert_called_with', ctx=Load()), args=[
+                Str(s='12345'),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS', value=Name(id='TEST_COLAB_APPS', ctx=Load())),
+              ]),
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.accounts.tests.utils.password_validator'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='UserCreationFormTestCase', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUpClass', args=arguments(args=[
+            arg(arg='cls', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='cls', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='user1234')),
+                keyword(arg='email', value=Str(s='teste1234@example.com')),
+                keyword(arg='first_name', value=Str(s='test_first_name')),
+                keyword(arg='last_name', value=Str(s='test_last_name')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='cls', ctx=Load()), attr='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='cls', ctx=Load()), attr='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[
+            Name(id='classmethod', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='tearDownClass', args=arguments(args=[
+            arg(arg='cls', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[]), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[
+            Name(id='classmethod', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='get_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='email', annotation=None),
+            arg(arg='username', annotation=None),
+            arg(arg='password1', annotation=None),
+            arg(arg='password2', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+            Str(s='test_user'),
+            Str(s='12345'),
+            Str(s='12345'),
+          ]), body=[
+            Return(value=Dict(keys=[
+                Str(s='first_name'),
+                Str(s='last_name'),
+                Str(s='username'),
+                Str(s='email'),
+                Str(s='password1'),
+                Str(s='password2'),
+              ], values=[
+                Str(s='test_first_name'),
+                Str(s='test_last_name'),
+                Name(id='username', ctx=Load()),
+                Name(id='email', ctx=Load()),
+                Name(id='password1', ctx=Load()),
+                Name(id='password2', ctx=Load()),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_mail_error', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste1234@example.com'),
+                  ], keywords=[])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Str(s='email'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_mail', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste12345@example.com'),
+                  ], keywords=[])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_username_error', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste12345@example.com'),
+                  ], keywords=[
+                    keyword(arg='username', value=Str(s='user1234')),
+                  ])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Str(s='username'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_username', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste12345@example.com'),
+                  ], keywords=[
+                    keyword(arg='username', value=Str(s='user12345')),
+                  ])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_password2_empty_password1', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste12345@example.com'),
+                  ], keywords=[
+                    keyword(arg='username', value=Str(s='user12345')),
+                    keyword(arg='password1', value=Str(s='')),
+                  ])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Str(s='password1'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_password2_empty_password2', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste12345@example.com'),
+                  ], keywords=[
+                    keyword(arg='username', value=Str(s='user12345')),
+                    keyword(arg='password2', value=Str(s='')),
+                  ])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Str(s='password2'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_password2_different_passwords', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste12345@example.com'),
+                  ], keywords=[
+                    keyword(arg='username', value=Str(s='user12345')),
+                    keyword(arg='password1', value=Str(s='1234')),
+                  ])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Str(s='password2'), ops=[
+                    In(),
+                  ], comparators=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Attribute(value=Name(id='creation_form', ctx=Load()), attr='errors', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_clean_password', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='creation_form', ctx=Store()),
+              ], value=Call(func=Name(id='UserCreationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[
+                    Str(s='teste12345@example.com'),
+                  ], keywords=[
+                    keyword(arg='username', value=Str(s='user12345')),
+                  ])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='creation_form', ctx=Load()), attr='is_valid', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='LoginFormTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUpClass', args=arguments(args=[
+            arg(arg='cls', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='cls', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='user1234')),
+                keyword(arg='email', value=Str(s='teste1234@example.com')),
+                keyword(arg='first_name', value=Str(s='test_first_name')),
+                keyword(arg='last_name', value=Str(s='test_last_name')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='cls', ctx=Load()), attr='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='12345'),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='cls', ctx=Load()), attr='user', ctx=Load()), attr='is_active', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='cls', ctx=Load()), attr='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[
+            Name(id='classmethod', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='tearDownClass', args=arguments(args=[
+            arg(arg='cls', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[]), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[
+            Name(id='classmethod', ctx=Load()),
+          ], returns=None),
+        FunctionDef(name='get_form_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='username', annotation=None),
+            arg(arg='password', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+            Str(s='user1234'),
+            Str(s='12345'),
+          ]), body=[
+            Return(value=Dict(keys=[
+                Str(s='username'),
+                Str(s='password'),
+              ], values=[
+                Name(id='username', ctx=Load()),
+                Name(id='password', ctx=Load()),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_inactive_login_message', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='login_form', ctx=Store()),
+              ], value=Call(func=Name(id='LoginAuthenticationForm', ctx=Load()), args=[], keywords=[
+                keyword(arg='data', value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_form_data', ctx=Load()), args=[], keywords=[
+                    keyword(arg='username', value=Str(s='user1234')),
+                    keyword(arg='password', value=Str(s='12345')),
+                  ])),
+              ])),
+            Assign(targets=[
+                Name(id='message', ctx=Store()),
+              ], value=Str(s='This user is inactive. Try to resend your email verification and activate your account.')),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Subscript(value=Subscript(value=Attribute(value=Name(id='login_form', ctx=Load()), attr='errors', ctx=Load()), slice=Index(value=Str(s='__all__')), ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='message', ctx=Load()),
+                Name(id='result', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

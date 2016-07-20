@@ -1,0 +1,51 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='absolute_import', asname=None),
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='celery.bin', names=[
+        alias(name='celery', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.celery', names=[
+        alias(name='app', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.queue.command', names=[
+        alias(name='CeleryCommand', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='base', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='celery', ctx=Load()), attr='CeleryCommand', ctx=Load()), args=[], keywords=[
+        keyword(arg='app', value=Name(id='app', ctx=Load())),
+      ])),
+    ClassDef(name='Command', bases=[
+        Name(id='CeleryCommand', ctx=Load()),
+      ], keywords=[], body=[
+        Expr(value=Str(s='The celery command.')),
+        Assign(targets=[
+            Name(id='help', ctx=Store()),
+          ], value=Str(s='celery commands, see celery help')),
+        Assign(targets=[
+            Name(id='options', ctx=Store()),
+          ], value=BinOp(left=BinOp(left=Attribute(value=Name(id='CeleryCommand', ctx=Load()), attr='options', ctx=Load()), op=Add(), right=Call(func=Attribute(value=Name(id='base', ctx=Load()), attr='get_options', ctx=Load()), args=[], keywords=[])), op=Add(), right=Attribute(value=Name(id='base', ctx=Load()), attr='preload_options', ctx=Load()))),
+        FunctionDef(name='run_from_argv', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='argv', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='argv', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='handle_default_options', ctx=Load()), args=[
+                Name(id='argv', ctx=Load()),
+              ], keywords=[])),
+            If(test=Attribute(value=Name(id='self', ctx=Load()), attr='requires_system_checks', ctx=Load()), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='validate', ctx=Load()), args=[], keywords=[])),
+              ], orelse=[]),
+            Expr(value=Call(func=Attribute(value=Name(id='base', ctx=Load()), attr='execute_from_commandline', ctx=Load()), args=[
+                BinOp(left=List(elts=[
+                    Call(func=Attribute(value=Str(s='{0[0]} {0[1]}'), attr='format', ctx=Load()), args=[
+                        Name(id='argv', ctx=Load()),
+                      ], keywords=[]),
+                  ], ctx=Load()), op=Add(), right=Subscript(value=Name(id='argv', ctx=Load()), slice=Slice(lower=Num(n=2), upper=None, step=None), ctx=Load())),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

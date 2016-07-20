@@ -1,0 +1,400 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='Mock', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.cache', names=[
+        alias(name='cache', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.plugins.templatetags', names=[
+        alias(name='plugins', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ClassDef(name='PluginsMenuTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='cache', ctx=Load()), attr='clear', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='cache', ctx=Load()), attr='clear', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='logout', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='User', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Store()),
+              ], value=Str(s='usertest@colab.com.br')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Store()),
+              ], value=Num(n=1)),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='first_name', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='last_name', ctx=Store()),
+              ], value=Str(s='COLAB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Return(value=Name(id='user', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='authenticate_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())),
+                keyword(arg='password', value=Str(s='123colab4')),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_plugins_menu_without_menu_urls', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='plugin_1', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='menu_title'),
+                Str(s='menu_urls'),
+              ], values=[
+                Str(s='myTitle'),
+                List(elts=[], ctx=Load()),
+              ])),
+            Assign(targets=[
+                Name(id='test_context', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='user'),
+                Str(s='plugins'),
+              ], values=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+                Dict(keys=[
+                    Str(s='plugin_1'),
+                  ], values=[
+                    Name(id='plugin_1', ctx=Load()),
+                  ]),
+              ])),
+            Assign(targets=[
+                Name(id='menu', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='plugins', ctx=Load()), attr='plugins_menu', ctx=Load()), args=[
+                Name(id='test_context', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='menu', ctx=Load()), attr='strip', ctx=Load()), args=[], keywords=[]),
+                Str(s=''),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_plugins_menu_with_1_menu_urls', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='link', ctx=Store()),
+              ], value=Str(s='http://url')),
+            Assign(targets=[
+                Name(id='title', ctx=Store()),
+              ], value=Str(s='myTitle')),
+            Assign(targets=[
+                Name(id='plugin_1', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='menu_title'),
+                Str(s='menu_urls'),
+              ], values=[
+                Name(id='title', ctx=Load()),
+                List(elts=[
+                    Dict(keys=[
+                        Str(s='url'),
+                        Str(s='display'),
+                      ], values=[
+                        Name(id='link', ctx=Load()),
+                        Str(s='LRU'),
+                      ]),
+                  ], ctx=Load()),
+              ])),
+            Assign(targets=[
+                Name(id='test_context', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='user'),
+                Str(s='plugins'),
+              ], values=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+                Dict(keys=[
+                    Str(s='plugin_1'),
+                  ], values=[
+                    Name(id='plugin_1', ctx=Load()),
+                  ]),
+              ])),
+            Assign(targets=[
+                Name(id='menu', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='plugins', ctx=Load()), attr='plugins_menu', ctx=Load()), args=[
+                Name(id='test_context', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='link', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='title', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_plugins_menu_with_many_menu_urls', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='link1', ctx=Store()),
+              ], value=Str(s='http://url1')),
+            Assign(targets=[
+                Name(id='title1', ctx=Store()),
+              ], value=Str(s='myTitle1')),
+            Assign(targets=[
+                Name(id='display1', ctx=Store()),
+              ], value=Str(s='LRU1')),
+            Assign(targets=[
+                Name(id='link2', ctx=Store()),
+              ], value=Str(s='http://url2')),
+            Assign(targets=[
+                Name(id='display2', ctx=Store()),
+              ], value=Str(s='LRU2')),
+            Assign(targets=[
+                Name(id='plugin_1', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='menu_title'),
+                Str(s='menu_urls'),
+              ], values=[
+                Name(id='title1', ctx=Load()),
+                List(elts=[
+                    Dict(keys=[
+                        Str(s='url'),
+                        Str(s='display'),
+                      ], values=[
+                        Name(id='link1', ctx=Load()),
+                        Name(id='display1', ctx=Load()),
+                      ]),
+                    Dict(keys=[
+                        Str(s='url'),
+                        Str(s='display'),
+                      ], values=[
+                        Name(id='link2', ctx=Load()),
+                        Name(id='display2', ctx=Load()),
+                      ]),
+                  ], ctx=Load()),
+              ])),
+            Assign(targets=[
+                Name(id='test_context', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='user'),
+                Str(s='plugins'),
+              ], values=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+                Dict(keys=[
+                    Str(s='plugin_1'),
+                  ], values=[
+                    Name(id='plugin_1', ctx=Load()),
+                  ]),
+              ])),
+            Assign(targets=[
+                Name(id='menu', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='plugins', ctx=Load()), attr='plugins_menu', ctx=Load()), args=[
+                Name(id='test_context', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='link1', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='title1', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='display1', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='link2', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='display2', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_plugins_menu_with_multiple_plugins', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='link1', ctx=Store()),
+              ], value=Str(s='http://url1')),
+            Assign(targets=[
+                Name(id='title1', ctx=Store()),
+              ], value=Str(s='myTitle1')),
+            Assign(targets=[
+                Name(id='display1', ctx=Store()),
+              ], value=Str(s='LRU1')),
+            Assign(targets=[
+                Name(id='link2', ctx=Store()),
+              ], value=Str(s='http://url2')),
+            Assign(targets=[
+                Name(id='display2', ctx=Store()),
+              ], value=Str(s='LRU2')),
+            Assign(targets=[
+                Name(id='plugin_1', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='menu_title'),
+                Str(s='menu_urls'),
+              ], values=[
+                Name(id='title1', ctx=Load()),
+                List(elts=[
+                    Dict(keys=[
+                        Str(s='url'),
+                        Str(s='display'),
+                      ], values=[
+                        Name(id='link1', ctx=Load()),
+                        Name(id='display1', ctx=Load()),
+                      ]),
+                    Dict(keys=[
+                        Str(s='url'),
+                        Str(s='display'),
+                      ], values=[
+                        Name(id='link2', ctx=Load()),
+                        Name(id='display2', ctx=Load()),
+                      ]),
+                  ], ctx=Load()),
+              ])),
+            Assign(targets=[
+                Name(id='title2', ctx=Store()),
+              ], value=Str(s='myTitle2')),
+            Assign(targets=[
+                Name(id='plugin_2', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='menu_title'),
+                Str(s='menu_urls'),
+              ], values=[
+                Name(id='title2', ctx=Load()),
+                List(elts=[], ctx=Load()),
+              ])),
+            Assign(targets=[
+                Name(id='test_context', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='user'),
+                Str(s='plugins'),
+              ], values=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+                Dict(keys=[
+                    Str(s='plugin_1'),
+                    Str(s='plugin_2'),
+                  ], values=[
+                    Name(id='plugin_1', ctx=Load()),
+                    Name(id='plugin_2', ctx=Load()),
+                  ]),
+              ])),
+            Assign(targets=[
+                Name(id='menu', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='plugins', ctx=Load()), attr='plugins_menu', ctx=Load()), args=[
+                Name(id='test_context', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='link1', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='title1', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='display1', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='link2', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='display2', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertNotIn', ctx=Load()), args=[
+                Name(id='title2', ctx=Load()),
+                Name(id='menu', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        ClassDef(name='ColabUrlMock', bases=[
+            Name(id='Mock', ctx=Load()),
+          ], keywords=[], body=[
+            FunctionDef(name='auth', args=arguments(args=[
+                arg(arg='self', annotation=None),
+              ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+                Return(value=NameConstant(value=True)),
+              ], decorator_list=[], returns=None),
+          ], decorator_list=[]),
+        FunctionDef(name='test_plugins_menu_with_inactivate_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='is_active', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='title', ctx=Store()),
+              ], value=Str(s='myTitle')),
+            Assign(targets=[
+                Name(id='plugin_1', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='menu_title'),
+                Str(s='menu_urls'),
+              ], values=[
+                Name(id='title', ctx=Load()),
+                List(elts=[
+                    Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='ColabUrlMock', ctx=Load()), args=[], keywords=[]),
+                  ], ctx=Load()),
+              ])),
+            Assign(targets=[
+                Name(id='test_context', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='user'),
+                Str(s='plugins'),
+              ], values=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()),
+                Dict(keys=[
+                    Str(s='plugin_1'),
+                  ], values=[
+                    Name(id='plugin_1', ctx=Load()),
+                  ]),
+              ])),
+            Assign(targets=[
+                Name(id='menu', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='plugins', ctx=Load()), attr='plugins_menu', ctx=Load()), args=[
+                Name(id='test_context', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s=''),
+                Call(func=Attribute(value=Name(id='menu', ctx=Load()), attr='strip', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

@@ -1,0 +1,12 @@
+Module(body=[
+    ImportFrom(module='django.apps', names=[
+        alias(name='AppConfig', asname=None),
+      ], level=0),
+    ClassDef(name='HomeConfig', bases=[
+        Name(id='AppConfig', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='name', ctx=Store()),
+          ], value=Str(s='colab.home')),
+      ], decorator_list=[]),
+  ])

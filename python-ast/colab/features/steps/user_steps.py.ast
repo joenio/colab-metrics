@@ -1,0 +1,92 @@
+Module(body=[
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='behave', names=[
+        alias(name='given', asname=None),
+        alias(name='when', asname=None),
+      ], level=0),
+    FunctionDef(name='create_user', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='username', annotation=None),
+        arg(arg='password', annotation=None),
+        arg(arg='status', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='user', ctx=Store()),
+          ], value=Call(func=Name(id='User', ctx=Load()), args=[], keywords=[])),
+        Assign(targets=[
+            Attribute(value=Name(id='user', ctx=Load()), attr='username', ctx=Store()),
+          ], value=Name(id='username', ctx=Load())),
+        Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+            Name(id='password', ctx=Load()),
+          ], keywords=[])),
+        Assign(targets=[
+            Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Store()),
+          ], value=Str(s='usertest@colab.com.br')),
+        Assign(targets=[
+            Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Store()),
+          ], value=Num(n=1)),
+        Assign(targets=[
+            Attribute(value=Name(id='user', ctx=Load()), attr='first_name', ctx=Store()),
+          ], value=Str(s='USERtestCoLaB')),
+        Assign(targets=[
+            Attribute(value=Name(id='user', ctx=Load()), attr='last_name', ctx=Store()),
+          ], value=Str(s='COLAB')),
+        Assign(targets=[
+            Attribute(value=Name(id='user', ctx=Load()), attr='needs_update', ctx=Store()),
+          ], value=NameConstant(value=False)),
+        If(test=Compare(left=Name(id='status', ctx=Load()), ops=[
+            Eq(),
+          ], comparators=[
+            Str(s='active'),
+          ]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='is_active', ctx=Store()),
+              ], value=NameConstant(value=True)),
+          ], orelse=[
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='is_active', ctx=Store()),
+              ], value=NameConstant(value=False)),
+          ]),
+        Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='given', ctx=Load()), args=[
+            Str(s='The user "{username}" with the password "{password}" is "{status}"'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='username', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Expr(value=Call(func=Attribute(value=Name(id='context', ctx=Load()), attr='execute_steps', ctx=Load()), args=[
+            BinOp(left=Str(s='\n        When I access the URL "/"\n        When I click in "Acesso "\n        When I click in "Login"\n        Given The user "%s" with the password "%s" is "%s"\n        When I fill "%s" in "id_username" field\n        When I fill "%s" in "id_password" field\n        When I click in "Login" button\n    '), op=Mod(), right=Tuple(elts=[
+                Name(id='username', ctx=Load()),
+                Name(id='username', ctx=Load()),
+                Str(s='active'),
+                Name(id='username', ctx=Load()),
+                Name(id='username', ctx=Load()),
+              ], ctx=Load())),
+          ], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='given', ctx=Load()), args=[
+            Str(s='I am logged in as "{username}"'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='dropdown', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='find_element_by_id', ctx=Load()), args=[
+            Str(s='user-menu'),
+          ], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Call(func=Attribute(value=Name(id='dropdown', ctx=Load()), attr='find_element_by_xpath', ctx=Load()), args=[
+            Str(s='.//a'),
+          ], keywords=[]), attr='click', ctx=Load()), args=[], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='when', ctx=Load()), args=[
+            Str(s='I open the user menu'),
+          ], keywords=[]),
+      ], returns=None),
+  ])

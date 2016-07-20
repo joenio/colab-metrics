@@ -1,0 +1,17 @@
+Module(body=[
+    Import(names=[
+        alias(name='multiprocessing', asname=None),
+      ]),
+    Assign(targets=[
+        Name(id='bind', ctx=Store()),
+      ], value=Str(s='127.0.0.1:8001')),
+    Assign(targets=[
+        Name(id='workers', ctx=Store()),
+      ], value=BinOp(left=BinOp(left=Call(func=Attribute(value=Name(id='multiprocessing', ctx=Load()), attr='cpu_count', ctx=Load()), args=[], keywords=[]), op=Mult(), right=Num(n=2)), op=Add(), right=Num(n=1))),
+    Assign(targets=[
+        Name(id='syslog', ctx=Store()),
+      ], value=NameConstant(value=True)),
+    Assign(targets=[
+        Name(id='proc_name', ctx=Store()),
+      ], value=Str(s='colab')),
+  ])

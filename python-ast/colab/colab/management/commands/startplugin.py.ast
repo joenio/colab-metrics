@@ -1,0 +1,87 @@
+Module(body=[
+    Import(names=[
+        alias(name='os', asname=None),
+      ]),
+    Import(names=[
+        alias(name='colab', asname=None),
+      ]),
+    ImportFrom(module='django.core.management.commands.startapp', names=[
+        alias(name='Command', asname='StartAppCommand'),
+      ], level=0),
+    ImportFrom(module='django.core.management.base', names=[
+        alias(name='CommandError', asname=None),
+      ], level=0),
+    ClassDef(name='Command', bases=[
+        Name(id='StartAppCommand', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='help', ctx=Store()),
+          ], value=Str(s='Creates a Colab plugin directory structure for the given plugin name in the current directory or optionally in the plugin directory.')),
+        Assign(targets=[
+            Name(id='missing_args_message', ctx=Store()),
+          ], value=Str(s='You must provide a plugin name')),
+        FunctionDef(name='handle_template', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='template', annotation=None),
+            arg(arg='subdir', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Call(func=Attribute(value=Attribute(value=Name(id='os', ctx=Load()), attr='path', ctx=Load()), attr='join', ctx=Load()), args=[
+                Subscript(value=Attribute(value=Name(id='colab', ctx=Load()), attr='__path__', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()),
+                Str(s='conf'),
+                Str(s='plugin_template'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='handle', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='app_name', annotation=None),
+            arg(arg='target', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='options', annotation=None), defaults=[
+            NameConstant(value=None),
+            NameConstant(value=None),
+          ]), body=[
+            If(test=BoolOp(op=Or(), values=[
+                Compare(left=Name(id='app_name', ctx=Load()), ops=[
+                    Is(),
+                  ], comparators=[
+                    NameConstant(value=None),
+                  ]),
+                Compare(left=Name(id='app_name', ctx=Load()), ops=[
+                    Eq(),
+                  ], comparators=[
+                    Str(s=''),
+                  ]),
+              ]), body=[
+                Raise(exc=Call(func=Name(id='CommandError', ctx=Load()), args=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='missing_args_message', ctx=Load()),
+                  ], keywords=[]), cause=None),
+              ], orelse=[]),
+            Assign(targets=[
+                Subscript(value=Name(id='options', ctx=Load()), slice=Index(value=Str(s='app_name_dash')), ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='app_name', ctx=Load()), attr='replace', ctx=Load()), args=[
+                Str(s='_'),
+                Str(s='-'),
+              ], keywords=[])),
+            Assign(targets=[
+                Subscript(value=Name(id='options', ctx=Load()), slice=Index(value=Str(s='app_name_camel')), ctx=Store()),
+              ], value=Call(func=Attribute(value=Call(func=Attribute(value=Name(id='app_name', ctx=Load()), attr='title', ctx=Load()), args=[], keywords=[]), attr='replace', ctx=Load()), args=[
+                Str(s='_'),
+                Str(s=''),
+              ], keywords=[])),
+            Assign(targets=[
+                Subscript(value=Name(id='options', ctx=Load()), slice=Index(value=Str(s='app_name_verbose')), ctx=Store()),
+              ], value=Call(func=Attribute(value=Call(func=Attribute(value=Name(id='app_name', ctx=Load()), attr='replace', ctx=Load()), args=[
+                Str(s='_'),
+                Str(s=' '),
+              ], keywords=[]), attr='title', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Call(func=Name(id='super', ctx=Load()), args=[
+                Name(id='Command', ctx=Load()),
+                Name(id='self', ctx=Load()),
+              ], keywords=[]), attr='handle', ctx=Load()), args=[
+                Name(id='app_name', ctx=Load()),
+                Name(id='target', ctx=Load()),
+              ], keywords=[
+                keyword(arg=None, value=Name(id='options', ctx=Load())),
+              ])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

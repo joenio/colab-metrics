@@ -1,0 +1,299 @@
+Module(body=[
+    Import(names=[
+        alias(name='math', asname=None),
+      ]),
+    ImportFrom(module='mock', names=[
+        alias(name='Mock', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.search.base_indexes', names=[
+        alias(name='BaseIndex', asname=None),
+      ], level=0),
+    ClassDef(name='SearchViewTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Pass(),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_updated_field', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='base_index', ctx=Store()),
+              ], value=Call(func=Name(id='BaseIndex', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='modified'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='get_updated_field', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_boost', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='hits', value=Num(n=10)),
+              ])),
+            Assign(targets=[
+                Name(id='base_index', ctx=Store()),
+              ], value=Call(func=Name(id='BaseIndex', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='get_boost', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='hits', value=Num(n=11)),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='math', ctx=Load()), attr='log', ctx=Load()), args=[
+                    Num(n=11),
+                  ], keywords=[]),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='get_boost', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_prepare_author', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='author', value=Str(s='author')),
+              ])),
+            Assign(targets=[
+                Name(id='base_index', ctx=Store()),
+              ], value=Call(func=Name(id='BaseIndex', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Name(id='setattr', ctx=Load()), args=[
+                Name(id='base_index', ctx=Load()),
+                Str(s='author_obj'),
+                NameConstant(value=None),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='author'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_author', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='base_index', ctx=Load()), attr='author_obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='carlin')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='carlin'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_author', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_prepare_author_url', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='base_index', ctx=Store()),
+              ], value=Call(func=Name(id='BaseIndex', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Name(id='setattr', ctx=Load()), args=[
+                Name(id='base_index', ctx=Load()),
+                Str(s='author_obj'),
+                NameConstant(value=None),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                NameConstant(value=None),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_author_url', ctx=Load()), args=[
+                    NameConstant(value=None),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='base_index', ctx=Load()), attr='author_obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='get_absolute_url', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='url_test'))),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='url_test'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_author_url', ctx=Load()), args=[
+                    NameConstant(value=None),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        ClassDef(name='AuthorMockObject', bases=[], keywords=[], body=[
+            Assign(targets=[
+                Name(id='author', ctx=Store()),
+              ], value=Str(s='author')),
+          ], decorator_list=[]),
+        FunctionDef(name='test_prepare_modified_by', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='base_index', ctx=Store()),
+              ], value=Call(func=Name(id='BaseIndex', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Name(id='setattr', ctx=Load()), args=[
+                Name(id='base_index', ctx=Load()),
+                Str(s='author_obj'),
+                NameConstant(value=None),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='AuthorMockObject', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='author'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_modified_by', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='base_index', ctx=Load()), attr='author_obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='get_full_name', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='full_name'))),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='full_name'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_modified_by', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='mock_modified_by', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='get_full_name', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='full_name'))),
+              ])),
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='modified_by', value=Str(s='somebody')),
+                keyword(arg='get_modified_by', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Name(id='mock_modified_by', ctx=Load()))),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='full_name'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_modified_by', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_prepare_fullname_and_username', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='base_index', ctx=Store()),
+              ], value=Call(func=Name(id='BaseIndex', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Name(id='setattr', ctx=Load()), args=[
+                Name(id='base_index', ctx=Load()),
+                Str(s='author_obj'),
+                Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                    keyword(arg='username', value=Str(s='user')),
+                    keyword(arg='get_full_name', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='name'))),
+                  ]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='expected', ctx=Store()),
+              ], value=Call(func=Attribute(value=Str(s='{}\n{}'), attr='format', ctx=Load()), args=[
+                Str(s='name'),
+                Str(s='user'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Name(id='expected', ctx=Load()),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_fullname_and_username', ctx=Load()), args=[
+                    NameConstant(value=None),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='base_index', ctx=Load()), attr='author_obj', ctx=Store()),
+              ], value=NameConstant(value=None)),
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='AuthorMockObject', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='author'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_fullname_and_username', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='mock_modified_by', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='get_full_name', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='full_name'))),
+                keyword(arg='username', value=Str(s='user')),
+              ])),
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='modified_by', value=Str(s='somebody')),
+                keyword(arg='get_modified_by', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Name(id='mock_modified_by', ctx=Load()))),
+              ])),
+            Assign(targets=[
+                Name(id='expected', ctx=Store()),
+              ], value=Call(func=Attribute(value=Str(s='{}\n{}'), attr='format', ctx=Load()), args=[
+                Str(s='full_name'),
+                Str(s='user'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Name(id='expected', ctx=Load()),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_fullname_and_username', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_prepare_modified_by_url', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='base_index', ctx=Store()),
+              ], value=Call(func=Name(id='BaseIndex', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Name(id='setattr', ctx=Load()), args=[
+                Name(id='base_index', ctx=Load()),
+                Str(s='author_obj'),
+                NameConstant(value=None),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                NameConstant(value=None),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_modified_by_url', ctx=Load()), args=[
+                    NameConstant(value=None),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='base_index', ctx=Load()), attr='author_obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='get_absolute_url', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='urlurl'))),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='urlurl'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_modified_by_url', ctx=Load()), args=[
+                    NameConstant(value=None),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='mock_modified_by', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='get_absolute_url', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Str(s='urlurl'))),
+              ])),
+            Assign(targets=[
+                Name(id='obj', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='modified_by', value=Str(s='somebody')),
+                keyword(arg='get_modified_by', value=Lambda(args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=Name(id='mock_modified_by', ctx=Load()))),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='urlurl'),
+                Call(func=Attribute(value=Name(id='base_index', ctx=Load()), attr='prepare_modified_by_url', ctx=Load()), args=[
+                    Name(id='obj', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

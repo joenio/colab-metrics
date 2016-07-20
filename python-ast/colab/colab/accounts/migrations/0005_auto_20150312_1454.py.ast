@@ -1,0 +1,65 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='django.contrib.auth.hashers', names=[
+        alias(name='make_password', asname=None),
+      ], level=0),
+    ImportFrom(module='django.db', names=[
+        alias(name='models', asname=None),
+        alias(name='migrations', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils.crypto', names=[
+        alias(name='get_random_string', asname=None),
+      ], level=0),
+    FunctionDef(name='normalize_password', args=arguments(args=[
+        arg(arg='apps', annotation=None),
+        arg(arg='schema_editor', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='User', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='apps', ctx=Load()), attr='get_model', ctx=Load()), args=[
+            Str(s='accounts'),
+            Str(s='User'),
+          ], keywords=[])),
+        For(target=Name(id='user', ctx=Store()), iter=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[]), body=[
+            If(test=Compare(left=Call(func=Name(id='len', ctx=Load()), args=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='password', ctx=Load()),
+              ], keywords=[]), ops=[
+                IsNot(),
+              ], comparators=[
+                Num(n=0),
+              ]), body=[
+                Continue(),
+              ], orelse=[]),
+            Assign(targets=[
+                Name(id='rand_pwd', ctx=Store()),
+              ], value=Call(func=Name(id='get_random_string', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='password', ctx=Store()),
+              ], value=Call(func=Name(id='make_password', ctx=Load()), args=[
+                Name(id='rand_pwd', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+          ], orelse=[]),
+      ], decorator_list=[], returns=None),
+    ClassDef(name='Migration', bases=[
+        Attribute(value=Name(id='migrations', ctx=Load()), attr='Migration', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='dependencies', ctx=Store()),
+          ], value=List(elts=[
+            Tuple(elts=[
+                Str(s='accounts'),
+                Str(s='0004_auto_20150311_1818'),
+              ], ctx=Load()),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='operations', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='RunPython', ctx=Load()), args=[
+                Name(id='normalize_password', ctx=Load()),
+              ], keywords=[]),
+          ], ctx=Load())),
+      ], decorator_list=[]),
+  ])

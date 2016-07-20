@@ -41,9 +41,16 @@ comandos acima.
 
 http://pychecker.sourceforge.net
 
+Verifica por erros comuns no código, não aceita analisar um projeto inteiro de
+uma vez, apenas arquivos individuais.
+
+    $ sudo apt-get install pychecker
+
 ### Prospector
 
 http://github.com/landscapeio/prospector
+
+    $ sudo apt-get install prospector
 
 ### Landscape
 
@@ -59,3 +66,26 @@ métricas ou nenhuma representação do projeto em árvore ou grafo, alguns
 screenshots dos relatórios gerados para o projeto Colab foram adicionados
 no diretório `landscape` deste repositório. Pode também ser acessado online
 publicamente em https://landscape.io/github/joenio/colab/
+
+### PMD
+
+http://pmd.github.io/pmd-5.3.1/pmd-python
+
+A ferramenta PMD funciona para Python mas apenas para detectar duplicação 
+de código.
+
+    $ ./bin/run.sh cpd --language python --minimum-tokens 100 --files ~/src/colab/colab/
+
+
+### Pythoscope
+
+http://pythoscope.org/
+
+### Python AST
+
+http://docs.python.org/3/library/ast.html
+
+O Python vem com uma lib core para gerar e manipular AST, com isso foi feito um
+script para gerar AST de cada arquivo de um dado projeto, no diretório `python-ast`
+deste projeto criamos o script `parser` e extraimos AST de cada arquivo do projeto
+colab em sua última versão, presente também no diretório `python-ast`.

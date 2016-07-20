@@ -1,0 +1,217 @@
+Module(body=[
+    Expr(value=Str(s='\nTest Signals class.\nObjective: Test parameters, and behavior.\n')),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+        alias(name='MagicMock', asname=None),
+        alias(name='PropertyMock', asname=None),
+      ], level=0),
+    ImportFrom(module='signals', names=[
+        alias(name='registered_signals', asname=None),
+        alias(name='register_signal', asname=None),
+        alias(name='connect_signal', asname=None),
+        alias(name='send', asname=None),
+      ], level=2),
+    ImportFrom(module='exceptions', names=[
+        alias(name='SignalDoesNotExist', asname=None),
+      ], level=2),
+    ClassDef(name='SignalsTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='list_signal', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='a'),
+                Str(s='b'),
+                Str(s='c'),
+              ], ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='plugin_name', ctx=Store()),
+              ], value=Str(s='test_signal')),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_register_signal_', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Name(id='register_signal', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='plugin_name', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='list_signal', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='signal_name', ctx=Store()),
+              ], value=Str(s='a')),
+            Assign(targets=[
+                Name(id='signal_list', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='test_signal'),
+              ], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Subscript(value=Name(id='registered_signals', ctx=Load()), slice=Index(value=Name(id='signal_name', ctx=Load())), ctx=Load()),
+                  ], keywords=[]),
+                Num(n=1),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Subscript(value=Name(id='registered_signals', ctx=Load()), slice=Index(value=Name(id='signal_name', ctx=Load())), ctx=Load()),
+                Name(id='signal_list', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_register_signal_already_registered', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='signal_name', ctx=Store()),
+              ], value=Str(s='a')),
+            Assign(targets=[
+                Name(id='signal_list', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='test_signal'),
+              ], ctx=Load())),
+            Expr(value=Call(func=Name(id='register_signal', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='plugin_name', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='list_signal', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Subscript(value=Name(id='registered_signals', ctx=Load()), slice=Index(value=Name(id='signal_name', ctx=Load())), ctx=Load()),
+                  ], keywords=[]),
+                Num(n=1),
+              ], keywords=[])),
+            Expr(value=Call(func=Name(id='register_signal', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='plugin_name', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='list_signal', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Subscript(value=Name(id='registered_signals', ctx=Load()), slice=Index(value=Name(id='signal_name', ctx=Load())), ctx=Load()),
+                  ], keywords=[]),
+                Num(n=1),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Subscript(value=Name(id='registered_signals', ctx=Load()), slice=Index(value=Name(id='signal_name', ctx=Load())), ctx=Load()),
+                Name(id='signal_list', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_connect_non_registered_signal', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='sender', ctx=Store()),
+              ], value=Str(s='Test')),
+            Assign(targets=[
+                Name(id='handling_method', ctx=Store()),
+              ], value=Str(s='Test')),
+            Assign(targets=[
+                Name(id='signal_name', ctx=Store()),
+              ], value=Str(s='Test')),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRaises', ctx=Load()), args=[
+                Name(id='SignalDoesNotExist', ctx=Load()),
+                Name(id='connect_signal', ctx=Load()),
+                Name(id='signal_name', ctx=Load()),
+                Name(id='sender', ctx=Load()),
+                Name(id='handling_method', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_connect_already_registered_signal', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='sender', ctx=Store()),
+              ], value=Str(s='Test')),
+            Assign(targets=[
+                Name(id='handling_method', ctx=Store()),
+              ], value=Call(func=Name(id='MagicMock', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Call(func=Name(id='type', ctx=Load()), args=[
+                    Name(id='handling_method', ctx=Load()),
+                  ], keywords=[]), attr='delay', ctx=Store()),
+              ], value=Call(func=Name(id='PropertyMock', ctx=Load()), args=[], keywords=[
+                keyword(arg='return_value', value=Str(s='Test')),
+              ])),
+            Assign(targets=[
+                Name(id='signal_name', ctx=Store()),
+              ], value=Str(s='a')),
+            Expr(value=Call(func=Name(id='register_signal', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='plugin_name', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='list_signal', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Name(id='connect_signal', ctx=Load()), args=[
+                Name(id='signal_name', ctx=Load()),
+                Name(id='sender', ctx=Load()),
+                Name(id='handling_method', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='args', ctx=Store()),
+                    Name(id='kwargs', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Attribute(value=Name(id='mock', ctx=Load()), attr='call_args', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Subscript(value=Name(id='args', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()),
+                Attribute(value=Name(id='handling_method', ctx=Load()), attr='delay', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Subscript(value=Name(id='kwargs', ctx=Load()), slice=Index(value=Str(s='sender')), ctx=Load()),
+                Name(id='sender', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='mock', ctx=Load()), attr='is_called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.signals.signals.Signal.connect'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_send_signal', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='sender', ctx=Store()),
+              ], value=Str(s='Test')),
+            Assign(targets=[
+                Name(id='signal_name', ctx=Store()),
+              ], value=Str(s='a')),
+            Expr(value=Call(func=Name(id='register_signal', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='plugin_name', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='list_signal', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Name(id='send', ctx=Load()), args=[
+                Name(id='signal_name', ctx=Load()),
+                Name(id='sender', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='args', ctx=Store()),
+                    Name(id='kwargs', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Attribute(value=Name(id='mock', ctx=Load()), attr='call_args', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Subscript(value=Name(id='kwargs', ctx=Load()), slice=Index(value=Str(s='sender')), ctx=Load()),
+                Name(id='sender', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='mock', ctx=Load()), attr='is_called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.signals.signals.Signal.send'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_send_signal_not_registered', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRaises', ctx=Load()), args=[
+                Name(id='SignalDoesNotExist', ctx=Load()),
+                Name(id='send', ctx=Load()),
+                Str(s='test_signal'),
+                Str(s='test'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

@@ -1,0 +1,284 @@
+Module(body=[
+    Import(names=[
+        alias(name='os', asname=None),
+      ]),
+    Import(names=[
+        alias(name='os.path', asname=None),
+      ]),
+    Import(names=[
+        alias(name='shutil', asname=None),
+      ]),
+    Import(names=[
+        alias(name='string', asname=None),
+      ]),
+    Import(names=[
+        alias(name='random', asname=None),
+      ]),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.management.base', names=[
+        alias(name='CommandError', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.management.commands.startplugin', names=[
+        alias(name='Command', asname=None),
+      ], level=0),
+    ClassDef(name='StartPluginCommandTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='original_dir', ctx=Store()),
+          ], value=Str(s='/tmp/app__test')),
+        Assign(targets=[
+            Name(id='options', ctx=Store()),
+          ], value=Dict(keys=[
+            Str(s='files'),
+            Str(s='settings'),
+            Str(s='pythonpath'),
+            Str(s='verbosity'),
+            Str(s='traceback'),
+            Str(s='extensions'),
+            Str(s='no_color'),
+            Str(s='template'),
+          ], values=[
+            List(elts=[], ctx=Load()),
+            NameConstant(value=None),
+            NameConstant(value=None),
+            Str(s='1'),
+            NameConstant(value=None),
+            List(elts=[
+                Str(s='py'),
+              ], ctx=Load()),
+            NameConstant(value=False),
+            NameConstant(value=None),
+          ])),
+        Assign(targets=[
+            Name(id='app_name', ctx=Store()),
+          ], value=Str(s='mock_app')),
+        Assign(targets=[
+            Name(id='app_name_dash', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='app_name', ctx=Load()), attr='replace', ctx=Load()), args=[
+            Str(s='_'),
+            Str(s='-'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='app_name_camel', ctx=Store()),
+          ], value=Call(func=Attribute(value=Call(func=Attribute(value=Name(id='app_name', ctx=Load()), attr='title', ctx=Load()), args=[], keywords=[]), attr='replace', ctx=Load()), args=[
+            Str(s='_'),
+            Str(s=''),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='app_name_verbose', ctx=Store()),
+          ], value=Call(func=Attribute(value=Call(func=Attribute(value=Name(id='app_name', ctx=Load()), attr='replace', ctx=Load()), args=[
+            Str(s='_'),
+            Str(s=' '),
+          ], keywords=[]), attr='title', ctx=Load()), args=[], keywords=[])),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Store()),
+              ], value=Attribute(value=Name(id='self', ctx=Load()), attr='original_dir', ctx=Load())),
+            While(test=Call(func=Attribute(value=Attribute(value=Name(id='os', ctx=Load()), attr='path', ctx=Load()), attr='isdir', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+              ], keywords=[]), body=[
+                Assign(targets=[
+                    Name(id='random_salt', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Str(s=''), attr='join', ctx=Load()), args=[
+                    GeneratorExp(elt=Call(func=Attribute(value=Name(id='random', ctx=Load()), attr='choice', ctx=Load()), args=[
+                        BinOp(left=Attribute(value=Name(id='string', ctx=Load()), attr='ascii_uppercase', ctx=Load()), op=Add(), right=Attribute(value=Name(id='string', ctx=Load()), attr='digits', ctx=Load())),
+                      ], keywords=[]), generators=[
+                        comprehension(target=Name(id='_', ctx=Store()), iter=Call(func=Name(id='range', ctx=Load()), args=[
+                            Num(n=4),
+                          ], keywords=[]), ifs=[]),
+                      ]),
+                  ], keywords=[])),
+                AugAssign(target=Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Store()), op=Add(), value=Name(id='random_salt', ctx=Load())),
+              ], orelse=[
+                Expr(value=Call(func=Attribute(value=Name(id='os', ctx=Load()), attr='mkdir', ctx=Load()), args=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+                  ], keywords=[])),
+              ]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='shutil', ctx=Load()), attr='rmtree', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+              ], keywords=[
+                keyword(arg='ignore_errors', value=NameConstant(value=True)),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='run_command', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='cmd', ctx=Store()),
+              ], value=Call(func=Name(id='Command', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='cmd', ctx=Load()), attr='handle', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load()),
+                Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+              ], keywords=[
+                keyword(arg=None, value=Attribute(value=Name(id='self', ctx=Load()), attr='options', ctx=Load())),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_empty_appname', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='cmd', ctx=Store()),
+              ], value=Call(func=Name(id='Command', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRaises', ctx=Load()), args=[
+                Name(id='CommandError', ctx=Load()),
+                Attribute(value=Name(id='cmd', ctx=Load()), attr='handle', ctx=Load()),
+                NameConstant(value=None),
+                Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+              ], keywords=[
+                keyword(arg=None, value=Attribute(value=Name(id='self', ctx=Load()), attr='options', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRaises', ctx=Load()), args=[
+                Name(id='CommandError', ctx=Load()),
+                Attribute(value=Name(id='cmd', ctx=Load()), attr='handle', ctx=Load()),
+                Str(s=''),
+                Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+              ], keywords=[
+                keyword(arg=None, value=Attribute(value=Name(id='self', ctx=Load()), attr='options', ctx=Load())),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_valid_command', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='paths', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='setup.py'),
+                Str(s='src'),
+                BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/apps.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/data_importer.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/diazo.xml')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/__init__.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/models.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/search_indexes.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/urls.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/views.py')),
+                Str(s='tests'),
+                Str(s='tests/colab_settings.py'),
+                Str(s='tests/__init__.py'),
+                Str(s='tests/runtests.py'),
+                Str(s='tests/test_plugin.py'),
+                Str(s='tests/plugins.d'),
+                BinOp(left=BinOp(left=Str(s='tests/plugins.d/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='.py')),
+              ], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='run_command', ctx=Load()), args=[], keywords=[])),
+            For(target=Name(id='path', ctx=Store()), iter=Name(id='paths', ctx=Load()), body=[
+                Assign(targets=[
+                    Name(id='dir', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Attribute(value=Name(id='os', ctx=Load()), attr='path', ctx=Load()), attr='join', ctx=Load()), args=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+                    Name(id='path', ctx=Load()),
+                  ], keywords=[])),
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                    Call(func=Attribute(value=Attribute(value=Name(id='os', ctx=Load()), attr='path', ctx=Load()), attr='exists', ctx=Load()), args=[
+                        Name(id='dir', ctx=Load()),
+                      ], keywords=[]),
+                  ], keywords=[])),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='verify_presence_of', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='name', annotation=None),
+            arg(arg='paths', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='run_command', ctx=Load()), args=[], keywords=[])),
+            For(target=Name(id='path', ctx=Store()), iter=Name(id='paths', ctx=Load()), body=[
+                Assign(targets=[
+                    Name(id='dir', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Attribute(value=Name(id='os', ctx=Load()), attr='path', ctx=Load()), attr='join', ctx=Load()), args=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='dir', ctx=Load()),
+                    Name(id='path', ctx=Load()),
+                  ], keywords=[])),
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                    Call(func=Attribute(value=Attribute(value=Name(id='os', ctx=Load()), attr='path', ctx=Load()), attr='exists', ctx=Load()), args=[
+                        Name(id='dir', ctx=Load()),
+                      ], keywords=[]),
+                  ], keywords=[])),
+                With(items=[
+                    withitem(context_expr=Call(func=Name(id='open', ctx=Load()), args=[
+                        Name(id='dir', ctx=Load()),
+                      ], keywords=[]), optional_vars=Name(id='file', ctx=Store())),
+                  ], body=[
+                    Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                        Name(id='name', ctx=Load()),
+                        Call(func=Attribute(value=Str(s=''), attr='join', ctx=Load()), args=[
+                            Call(func=Attribute(value=Name(id='file', ctx=Load()), attr='readlines', ctx=Load()), args=[], keywords=[]),
+                          ], keywords=[]),
+                      ], keywords=[])),
+                  ]),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_presence_of_app_name_verbose', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='paths', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='setup.py'),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/apps.py')),
+                BinOp(left=BinOp(left=Str(s='tests/plugins.d/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='.py')),
+              ], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='verify_presence_of', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='app_name_verbose', ctx=Load()),
+                Name(id='paths', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_presence_of_app_name_camel', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='paths', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='tests/test_plugin.py'),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/views.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/apps.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/data_importer.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/urls.py')),
+              ], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='verify_presence_of', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='app_name_camel', ctx=Load()),
+                Name(id='paths', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_presence_of_app_name_dash', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='paths', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='setup.py'),
+              ], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='verify_presence_of', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='app_name_dash', ctx=Load()),
+                Name(id='paths', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_presence_of_app_name', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='paths', ctx=Store()),
+              ], value=List(elts=[
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/apps.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/data_importer.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/__init__.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/urls.py')),
+                BinOp(left=BinOp(left=Str(s='src/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='/views.py')),
+                BinOp(left=BinOp(left=Str(s='tests/plugins.d/'), op=Add(), right=Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load())), op=Add(), right=Str(s='.py')),
+              ], ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='verify_presence_of', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='app_name', ctx=Load()),
+                Name(id='paths', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

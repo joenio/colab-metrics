@@ -1,0 +1,42 @@
+Module(body=[
+    ImportFrom(module='django.utils.translation', names=[
+        alias(name='ugettext_lazy', asname='_'),
+      ], level=0),
+    ImportFrom(module='colab.plugins.utils.menu', names=[
+        alias(name='colab_url_factory', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='name', ctx=Store()),
+      ], value=Str(s='{{ app_name }}')),
+    Assign(targets=[
+        Name(id='verbose_name', ctx=Store()),
+      ], value=Str(s='{{ app_name_verbose }} Plugin')),
+    Assign(targets=[
+        Name(id='upstream', ctx=Store()),
+      ], value=Str(s='localhost')),
+    Assign(targets=[
+        Name(id='urls', ctx=Store()),
+      ], value=Dict(keys=[
+        Str(s='include'),
+        Str(s='prefix'),
+      ], values=[
+        Str(s='{{ app_name }}.urls'),
+        Str(s='^{{ app_name }}/'),
+      ])),
+    Assign(targets=[
+        Name(id='menu_title', ctx=Store()),
+      ], value=Call(func=Name(id='_', ctx=Load()), args=[
+        Str(s='{{ app_name }}'),
+      ], keywords=[])),
+    Assign(targets=[
+        Name(id='url', ctx=Store()),
+      ], value=Call(func=Name(id='colab_url_factory', ctx=Load()), args=[
+        Str(s='{{ app_name }}'),
+      ], keywords=[])),
+    Assign(targets=[
+        Name(id='extra', ctx=Store()),
+      ], value=Dict(keys=[], values=[])),
+    Assign(targets=[
+        Name(id='menu_urls', ctx=Store()),
+      ], value=Tuple(elts=[], ctx=Load())),
+  ])

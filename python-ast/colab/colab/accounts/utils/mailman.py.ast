@@ -1,0 +1,646 @@
+Module(body=[
+    Import(names=[
+        alias(name='logging', asname=None),
+      ]),
+    Import(names=[
+        alias(name='requests', asname=None),
+      ]),
+    Import(names=[
+        alias(name='urlparse', asname=None),
+      ]),
+    ImportFrom(module='uuid', names=[
+        alias(name='uuid4', asname=None),
+      ], level=0),
+    ImportFrom(module='django.conf', names=[
+        alias(name='settings', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core', names=[
+        alias(name='mail', asname=None),
+      ], level=0),
+    ImportFrom(module='django.template', names=[
+        alias(name='Context', asname=None),
+        alias(name='loader', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils.translation', names=[
+        alias(name='ugettext_lazy', asname='_'),
+      ], level=0),
+    ImportFrom(module='django.contrib.auth', names=[
+        alias(name='get_user_model', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='TIMEOUT', ctx=Store()),
+      ], value=Num(n=1)),
+    Assign(targets=[
+        Name(id='LOGGER', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='logging', ctx=Load()), attr='getLogger', ctx=Load()), args=[
+        Str(s='colab.mailman'),
+      ], keywords=[])),
+    Assign(targets=[
+        Name(id='S', ctx=Store()),
+      ], value=Str(s='success')),
+    Assign(targets=[
+        Name(id='I', ctx=Store()),
+      ], value=Str(s='info')),
+    Assign(targets=[
+        Name(id='E', ctx=Store()),
+      ], value=Str(s='error')),
+    Assign(targets=[
+        Name(id='MAILMAN_MSGS', ctx=Store()),
+      ], value=Dict(keys=[
+        Num(n=0),
+        Num(n=1),
+        Num(n=2),
+        Num(n=3),
+        Num(n=4),
+        Num(n=5),
+        Num(n=6),
+        Num(n=7),
+        Num(n=8),
+        Num(n=9),
+        Num(n=10),
+        Num(n=11),
+        Num(n=12),
+        Num(n=13),
+        Num(n=14),
+      ], values=[
+        Tuple(elts=[
+            Name(id='S', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='%s: Success!'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='S', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='%s: An email confirmation was sent to you, please check your inbox.'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='I', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s="%s: Your subscription was sent successfully! Please wait for the list's admin approval."),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='I', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='%s: You are already a member of this list.'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='%s: You are banned from this list!'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='%s: You appear to have an invalid email address.'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='%s: Your email address is considered to be hostile.'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='%s: You are not a member of this list.'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='Missing information: `email_from`, `subject` and `body` are mandatory.'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='Bad list name'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='AssertionError'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='Invalid password'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='Mailman unknown list error'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='List already exists'),
+              ], keywords=[]),
+          ], ctx=Load()),
+        Tuple(elts=[
+            Name(id='E', ctx=Load()),
+            Call(func=Name(id='_', ctx=Load()), args=[
+                Str(s='Invalid params'),
+              ], keywords=[]),
+          ], ctx=Load()),
+      ])),
+    FunctionDef(name='send_create_list_email', args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kargs', annotation=None), defaults=[]), body=[
+        Expr(value=Str(s=" Send the notification mail\n    kargs' params:\n        user = User object\n        password = list's password\n        listname = list's name\n    ")),
+        Assign(targets=[
+            Name(id='to', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='kargs', ctx=Load()), attr='get', ctx=Load()), args=[
+            Str(s='user'),
+            NameConstant(value=None),
+          ], keywords=[])),
+        If(test=UnaryOp(op=Not(), operand=Name(id='to', ctx=Load())), body=[
+            Return(value=None),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='to', ctx=Store()),
+          ], value=List(elts=[
+            Attribute(value=Name(id='to', ctx=Load()), attr='email', ctx=Load()),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='from_email', ctx=Store()),
+          ], value=Attribute(value=Name(id='settings', ctx=Load()), attr='COLAB_FROM_ADDRESS', ctx=Load())),
+        Assign(targets=[
+            Name(id='subject', ctx=Store()),
+          ], value=Call(func=Name(id='_', ctx=Load()), args=[
+            Call(func=Attribute(value=Str(s='Created list {}.'), attr='format', ctx=Load()), args=[
+                Call(func=Attribute(value=Name(id='kargs', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='listname'),
+                    Str(s=''),
+                  ], keywords=[]),
+              ], keywords=[]),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='msg_tmpl', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='loader', ctx=Load()), attr='get_template', ctx=Load()), args=[
+            Str(s='emails/create_list_confirmation.txt'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='message', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='msg_tmpl', ctx=Load()), attr='render', ctx=Load()), args=[
+            Call(func=Name(id='Context', ctx=Load()), args=[
+                Name(id='kargs', ctx=Load()),
+              ], keywords=[]),
+          ], keywords=[])),
+        Return(value=Call(func=Attribute(value=Name(id='mail', ctx=Load()), attr='send_mail', ctx=Load()), args=[
+            Name(id='subject', ctx=Load()),
+            Name(id='message', ctx=Load()),
+            Name(id='from_email', ctx=Load()),
+            Name(id='to', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='create_list', args=arguments(args=[
+        arg(arg='listname', annotation=None),
+        arg(arg='admin', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='url', ctx=Store()),
+          ], value=Call(func=Name(id='get_url', ctx=Load()), args=[
+            Str(s='lists/'),
+          ], keywords=[
+            keyword(arg='listname', value=Name(id='listname', ctx=Load())),
+          ])),
+        Assign(targets=[
+            Name(id='password', ctx=Store()),
+          ], value=Attribute(value=Call(func=Name(id='uuid4', ctx=Load()), args=[], keywords=[]), attr='hex', ctx=Load())),
+        Try(body=[
+            Assign(targets=[
+                Name(id='admin_user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Call(func=Name(id='get_user_model', ctx=Load()), args=[], keywords=[]), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Attribute(value=Name(id='admin', ctx=Load()), attr='username', ctx=Load())),
+              ])),
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='requests', ctx=Load()), attr='post', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+              ], keywords=[
+                keyword(arg='timeout', value=Name(id='TIMEOUT', ctx=Load())),
+                keyword(arg='data', value=Dict(keys=[
+                    Str(s='admin'),
+                    Str(s='password'),
+                  ], values=[
+                    Attribute(value=Name(id='admin_user', ctx=Load()), attr='email', ctx=Load()),
+                    Name(id='password', ctx=Load()),
+                  ])),
+              ])),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='msg_type', ctx=Store()),
+                    Name(id='message', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Subscript(value=Name(id='MAILMAN_MSGS', ctx=Load()), slice=Index(value=Call(func=Attribute(value=Name(id='result', ctx=Load()), attr='json', ctx=Load()), args=[], keywords=[])), ctx=Load())),
+            Expr(value=Call(func=Name(id='send_create_list_email', ctx=Load()), args=[], keywords=[
+                keyword(arg='user', value=Name(id='admin_user', ctx=Load())),
+                keyword(arg='password', value=Name(id='password', ctx=Load())),
+                keyword(arg='listname', value=Name(id='listname', ctx=Load())),
+              ])),
+            Return(value=Tuple(elts=[
+                Name(id='msg_type', ctx=Load()),
+                BinOp(left=Name(id='message', ctx=Load()), op=Mod(), right=Name(id='listname', ctx=Load())),
+              ], ctx=Load())),
+          ], handlers=[
+            ExceptHandler(type=None, name=None, body=[
+                Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='exception', ctx=Load()), args=[
+                    Str(s='Unable to create list'),
+                  ], keywords=[])),
+                Return(value=Tuple(elts=[
+                    Name(id='E', ctx=Load()),
+                    Str(s='Error: Unable to create list'),
+                  ], ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='get_url', args=arguments(args=[
+        arg(arg='path', annotation=None),
+        arg(arg='listname', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+        NameConstant(value=None),
+      ]), body=[
+        Assign(targets=[
+            Name(id='url', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='urlparse', ctx=Load()), attr='urljoin', ctx=Load()), args=[
+            Attribute(value=Name(id='settings', ctx=Load()), attr='MAILMAN_API_URL', ctx=Load()),
+            Name(id='path', ctx=Load()),
+          ], keywords=[])),
+        If(test=Name(id='listname', ctx=Load()), body=[
+            Return(value=Call(func=Attribute(value=Name(id='urlparse', ctx=Load()), attr='urljoin', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+                Name(id='listname', ctx=Load()),
+              ], keywords=[])),
+          ], orelse=[]),
+        Return(value=Name(id='url', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='subscribe', args=arguments(args=[
+        arg(arg='listname', annotation=None),
+        arg(arg='address', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='url', ctx=Store()),
+          ], value=Call(func=Name(id='get_url', ctx=Load()), args=[
+            Str(s='subscribe/'),
+          ], keywords=[
+            keyword(arg='listname', value=Name(id='listname', ctx=Load())),
+          ])),
+        Try(body=[
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='requests', ctx=Load()), attr='put', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+              ], keywords=[
+                keyword(arg='timeout', value=Name(id='TIMEOUT', ctx=Load())),
+                keyword(arg='data', value=Dict(keys=[
+                    Str(s='address'),
+                  ], values=[
+                    Name(id='address', ctx=Load()),
+                  ])),
+              ])),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='msg_type', ctx=Store()),
+                    Name(id='message', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Subscript(value=Name(id='MAILMAN_MSGS', ctx=Load()), slice=Index(value=Call(func=Attribute(value=Name(id='result', ctx=Load()), attr='json', ctx=Load()), args=[], keywords=[])), ctx=Load())),
+            Return(value=Tuple(elts=[
+                Name(id='msg_type', ctx=Load()),
+                BinOp(left=Name(id='message', ctx=Load()), op=Mod(), right=Name(id='listname', ctx=Load())),
+              ], ctx=Load())),
+          ], handlers=[
+            ExceptHandler(type=None, name=None, body=[
+                Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='exception', ctx=Load()), args=[
+                    Str(s='Unable to subscribe user'),
+                  ], keywords=[])),
+                Return(value=Tuple(elts=[
+                    Name(id='E', ctx=Load()),
+                    Str(s='Error: Unable to subscribe user'),
+                  ], ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='unsubscribe', args=arguments(args=[
+        arg(arg='listname', annotation=None),
+        arg(arg='address', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='url', ctx=Store()),
+          ], value=Call(func=Name(id='get_url', ctx=Load()), args=[
+            Str(s='subscribe/'),
+            Name(id='listname', ctx=Load()),
+          ], keywords=[])),
+        Try(body=[
+            Assign(targets=[
+                Name(id='result', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='requests', ctx=Load()), attr='delete', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+              ], keywords=[
+                keyword(arg='timeout', value=Name(id='TIMEOUT', ctx=Load())),
+                keyword(arg='data', value=Dict(keys=[
+                    Str(s='address'),
+                  ], values=[
+                    Name(id='address', ctx=Load()),
+                  ])),
+              ])),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='msg_type', ctx=Store()),
+                    Name(id='message', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Subscript(value=Name(id='MAILMAN_MSGS', ctx=Load()), slice=Index(value=Call(func=Attribute(value=Name(id='result', ctx=Load()), attr='json', ctx=Load()), args=[], keywords=[])), ctx=Load())),
+            Return(value=Tuple(elts=[
+                Name(id='msg_type', ctx=Load()),
+                BinOp(left=Name(id='message', ctx=Load()), op=Mod(), right=Name(id='listname', ctx=Load())),
+              ], ctx=Load())),
+          ], handlers=[
+            ExceptHandler(type=None, name=None, body=[
+                Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='exception', ctx=Load()), args=[
+                    Str(s='Unable to unsubscribe user'),
+                  ], keywords=[])),
+                Return(value=Tuple(elts=[
+                    Name(id='E', ctx=Load()),
+                    Str(s='Error: Unable to subscribe user'),
+                  ], ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='update_subscription', args=arguments(args=[
+        arg(arg='address', annotation=None),
+        arg(arg='lists', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='current_lists', ctx=Store()),
+          ], value=Call(func=Name(id='mailing_lists', ctx=Load()), args=[], keywords=[
+            keyword(arg='address', value=Name(id='address', ctx=Load())),
+            keyword(arg='names_only', value=NameConstant(value=True)),
+          ])),
+        Assign(targets=[
+            Name(id='info_messages', ctx=Store()),
+          ], value=List(elts=[], ctx=Load())),
+        For(target=Name(id='maillist', ctx=Store()), iter=Name(id='current_lists', ctx=Load()), body=[
+            If(test=Compare(left=Name(id='maillist', ctx=Load()), ops=[
+                NotIn(),
+              ], comparators=[
+                Name(id='lists', ctx=Load()),
+              ]), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='info_messages', ctx=Load()), attr='append', ctx=Load()), args=[
+                    Call(func=Name(id='unsubscribe', ctx=Load()), args=[
+                        Name(id='maillist', ctx=Load()),
+                        Name(id='address', ctx=Load()),
+                      ], keywords=[]),
+                  ], keywords=[])),
+              ], orelse=[]),
+          ], orelse=[]),
+        For(target=Name(id='maillist', ctx=Store()), iter=Name(id='lists', ctx=Load()), body=[
+            If(test=Compare(left=Name(id='maillist', ctx=Load()), ops=[
+                NotIn(),
+              ], comparators=[
+                Name(id='current_lists', ctx=Load()),
+              ]), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='info_messages', ctx=Load()), attr='append', ctx=Load()), args=[
+                    Call(func=Name(id='subscribe', ctx=Load()), args=[
+                        Name(id='maillist', ctx=Load()),
+                        Name(id='address', ctx=Load()),
+                      ], keywords=[]),
+                  ], keywords=[])),
+              ], orelse=[]),
+          ], orelse=[]),
+        Return(value=Name(id='info_messages', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='mailing_lists', args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+        Assign(targets=[
+            Name(id='url', ctx=Store()),
+          ], value=Call(func=Name(id='get_url', ctx=Load()), args=[
+            Str(s='lists/'),
+          ], keywords=[])),
+        Try(body=[
+            Assign(targets=[
+                Name(id='lists', ctx=Store()),
+              ], value=Call(func=Attribute(value=Call(func=Attribute(value=Name(id='requests', ctx=Load()), attr='get', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+              ], keywords=[
+                keyword(arg='timeout', value=Name(id='TIMEOUT', ctx=Load())),
+                keyword(arg='params', value=Name(id='kwargs', ctx=Load())),
+              ]), attr='json', ctx=Load()), args=[], keywords=[])),
+            If(test=UnaryOp(op=Not(), operand=Call(func=Name(id='isinstance', ctx=Load()), args=[
+                Name(id='lists', ctx=Load()),
+                Tuple(elts=[
+                    Name(id='list', ctx=Load()),
+                    Name(id='tuple', ctx=Load()),
+                  ], ctx=Load()),
+              ], keywords=[])), body=[
+                Raise(exc=None, cause=None),
+              ], orelse=[]),
+          ], handlers=[
+            ExceptHandler(type=None, name=None, body=[
+                Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='exception', ctx=Load()), args=[
+                    Str(s='Unable to list mailing lists'),
+                  ], keywords=[])),
+                Return(value=List(elts=[], ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+        If(test=Call(func=Attribute(value=Name(id='kwargs', ctx=Load()), attr='get', ctx=Load()), args=[
+            Str(s='names_only'),
+          ], keywords=[]), body=[
+            Assign(targets=[
+                Name(id='names_only', ctx=Store()),
+              ], value=List(elts=[], ctx=Load())),
+            For(target=Name(id='l', ctx=Store()), iter=Name(id='lists', ctx=Load()), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='names_only', ctx=Load()), attr='append', ctx=Load()), args=[
+                    Subscript(value=Name(id='l', ctx=Load()), slice=Index(value=Str(s='listname')), ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+            Return(value=Name(id='names_only', ctx=Load())),
+          ], orelse=[
+            Return(value=Name(id='lists', ctx=Load())),
+          ]),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='is_private_list', args=arguments(args=[
+        arg(arg='name', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Try(body=[
+            Assign(targets=[
+                Name(id='privacy', ctx=Store()),
+              ], value=Dict(keys=[], values=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='privacy', ctx=Load()), attr='update', ctx=Load()), args=[
+                DictComp(key=Call(func=Attribute(value=Name(id='mlist', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='listname'),
+                  ], keywords=[]), value=Call(func=Attribute(value=Name(id='mlist', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='archive_private'),
+                  ], keywords=[]), generators=[
+                    comprehension(target=Name(id='mlist', ctx=Store()), iter=Call(func=Name(id='all_lists', ctx=Load()), args=[], keywords=[]), ifs=[]),
+                  ]),
+              ], keywords=[])),
+            Return(value=Subscript(value=Name(id='privacy', ctx=Load()), slice=Index(value=Name(id='name', ctx=Load())), ctx=Load())),
+          ], handlers=[
+            ExceptHandler(type=Name(id='KeyError', ctx=Load()), name=None, body=[
+                Return(value=List(elts=[], ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='all_lists', args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+        Return(value=Call(func=Name(id='mailing_lists', ctx=Load()), args=[], keywords=[
+            keyword(arg=None, value=Name(id='kwargs', ctx=Load())),
+          ])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='user_lists', args=arguments(args=[
+        arg(arg='user', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='list_set', ctx=Store()),
+          ], value=Call(func=Name(id='set', ctx=Load()), args=[], keywords=[])),
+        For(target=Name(id='email', ctx=Store()), iter=Call(func=Attribute(value=Attribute(value=Name(id='user', ctx=Load()), attr='emails', ctx=Load()), attr='values_list', ctx=Load()), args=[
+            Str(s='address'),
+          ], keywords=[
+            keyword(arg='flat', value=NameConstant(value=True)),
+          ]), body=[
+            Assign(targets=[
+                Name(id='mlists', ctx=Store()),
+              ], value=Call(func=Name(id='mailing_lists', ctx=Load()), args=[], keywords=[
+                keyword(arg='address', value=Name(id='email', ctx=Load())),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='list_set', ctx=Load()), attr='update', ctx=Load()), args=[
+                GeneratorExp(elt=Call(func=Attribute(value=Name(id='mlist', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='listname'),
+                  ], keywords=[]), generators=[
+                    comprehension(target=Name(id='mlist', ctx=Store()), iter=Name(id='mlists', ctx=Load()), ifs=[]),
+                  ]),
+              ], keywords=[])),
+          ], orelse=[]),
+        Return(value=Call(func=Name(id='tuple', ctx=Load()), args=[
+            Name(id='list_set', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='get_list_description', args=arguments(args=[
+        arg(arg='listname', annotation=None),
+        arg(arg='lists', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+        NameConstant(value=None),
+      ]), body=[
+        If(test=UnaryOp(op=Not(), operand=Name(id='lists', ctx=Load())), body=[
+            Assign(targets=[
+                Name(id='lists', ctx=Store()),
+              ], value=Call(func=Name(id='all_lists', ctx=Load()), args=[], keywords=[])),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='desc', ctx=Store()),
+          ], value=Call(func=Attribute(value=Str(s=''), attr='join', ctx=Load()), args=[
+            GeneratorExp(elt=Call(func=Attribute(value=Name(id='mlist', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='description'),
+              ], keywords=[]), generators=[
+                comprehension(target=Name(id='mlist', ctx=Store()), iter=Name(id='lists', ctx=Load()), ifs=[
+                    BoolOp(op=And(), values=[
+                        Call(func=Name(id='isinstance', ctx=Load()), args=[
+                            Name(id='mlist', ctx=Load()),
+                            Name(id='dict', ctx=Load()),
+                          ], keywords=[]),
+                        Compare(left=Call(func=Attribute(value=Name(id='mlist', ctx=Load()), attr='get', ctx=Load()), args=[
+                            Str(s='listname'),
+                          ], keywords=[]), ops=[
+                            Eq(),
+                          ], comparators=[
+                            Name(id='listname', ctx=Load()),
+                          ]),
+                      ]),
+                  ]),
+              ]),
+          ], keywords=[])),
+        Return(value=Name(id='desc', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='list_users', args=arguments(args=[
+        arg(arg='listname', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='url', ctx=Store()),
+          ], value=Call(func=Name(id='get_url', ctx=Load()), args=[
+            Str(s='members/'),
+            Name(id='listname', ctx=Load()),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='params', ctx=Store()),
+          ], value=Dict(keys=[], values=[])),
+        Try(body=[
+            Assign(targets=[
+                Name(id='users', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='requests', ctx=Load()), attr='get', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+              ], keywords=[
+                keyword(arg='timeout', value=Name(id='TIMEOUT', ctx=Load())),
+                keyword(arg='params', value=Name(id='params', ctx=Load())),
+              ])),
+          ], handlers=[
+            ExceptHandler(type=Attribute(value=Attribute(value=Name(id='requests', ctx=Load()), attr='exceptions', ctx=Load()), attr='RequestException', ctx=Load()), name=None, body=[
+                Return(value=List(elts=[], ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+        Assign(targets=[
+            Name(id='result', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='users', ctx=Load()), attr='json', ctx=Load()), args=[], keywords=[])),
+        If(test=Call(func=Name(id='isinstance', ctx=Load()), args=[
+            Name(id='result', ctx=Load()),
+            Name(id='int', ctx=Load()),
+          ], keywords=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='error', ctx=Load()), args=[
+                Str(s='Error number %s'),
+                Name(id='result', ctx=Load()),
+              ], keywords=[])),
+            Return(value=List(elts=[], ctx=Load())),
+          ], orelse=[]),
+        Return(value=Name(id='result', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='get_user_mailinglists', args=arguments(args=[
+        arg(arg='user', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='lists_for_user', ctx=Store()),
+          ], value=List(elts=[], ctx=Load())),
+        Assign(targets=[
+            Name(id='emails', ctx=Store()),
+          ], value=Str(s='')),
+        If(test=Name(id='user', ctx=Load()), body=[
+            Assign(targets=[
+                Name(id='emails', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='user', ctx=Load()), attr='emails', ctx=Load()), attr='values_list', ctx=Load()), args=[
+                Str(s='address'),
+              ], keywords=[
+                keyword(arg='flat', value=NameConstant(value=True)),
+              ])),
+          ], orelse=[]),
+        For(target=Name(id='email', ctx=Store()), iter=Name(id='emails', ctx=Load()), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='lists_for_user', ctx=Load()), attr='extend', ctx=Load()), args=[
+                Call(func=Name(id='mailing_lists', ctx=Load()), args=[], keywords=[
+                    keyword(arg='address', value=Name(id='email', ctx=Load())),
+                  ]),
+              ], keywords=[])),
+          ], orelse=[]),
+        Return(value=Name(id='lists_for_user', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='extract_listname_from_list', args=arguments(args=[
+        arg(arg='lists', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Try(body=[
+            Return(value=ListComp(elt=Call(func=Attribute(value=Name(id='mlist', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='listname'),
+              ], keywords=[]), generators=[
+                comprehension(target=Name(id='mlist', ctx=Store()), iter=Name(id='lists', ctx=Load()), ifs=[]),
+              ])),
+          ], handlers=[
+            ExceptHandler(type=Name(id='ValueError', ctx=Load()), name=None, body=[
+                Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='exception', ctx=Load()), args=[
+                    Str(s='listname not available'),
+                  ], keywords=[])),
+                Return(value=List(elts=[], ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+      ], decorator_list=[], returns=None),
+  ])

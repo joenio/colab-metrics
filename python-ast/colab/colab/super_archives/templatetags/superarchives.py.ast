@@ -1,0 +1,75 @@
+Module(body=[
+    ImportFrom(module='django', names=[
+        alias(name='template', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.utils', names=[
+        alias(name='url', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='register', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='template', ctx=Load()), attr='Library', ctx=Load()), args=[], keywords=[])),
+    Assign(targets=[
+        Name(id='TEMPLATE_PATH', ctx=Store()),
+      ], value=Str(s='superarchives/tags/')),
+    FunctionDef(name='display_message', args=arguments(args=[
+        arg(arg='email', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        If(test=UnaryOp(op=Not(), operand=Call(func=Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='blocks', ctx=Load()), attr='count', ctx=Load()), args=[], keywords=[])), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='email', ctx=Load()), attr='update_blocks', ctx=Load()), args=[], keywords=[])),
+          ], orelse=[]),
+        Return(value=Dict(keys=[
+            Str(s='blocks'),
+          ], values=[
+            Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='blocks', ctx=Load()), attr='all', ctx=Load()),
+          ])),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='inclusion_tag', ctx=Load()), args=[
+            BinOp(left=Name(id='TEMPLATE_PATH', ctx=Load()), op=Add(), right=Str(s='display_message.html')),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='append_to_get', args=arguments(args=[
+        arg(arg='context', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+        Return(value=Call(func=Attribute(value=Name(id='url', ctx=Load()), attr='append_to_get', ctx=Load()), args=[
+            Subscript(value=Attribute(value=Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='request')), ctx=Load()), attr='META', ctx=Load()), slice=Index(value=Str(s='PATH_INFO')), ctx=Load()),
+            Subscript(value=Attribute(value=Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='request')), ctx=Load()), attr='META', ctx=Load()), slice=Index(value=Str(s='QUERY_STRING')), ctx=Load()),
+          ], keywords=[
+            keyword(arg=None, value=Name(id='kwargs', ctx=Load())),
+          ])),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='simple_tag', ctx=Load()), args=[], keywords=[
+            keyword(arg='takes_context', value=NameConstant(value=True)),
+          ]),
+      ], returns=None),
+    FunctionDef(name='pop_from_get', args=arguments(args=[
+        arg(arg='context', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+        Return(value=Call(func=Attribute(value=Name(id='url', ctx=Load()), attr='pop_from_get', ctx=Load()), args=[
+            Subscript(value=Attribute(value=Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='request')), ctx=Load()), attr='META', ctx=Load()), slice=Index(value=Str(s='PATH_INFO')), ctx=Load()),
+            Subscript(value=Attribute(value=Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='request')), ctx=Load()), attr='META', ctx=Load()), slice=Index(value=Str(s='QUERY_STRING')), ctx=Load()),
+          ], keywords=[
+            keyword(arg=None, value=Name(id='kwargs', ctx=Load())),
+          ])),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='simple_tag', ctx=Load()), args=[], keywords=[
+            keyword(arg='takes_context', value=NameConstant(value=True)),
+          ]),
+      ], returns=None),
+    FunctionDef(name='profile_url', args=arguments(args=[
+        arg(arg='username', annotation=None),
+        arg(arg='user_url', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        If(test=BoolOp(op=Or(), values=[
+            UnaryOp(op=Not(), operand=Name(id='username', ctx=Load())),
+            UnaryOp(op=Not(), operand=Name(id='user_url', ctx=Load())),
+          ]), body=[
+            Return(value=Str(s='')),
+          ], orelse=[]),
+        Return(value=BinOp(left=Str(s='- <a href="%s">%s</a>'), op=Mod(), right=Tuple(elts=[
+            Name(id='user_url', ctx=Load()),
+            Name(id='username', ctx=Load()),
+          ], ctx=Load()))),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='assignment_tag', ctx=Load()), args=[], keywords=[]),
+      ], returns=None),
+  ])

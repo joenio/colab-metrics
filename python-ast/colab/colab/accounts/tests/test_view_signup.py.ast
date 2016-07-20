@@ -1,0 +1,122 @@
+Module(body=[
+    Expr(value=Str(s='\nTest Sign Up view\nThis test related with accounts/views.py\n')),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ClassDef(name='TestSignUpView', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user_django', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='tearDown', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='delete', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_user_django', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[
+                Str(s='USERtestCoLaB'),
+                Str(s='usertest@colab.com.br'),
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Return(value=Name(id='user', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_user_authenticated_and_unregistered', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='usertestcolab')),
+                keyword(arg='password', value=Str(s='123colab4')),
+              ])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/account/register/'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='logout', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_user_authenticated_and_registered', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='needs_update', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='usertestcolab')),
+                keyword(arg='password', value=Str(s='123colab4')),
+              ])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/account/register/'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=302),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='url', ctx=Store()),
+              ], value=Str(s='http://testserver/account/usertestcolab')),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Name(id='url', ctx=Load()),
+                Attribute(value=Name(id='response', ctx=Load()), attr='url', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='logout', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_signup_with_valid_email_and_inactive_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='message', ctx=Store()),
+              ], value=Str(s="This user already exists, but is not active. Please check your spam or <a href='/account/resend-email-verification/'> resend an email</a>")),
+            Assign(targets=[
+                Name(id='options', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='username'),
+                Str(s='email'),
+              ], values=[
+                Str(s='another_user'),
+                Str(s='usertest@colab.com.br'),
+              ])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='is_active', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='post', ctx=Load()), args=[
+                Str(s='/account/register/'),
+                Name(id='options', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='message', ctx=Load()),
+                Attribute(value=Name(id='response', ctx=Load()), attr='content', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

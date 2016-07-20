@@ -1,0 +1,33 @@
+Module(body=[
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='WidgetManager', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.widgets.group', names=[
+        alias(name='GroupWidget', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.widgets.group_membership', names=[
+        alias(name='GroupMembershipWidget', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.widgets.latest_posted', names=[
+        alias(name='LatestPostedWidget', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.widgets.latest_contributions', names=[
+        alias(name='LatestContributionsWidget', asname=None),
+      ], level=0),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='group'),
+        Call(func=Name(id='GroupWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='button'),
+        Call(func=Name(id='GroupMembershipWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='list'),
+        Call(func=Name(id='LatestPostedWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+    Expr(value=Call(func=Attribute(value=Name(id='WidgetManager', ctx=Load()), attr='register_widget', ctx=Load()), args=[
+        Str(s='list'),
+        Call(func=Name(id='LatestContributionsWidget', ctx=Load()), args=[], keywords=[]),
+      ], keywords=[])),
+  ])

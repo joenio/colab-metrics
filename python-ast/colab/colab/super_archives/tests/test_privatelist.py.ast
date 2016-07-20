@@ -1,0 +1,189 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ClassDef(name='ArchivesViewTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='fixtures', ctx=Store()),
+          ], value=List(elts=[
+            Str(s='mailinglistdata.json'),
+          ], ctx=Load())),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='authenticate_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='johndoe')),
+                keyword(arg='password', value=Str(s='1234')),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_see_only_private_list_if_member', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mocklist', annotation=None),
+            arg(arg='mockemail', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/thread/'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='list_data', ctx=Store()),
+              ], value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='lists')), ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='lista'),
+                Attribute(value=Subscript(value=Name(id='list_data', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='privatelist'),
+                Attribute(value=Subscript(value=Name(id='list_data', ctx=Load()), slice=Index(value=Num(n=1)), ctx=Load()), attr='name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=2),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='list_data', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.mailman.get_user_mailinglists'),
+              ], keywords=[
+                keyword(arg='return_value', value=List(elts=[
+                    Dict(keys=[
+                        Str(s='listname'),
+                      ], values=[
+                        Str(s='privatelist'),
+                      ]),
+                  ], ctx=Load())),
+              ]),
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.mailman.list_users'),
+              ], keywords=[
+                keyword(arg='return_value', value=List(elts=[
+                    Str(s='johndoe@example.com'),
+                  ], ctx=Load())),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_see_only_public_if_not_logged_in', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/thread/'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='list_data', ctx=Store()),
+              ], value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='lists')), ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='lista'),
+                Attribute(value=Subscript(value=Name(id='list_data', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='list_data', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_see_private_thread_in_dashboard_if_member', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mocklist', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/dashboard'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='latest_threads', ctx=Store()),
+              ], value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='latest_threads')), ctx=Load())),
+            Assign(targets=[
+                Name(id='hottest_threads', ctx=Store()),
+              ], value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='hottest_threads')), ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=4),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='latest_threads', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=4),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='hottest_threads', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.mailman.get_user_mailinglists'),
+              ], keywords=[
+                keyword(arg='return_value', value=List(elts=[
+                    Dict(keys=[
+                        Str(s='listname'),
+                      ], values=[
+                        Str(s='privatelist'),
+                      ]),
+                  ], ctx=Load())),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_dont_see_private_thread_if_logged_out', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/dashboard'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='latest_threads', ctx=Store()),
+              ], value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='latest_threads')), ctx=Load())),
+            Assign(targets=[
+                Name(id='hottest_threads', ctx=Store()),
+              ], value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='hottest_threads')), ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='latest_threads', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='hottest_threads', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_dont_see_private_threads_in_profile_if_logged_out', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/account/johndoe'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='emails', ctx=Store()),
+              ], value=Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='emails')), ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=1),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Name(id='emails', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

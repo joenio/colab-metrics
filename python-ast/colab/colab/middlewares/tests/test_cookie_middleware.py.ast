@@ -1,0 +1,242 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='django', names=[
+        alias(name='http', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.middlewares.cookie_middleware', names=[
+        alias(name='StringMorsel', asname=None),
+        alias(name='CookiePostHandlerMiddleware', asname=None),
+        alias(name='CookiePreHandlerMiddleware', asname=None),
+        alias(name='CookieHandler', asname=None),
+      ], level=0),
+    ClassDef(name='StringMorselTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Store()),
+              ], value=Call(func=Name(id='StringMorsel', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Load()), attr='set', ctx=Load()), args=[
+                Str(s='cookie_name'),
+                Str(s='cookie_value'),
+                Str(s='coded_value'),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_string_morsel_str', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='cookie_value'),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Load()), attr='__repr__', ctx=Load()), args=[], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_string_morsel_eq', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Load()), ops=[
+                    Eq(),
+                  ], comparators=[
+                    Str(s='cookie_value'),
+                  ]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='other_morsel', ctx=Store()),
+              ], value=Call(func=Name(id='StringMorsel', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='other_morsel', ctx=Load()), attr='set', ctx=Load()), args=[
+                Str(s='cookie_name'),
+                Str(s='cookie_value'),
+                Str(s='other_coded_value'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Compare(left=Name(id='other_morsel', ctx=Load()), ops=[
+                    Eq(),
+                  ], comparators=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Compare(left=Name(id='other_morsel', ctx=Load()), ops=[
+                    Eq(),
+                  ], comparators=[
+                    Num(n=42),
+                  ]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_string_morsel_ne', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[
+                Compare(left=Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Load()), ops=[
+                    NotEq(),
+                  ], comparators=[
+                    Str(s='cookie_value'),
+                  ]),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='other_morsel', ctx=Store()),
+              ], value=Call(func=Name(id='StringMorsel', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='other_morsel', ctx=Load()), attr='set', ctx=Load()), args=[
+                Str(s='cookie_name'),
+                Str(s='cookie_value'),
+                Str(s='other_coded_value'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Name(id='other_morsel', ctx=Load()), ops=[
+                    NotEq(),
+                  ], comparators=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Load()),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Compare(left=Name(id='other_morsel', ctx=Load()), ops=[
+                    NotEq(),
+                  ], comparators=[
+                    Num(n=42),
+                  ]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_string_morsel_split', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIsInstance', ctx=Load()), args=[
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='morsel', ctx=Load()), attr='split', ctx=Load()), args=[], keywords=[]),
+                Name(id='list', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='CookiePostHandlerTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_process_response', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='pre_handler', ctx=Store()),
+              ], value=Call(func=Name(id='CookiePreHandlerMiddleware', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='post_handler', ctx=Store()),
+              ], value=Call(func=Name(id='CookiePostHandlerMiddleware', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='http', ctx=Load()), attr='HttpRequest', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='http', ctx=Load()), attr='HttpResponse', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='pre_handler', ctx=Load()), attr='process_request', ctx=Load()), args=[
+                Name(id='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='request', ctx=Load()), attr='COOKIES', ctx=Load()), attr='set', ctx=Load()), args=[
+                Str(s='cookie1'),
+                Str(s='cookie_value1'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='request', ctx=Load()), attr='COOKIES', ctx=Load()), attr='set', ctx=Load()), args=[
+                Str(s='cookie2'),
+                Str(s='cookie_value2'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='post_handler', ctx=Load()), attr='process_response', ctx=Load()), args=[
+                Name(id='request', ctx=Load()),
+                Name(id='response', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=2),
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Attribute(value=Name(id='response', ctx=Load()), attr='cookies', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='CookiePreHandlerTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_process_request', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='pre_handler', ctx=Store()),
+              ], value=Call(func=Name(id='CookiePreHandlerMiddleware', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='http', ctx=Load()), attr='HttpRequest', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Subscript(value=Attribute(value=Name(id='request', ctx=Load()), attr='COOKIES', ctx=Load()), slice=Index(value=Str(s='cookie1')), ctx=Store()),
+              ], value=Str(s='cookie_value1')),
+            Expr(value=Call(func=Attribute(value=Name(id='pre_handler', ctx=Load()), attr='process_request', ctx=Load()), args=[
+                Name(id='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='cookie_value1'),
+                Call(func=Attribute(value=Attribute(value=Name(id='request', ctx=Load()), attr='COOKIES', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='cookie1'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='CookieHandlerTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Store()),
+              ], value=Call(func=Name(id='CookieHandler', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_set', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='set', ctx=Load()), args=[
+                Str(s='key'),
+                Str(s='value'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='value'),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='key'),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='delete', ctx=Load()), args=[
+                Str(s='key'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s=''),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='key'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_set_with_domain', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='set', ctx=Load()), args=[
+                Str(s='key'),
+                Str(s='value'),
+              ], keywords=[
+                keyword(arg='domain', value=Str(s='domain')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='value'),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='key'),
+                  ], keywords=[]),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='delete', ctx=Load()), args=[
+                Str(s='key'),
+              ], keywords=[
+                keyword(arg='domain', value=Str(s='domain')),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s=''),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='cookie_handler', ctx=Load()), attr='get', ctx=Load()), args=[
+                    Str(s='key'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

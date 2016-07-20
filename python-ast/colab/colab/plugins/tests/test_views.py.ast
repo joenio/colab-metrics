@@ -1,0 +1,59 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test.client', names=[
+        alias(name='RequestFactory', asname=None),
+      ], level=0),
+    ImportFrom(module='views', names=[
+        alias(name='ColabProxyView', asname=None),
+      ], level=2),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ClassDef(name='ViewsTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='view', ctx=Store()),
+              ], value=Call(func=Name(id='ColabProxyView', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='factory', ctx=Store()),
+              ], value=Call(func=Name(id='RequestFactory', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='john')),
+                keyword(arg='email', value=Str(s='john@test.org')),
+                keyword(arg='password', value=Str(s='123')),
+                keyword(arg='first_name', value=Str(s='John')),
+                keyword(arg='last_name', value=Str(s='John')),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_dispatch_without_app_label', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='factory', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/'),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='request', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load())),
+            With(items=[
+                withitem(context_expr=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRaises', ctx=Load()), args=[
+                    Name(id='NotImplementedError', ctx=Load()),
+                  ], keywords=[]), optional_vars=None),
+              ], body=[
+                Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='view', ctx=Load()), attr='dispatch', ctx=Load()), args=[
+                    Name(id='request', ctx=Load()),
+                    Str(s='/'),
+                  ], keywords=[])),
+              ]),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

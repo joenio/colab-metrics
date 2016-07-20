@@ -1,0 +1,113 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='Client', asname=None),
+      ], level=0),
+    ClassDef(name='WidgetAccountTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='create_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='User', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Str(s='usertest')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='set_password', ctx=Load()), args=[
+                Str(s='123colab4'),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='email', ctx=Store()),
+              ], value=Str(s='usertest@colab.com.br')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='id', ctx=Store()),
+              ], value=Num(n=1)),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='twitter', ctx=Store()),
+              ], value=Str(s='usertestcolab')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='facebook', ctx=Store()),
+              ], value=Str(s='usertestcolab')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='first_name', ctx=Store()),
+              ], value=Str(s='USERtestCoLaB')),
+            Assign(targets=[
+                Attribute(value=Name(id='user', ctx=Load()), attr='last_name', ctx=Store()),
+              ], value=Str(s='COLAB')),
+            Expr(value=Call(func=Attribute(value=Name(id='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Return(value=Name(id='user', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='authenticate_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='needs_update', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='save', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load())),
+                keyword(arg='password', value=Str(s='123colab4')),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='get_response_from_request', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='addr', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='create_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Name(id='addr', ctx=Load()),
+              ], keywords=[])),
+            Return(value=Name(id='response', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_account_widgets', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='templates', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='widgets/group_membership.html'),
+                Str(s='widgets/group.html'),
+                Str(s='widgets/latest_contributions.html'),
+                Str(s='widgets/latest_posted.html'),
+                Str(s='widgets/collaboration_chart.html'),
+                Str(s='widgets/participation_chart.html'),
+              ], ctx=Load())),
+            For(target=Name(id='template', ctx=Store()), iter=Name(id='templates', ctx=Load()), body=[
+                Assign(targets=[
+                    Name(id='url', ctx=Store()),
+                  ], value=BinOp(left=Str(s='/account/'), op=Add(), right=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load()))),
+                Assign(targets=[
+                    Name(id='response', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_response_from_request', ctx=Load()), args=[
+                    Name(id='url', ctx=Load()),
+                  ], keywords=[])),
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTemplateUsed', ctx=Load()), args=[], keywords=[
+                    keyword(arg='template_name', value=Name(id='template', ctx=Load())),
+                    keyword(arg='response', value=Name(id='response', ctx=Load())),
+                  ])),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

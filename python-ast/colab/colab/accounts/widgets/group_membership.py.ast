@@ -1,0 +1,15 @@
+Module(body=[
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='Widget', asname=None),
+      ], level=0),
+    ClassDef(name='GroupMembershipWidget', bases=[
+        Name(id='Widget', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='name', ctx=Store()),
+          ], value=Str(s='group membership')),
+        Assign(targets=[
+            Name(id='template', ctx=Store()),
+          ], value=Str(s='widgets/group_membership.html')),
+      ], decorator_list=[]),
+  ])

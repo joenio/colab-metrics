@@ -1,0 +1,70 @@
+Module(body=[
+    ImportFrom(module='django', names=[
+        alias(name='template', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.models', names=[
+        alias(name='EmailAddress', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='register', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='template', ctx=Load()), attr='Library', ctx=Load()), args=[], keywords=[])),
+    FunctionDef(name='gravatar', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='email', annotation=None),
+        arg(arg='size', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+        Num(n=80),
+      ]), body=[
+        If(test=Call(func=Name(id='isinstance', ctx=Load()), args=[
+            Name(id='email', ctx=Load()),
+            Name(id='basestring', ctx=Load()),
+          ], keywords=[]), body=[
+            Try(body=[
+                Assign(targets=[
+                    Name(id='email', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Attribute(value=Name(id='EmailAddress', ctx=Load()), attr='objects', ctx=Load()), attr='get', ctx=Load()), args=[], keywords=[
+                    keyword(arg='address', value=Name(id='email', ctx=Load())),
+                  ])),
+              ], handlers=[
+                ExceptHandler(type=Attribute(value=Name(id='EmailAddress', ctx=Load()), attr='DoesNotExist', ctx=Load()), name=None, body=[
+                    Pass(),
+                  ]),
+              ], orelse=[], finalbody=[]),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='email_md5', ctx=Store()),
+          ], value=Call(func=Name(id='getattr', ctx=Load()), args=[
+            Name(id='email', ctx=Load()),
+            Str(s='md5'),
+            Str(s='anonymous'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='request', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='context', ctx=Load()), attr='get', ctx=Load()), args=[
+            Str(s='request'),
+          ], keywords=[])),
+        If(test=Call(func=Name(id='getattr', ctx=Load()), args=[
+            Name(id='request', ctx=Load()),
+            Str(s='is_secure'),
+          ], keywords=[]), body=[
+            Assign(targets=[
+                Name(id='protocol', ctx=Store()),
+              ], value=Str(s='https')),
+          ], orelse=[
+            Assign(targets=[
+                Name(id='protocol', ctx=Store()),
+              ], value=Str(s='http')),
+          ]),
+        Return(value=Call(func=Attribute(value=Str(s='<img src="{}://www.gravatar.com/avatar/{}?s={}&d=mm"height="{}px" width="{}px" />'), attr='format', ctx=Load()), args=[
+            Name(id='protocol', ctx=Load()),
+            Name(id='email_md5', ctx=Load()),
+            Name(id='size', ctx=Load()),
+            Name(id='size', ctx=Load()),
+            Name(id='size', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='simple_tag', ctx=Load()), args=[], keywords=[
+            keyword(arg='takes_context', value=NameConstant(value=True)),
+          ]),
+      ], returns=None),
+  ])

@@ -1,0 +1,46 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='django.db', names=[
+        alias(name='models', asname=None),
+        alias(name='migrations', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='django.core.validators', asname=None),
+      ]),
+    ClassDef(name='Migration', bases=[
+        Attribute(value=Name(id='migrations', ctx=Load()), attr='Migration', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='dependencies', ctx=Store()),
+          ], value=List(elts=[
+            Tuple(elts=[
+                Str(s='accounts'),
+                Str(s='0005_auto_20150312_1454'),
+              ], ctx=Load()),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='operations', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='AlterField', ctx=Load()), args=[], keywords=[
+                keyword(arg='model_name', value=Str(s='user')),
+                keyword(arg='name', value=Str(s='username')),
+                keyword(arg='field', value=Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                    keyword(arg='help_text', value=Str(s='Required. 30 characters or fewer. Letters and digits.')),
+                    keyword(arg='unique', value=NameConstant(value=True)),
+                    keyword(arg='max_length', value=Num(n=30)),
+                    keyword(arg='verbose_name', value=Str(s='username')),
+                    keyword(arg='validators', value=List(elts=[
+                        Call(func=Attribute(value=Attribute(value=Attribute(value=Name(id='django', ctx=Load()), attr='core', ctx=Load()), attr='validators', ctx=Load()), attr='RegexValidator', ctx=Load()), args=[
+                            Str(s='^[\\w.@+-]+$'),
+                            Str(s='Enter a valid username.'),
+                            Str(s='invalid'),
+                          ], keywords=[]),
+                      ], ctx=Load())),
+                  ])),
+                keyword(arg='preserve_default', value=NameConstant(value=True)),
+              ]),
+          ], ctx=Load())),
+      ], decorator_list=[]),
+  ])

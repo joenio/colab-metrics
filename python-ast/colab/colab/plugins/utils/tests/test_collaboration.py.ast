@@ -1,0 +1,96 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.models', names=[
+        alias(name='User', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.plugins.utils.models', names=[
+        alias(name='Collaboration', asname=None),
+      ], level=0),
+    ClassDef(name='CollaborationTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='fixtures', ctx=Store()),
+          ], value=List(elts=[
+            Str(s='sample_user_plugin.json'),
+          ], ctx=Load())),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Store()),
+              ], value=Call(func=Name(id='Collaboration', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='set_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='sample_user', ctx=Store()),
+              ], value=Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='User', ctx=Load()), attr='objects', ctx=Load()), attr='filter', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Str(s='SampleUser')),
+              ]), attr='last', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Name(id='sample_user', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_modified_by_without_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIsNone', ctx=Load()), args=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='modified_by', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_modified_by_with_valid_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='set_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='SampleUser LastName'),
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='modified_by', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_modified_by_url_without_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIsNone', ctx=Load()), args=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='modified_by_url', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_modified_by_url_with_valid_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='set_user', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='/account/SampleUser'),
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='modified_by_url', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_without_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='update_user', ctx=Load()), args=[
+                Str(s='SampleInvalidUser'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIsNone', ctx=Load()), args=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='user', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_update_user_with_valid_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='update_user', ctx=Load()), args=[
+                Str(s='SampleUser'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='SampleUser'),
+                Attribute(value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='user', ctx=Load()), attr='username', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Str(s='sample_user@email.com'),
+                Attribute(value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='collaboration', ctx=Load()), attr='user', ctx=Load()), attr='email', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

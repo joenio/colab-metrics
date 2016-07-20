@@ -1,0 +1,48 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.management.commands.celery', names=[
+        alias(name='Command', asname=None),
+      ], level=0),
+    ClassDef(name='CeleryCommandTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_run_from_argv', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='execute_from_commandline_mock', annotation=None),
+            arg(arg='validate_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='cmd', ctx=Store()),
+              ], value=Call(func=Name(id='Command', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='cmd', ctx=Load()), attr='requires_system_checks', ctx=Store()),
+              ], value=NameConstant(value=True)),
+            Expr(value=Call(func=Attribute(value=Name(id='cmd', ctx=Load()), attr='run_from_argv', ctx=Load()), args=[
+                List(elts=[
+                    Str(s='arg1'),
+                    Str(s='arg2'),
+                    Str(s='arg3'),
+                  ], ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='validate_mock', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='execute_from_commandline_mock', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='Command', ctx=Load()),
+                Str(s='validate'),
+              ], keywords=[]),
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.management.commands.celery.base.execute_from_commandline'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

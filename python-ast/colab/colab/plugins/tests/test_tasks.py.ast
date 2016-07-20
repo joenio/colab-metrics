@@ -1,0 +1,42 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='Mock', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='colab.plugins.data.tasks', asname=None),
+      ]),
+    ImportFrom(module='colab.plugins.tasks', names=[
+        alias(name='import_plugin_data', asname=None),
+      ], level=0),
+    ClassDef(name='TasksTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_import_plugin_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='task_mock', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='delay', value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[])),
+              ])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Attribute(value=Name(id='colab', ctx=Load()), attr='plugins', ctx=Load()), attr='tasks', ctx=Load()), attr='TASKS', ctx=Store()),
+              ], value=List(elts=[
+                Name(id='task_mock', ctx=Load()),
+                Name(id='task_mock', ctx=Load()),
+                Name(id='task_mock', ctx=Load()),
+              ], ctx=Load())),
+            Expr(value=Call(func=Name(id='import_plugin_data', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Num(n=3),
+                Attribute(value=Attribute(value=Name(id='task_mock', ctx=Load()), attr='delay', ctx=Load()), attr='call_count', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Attribute(value=Name(id='colab', ctx=Load()), attr='plugins', ctx=Load()), attr='tasks', ctx=Load()), attr='TASKS', ctx=Store()),
+              ], value=List(elts=[], ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

@@ -1,0 +1,57 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='django.apps', names=[
+        alias(name='AppConfig', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.plugins.utils.apps', names=[
+        alias(name='ColabPluginAppConfig', asname=None),
+      ], level=0),
+    ClassDef(name='AppsTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_set_namespace', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='get_plugin_config_mock', annotation=None),
+            arg(arg='path_from_module_mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='path_from_module_mock', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Str(s='/fake/path')),
+            Assign(targets=[
+                Attribute(value=Name(id='get_plugin_config_mock', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Dict(keys=[
+                Str(s='urls'),
+              ], values=[
+                Dict(keys=[], values=[]),
+              ])),
+            Assign(targets=[
+                Name(id='conf', ctx=Store()),
+              ], value=Call(func=Name(id='get_plugin_config_mock', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Name(id='ColabPluginAppConfig', ctx=Load()), args=[
+                Str(s='test'),
+                Str(s='test_app'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='namespace'),
+                Subscript(value=Name(id='conf', ctx=Load()), slice=Index(value=Str(s='urls')), ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                NameConstant(value=None),
+                Subscript(value=Subscript(value=Name(id='conf', ctx=Load()), slice=Index(value=Str(s='urls')), ctx=Load()), slice=Index(value=Str(s='namespace')), ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='AppConfig', ctx=Load()),
+                Str(s='_path_from_module'),
+              ], keywords=[]),
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.plugins.utils.apps.get_plugin_config'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

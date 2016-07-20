@@ -1,0 +1,159 @@
+Module(body=[
+    ImportFrom(module='selenium.webdriver.common.keys', names=[
+        alias(name='Keys', asname=None),
+      ], level=0),
+    ImportFrom(module='behave', names=[
+        alias(name='when', asname=None),
+        alias(name='then', asname=None),
+      ], level=0),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='url', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='get', ctx=Load()), args=[
+            BinOp(left=Attribute(value=Name(id='context', ctx=Load()), attr='base_url', ctx=Load()), op=Add(), right=Str(s='/')),
+          ], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='when', ctx=Load()), args=[
+            Str(s='I access the URL "{url}"'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='link', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Expr(value=Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='find_element_by_xpath', ctx=Load()), args=[
+            BinOp(left=Str(s="//a[contains(., '%s')]"), op=Mod(), right=Name(id='link', ctx=Load())),
+          ], keywords=[]), attr='click', ctx=Load()), args=[], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='when', ctx=Load()), args=[
+            Str(s='I click in "{link}"'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='button_value', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Expr(value=Call(func=Attribute(value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='find_element_by_xpath', ctx=Load()), args=[
+            BinOp(left=Str(s="//input[@value='%s']|//button[.='%s']"), op=Mod(), right=Tuple(elts=[
+                Name(id='button_value', ctx=Load()),
+                Name(id='button_value', ctx=Load()),
+              ], ctx=Load())),
+          ], keywords=[]), attr='click', ctx=Load()), args=[], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='when', ctx=Load()), args=[
+            Str(s='I click in "{button_value}" button'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='text', annotation=None),
+        arg(arg='field_id', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='field', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='find_element_by_id', ctx=Load()), args=[
+            Name(id='field_id', ctx=Load()),
+          ], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Name(id='field', ctx=Load()), attr='clear', ctx=Load()), args=[], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Name(id='field', ctx=Load()), attr='send_keys', ctx=Load()), args=[
+            Name(id='text', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='when', ctx=Load()), args=[
+            Str(s='I fill "{text}" in "{field_id}" field'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='text', annotation=None),
+        arg(arg='field_id', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='field', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='find_element_by_id', ctx=Load()), args=[
+            Name(id='field_id', ctx=Load()),
+          ], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Name(id='field', ctx=Load()), attr='clear', ctx=Load()), args=[], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Name(id='field', ctx=Load()), attr='send_keys', ctx=Load()), args=[
+            Name(id='text', ctx=Load()),
+          ], keywords=[])),
+        Expr(value=Call(func=Attribute(value=Name(id='field', ctx=Load()), attr='send_keys', ctx=Load()), args=[
+            Attribute(value=Name(id='Keys', ctx=Load()), attr='RETURN', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[
+        Call(func=Name(id='when', ctx=Load()), args=[
+            Str(s='I fill "{text}" in "{field_id}" field and hit enter'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='field_id', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='field', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='find_element_by_id', ctx=Load()), args=[
+            Name(id='field_id', ctx=Load()),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='container', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='field', ctx=Load()), attr='find_element_by_xpath', ctx=Load()), args=[
+            Str(s='..'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='classes', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='container', ctx=Load()), attr='get_attribute', ctx=Load()), args=[
+            Str(s='class'),
+          ], keywords=[])),
+        Assert(test=Compare(left=Str(s='has-error'), ops=[
+            In(),
+          ], comparators=[
+            Name(id='classes', ctx=Load()),
+          ]), msg=None),
+      ], decorator_list=[
+        Call(func=Name(id='then', ctx=Load()), args=[
+            Str(s='The field "{field_id}" should have an error'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='content', annotation=None),
+        arg(arg='element_id', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='element', ctx=Store()),
+          ], value=Call(func=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='find_element_by_id', ctx=Load()), args=[
+            Name(id='element_id', ctx=Load()),
+          ], keywords=[])),
+        Assert(test=BoolOp(op=Or(), values=[
+            Compare(left=Name(id='content', ctx=Load()), ops=[
+                In(),
+              ], comparators=[
+                Attribute(value=Name(id='element', ctx=Load()), attr='text', ctx=Load()),
+              ]),
+            Compare(left=Name(id='content', ctx=Load()), ops=[
+                In(),
+              ], comparators=[
+                Call(func=Attribute(value=Name(id='element', ctx=Load()), attr='get_attribute', ctx=Load()), args=[
+                    Str(s='value'),
+                  ], keywords=[]),
+              ]),
+          ]), msg=None),
+      ], decorator_list=[
+        Call(func=Name(id='then', ctx=Load()), args=[
+            Str(s='I should see "{content}" in "{element_id}"'),
+          ], keywords=[]),
+      ], returns=None),
+    FunctionDef(name='step_impl', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='url', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assert(test=Call(func=Attribute(value=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='driver', ctx=Load()), attr='current_url', ctx=Load()), attr='endswith', ctx=Load()), args=[
+            Name(id='url', ctx=Load()),
+          ], keywords=[]), msg=None),
+      ], decorator_list=[
+        Call(func=Name(id='then', ctx=Load()), args=[
+            Str(s='The browser URL should be "{url}"'),
+          ], keywords=[]),
+      ], returns=None),
+  ])

@@ -1,0 +1,94 @@
+Module(body=[
+    Import(names=[
+        alias(name='urllib', asname=None),
+      ]),
+    Import(names=[
+        alias(name='urlparse', asname=None),
+      ]),
+    FunctionDef(name='append_to_get', args=arguments(args=[
+        arg(arg='path', annotation=None),
+        arg(arg='query', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[
+        NameConstant(value=None),
+      ]), body=[
+        Assign(targets=[
+            Name(id='query_dict', ctx=Store()),
+          ], value=Call(func=Name(id='dict', ctx=Load()), args=[
+            Call(func=Attribute(value=Name(id='urlparse', ctx=Load()), attr='parse_qsl', ctx=Load()), args=[
+                Name(id='query', ctx=Load()),
+              ], keywords=[]),
+          ], keywords=[])),
+        For(target=Tuple(elts=[
+            Name(id='key', ctx=Store()),
+            Name(id='value', ctx=Store()),
+          ], ctx=Store()), iter=Call(func=Attribute(value=Name(id='kwargs', ctx=Load()), attr='items', ctx=Load()), args=[], keywords=[]), body=[
+            Assign(targets=[
+                Subscript(value=Name(id='query_dict', ctx=Load()), slice=Index(value=Name(id='key', ctx=Load())), ctx=Store()),
+              ], value=Name(id='value', ctx=Load())),
+          ], orelse=[]),
+        Return(value=Call(func=Attribute(value=Str(s='{}?{}'), attr='format', ctx=Load()), args=[
+            Name(id='path', ctx=Load()),
+            Call(func=Attribute(value=Name(id='urllib', ctx=Load()), attr='urlencode', ctx=Load()), args=[
+                Name(id='query_dict', ctx=Load()),
+              ], keywords=[]),
+          ], keywords=[])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='pop_from_get', args=arguments(args=[
+        arg(arg='path', annotation=None),
+        arg(arg='query', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[
+        NameConstant(value=None),
+      ]), body=[
+        Assign(targets=[
+            Name(id='query_dict', ctx=Store()),
+          ], value=Call(func=Name(id='dict', ctx=Load()), args=[
+            Call(func=Attribute(value=Name(id='urlparse', ctx=Load()), attr='parse_qsl', ctx=Load()), args=[
+                Name(id='query', ctx=Load()),
+              ], keywords=[]),
+          ], keywords=[])),
+        For(target=Tuple(elts=[
+            Name(id='key', ctx=Store()),
+            Name(id='value', ctx=Store()),
+          ], ctx=Store()), iter=Call(func=Attribute(value=Name(id='kwargs', ctx=Load()), attr='items', ctx=Load()), args=[], keywords=[]), body=[
+            If(test=Compare(left=Name(id='query_dict', ctx=Load()), ops=[
+                NotIn(),
+              ], comparators=[
+                Name(id='key', ctx=Load()),
+              ]), body=[
+                Continue(),
+              ], orelse=[]),
+            If(test=Compare(left=Subscript(value=Name(id='query_dict', ctx=Load()), slice=Index(value=Name(id='key', ctx=Load())), ctx=Load()), ops=[
+                Eq(),
+              ], comparators=[
+                Name(id='value', ctx=Load()),
+              ]), body=[
+                Delete(targets=[
+                    Subscript(value=Name(id='query_dict', ctx=Load()), slice=Index(value=Name(id='key', ctx=Load())), ctx=Del()),
+                  ]),
+                Continue(),
+              ], orelse=[]),
+            If(test=Compare(left=Name(id='value', ctx=Load()), ops=[
+                In(),
+              ], comparators=[
+                Subscript(value=Name(id='query_dict', ctx=Load()), slice=Index(value=Name(id='key', ctx=Load())), ctx=Load()),
+              ]), body=[
+                Assign(targets=[
+                    Name(id='aux', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Subscript(value=Name(id='query_dict', ctx=Load()), slice=Index(value=Name(id='key', ctx=Load())), ctx=Load()), attr='split', ctx=Load()), args=[
+                    Name(id='value', ctx=Load()),
+                  ], keywords=[])),
+                Assign(targets=[
+                    Subscript(value=Name(id='query_dict', ctx=Load()), slice=Index(value=Name(id='key', ctx=Load())), ctx=Store()),
+                  ], value=Call(func=Attribute(value=Call(func=Attribute(value=Str(s=''), attr='join', ctx=Load()), args=[
+                    Name(id='aux', ctx=Load()),
+                  ], keywords=[]), attr='strip', ctx=Load()), args=[], keywords=[])),
+              ], orelse=[]),
+          ], orelse=[]),
+        Return(value=Call(func=Attribute(value=Str(s='{}?{}'), attr='format', ctx=Load()), args=[
+            Name(id='path', ctx=Load()),
+            Call(func=Attribute(value=Name(id='urllib', ctx=Load()), attr='urlencode', ctx=Load()), args=[
+                Name(id='query_dict', ctx=Load()),
+              ], keywords=[]),
+          ], keywords=[])),
+      ], decorator_list=[], returns=None),
+  ])

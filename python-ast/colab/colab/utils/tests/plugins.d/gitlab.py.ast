@@ -1,0 +1,33 @@
+Module(body=[
+    ImportFrom(module='colab.plugins.utils.menu', names=[
+        alias(name='colab_url_factory', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='name', ctx=Store()),
+      ], value=Str(s='gitlab')),
+    Assign(targets=[
+        Name(id='verbose_name', ctx=Store()),
+      ], value=Str(s='Gitlab')),
+    Assign(targets=[
+        Name(id='upstream', ctx=Store()),
+      ], value=Str(s='https://localhost/gitlab/')),
+    Assign(targets=[
+        Name(id='private_token', ctx=Store()),
+      ], value=Str(s='AVA8vrohDpoSws41zd1w')),
+    Assign(targets=[
+        Name(id='urls', ctx=Store()),
+      ], value=Dict(keys=[
+        Str(s='include'),
+        Str(s='prefix'),
+        Str(s='namespace'),
+      ], values=[
+        Str(s='gitlab.urls'),
+        Str(s='gitlab/'),
+        Str(s='gitlab'),
+      ])),
+    Assign(targets=[
+        Name(id='url', ctx=Store()),
+      ], value=Call(func=Name(id='colab_url_factory', ctx=Load()), args=[
+        Str(s='gitlab'),
+      ], keywords=[])),
+  ])

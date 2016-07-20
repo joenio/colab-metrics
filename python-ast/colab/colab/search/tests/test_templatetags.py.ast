@@ -1,0 +1,95 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.search.templatetags.search_preview_templates', names=[
+        alias(name='get_search_preview_templates', asname=None),
+      ], level=0),
+    ImportFrom(module='mock', names=[
+        alias(name='MagicMock', asname=None),
+        alias(name='PropertyMock', asname=None),
+      ], level=0),
+    ClassDef(name='SearchTemplateTagsTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='model_indexed_mock', ctx=Store()),
+              ], value=Call(func=Name(id='MagicMock', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='template_path', ctx=Store()),
+              ], value=Str(s='{}/{}_search_preview.html')),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='set_mock_value', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='value', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Call(func=Name(id='type', ctx=Load()), args=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='model_indexed_mock', ctx=Load()),
+                  ], keywords=[]), attr='type', ctx=Store()),
+              ], value=Call(func=Name(id='PropertyMock', ctx=Load()), args=[], keywords=[
+                keyword(arg='return_value', value=Name(id='value', ctx=Load())),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_search_preview_templates_with_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='set_mock_value', ctx=Load()), args=[
+                Str(s='user'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='include_path', ctx=Store()),
+              ], value=Call(func=Name(id='get_search_preview_templates', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='model_indexed_mock', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='include_path', ctx=Load()),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='template_path', ctx=Load()), attr='format', ctx=Load()), args=[
+                    Str(s='search'),
+                    Str(s='user'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_search_preview_templates_with_thread', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='set_mock_value', ctx=Load()), args=[
+                Str(s='thread'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='include_path', ctx=Store()),
+              ], value=Call(func=Name(id='get_search_preview_templates', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='model_indexed_mock', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='include_path', ctx=Load()),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='template_path', ctx=Load()), attr='format', ctx=Load()), args=[
+                    Str(s='search'),
+                    Str(s='thread'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_search_preview_templates_with_plugin', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='set_mock_value', ctx=Load()), args=[
+                Str(s='plugin_model'),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='include_path', ctx=Store()),
+              ], value=Call(func=Name(id='get_search_preview_templates', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='model_indexed_mock', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Name(id='include_path', ctx=Load()),
+                Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='template_path', ctx=Load()), attr='format', ctx=Load()), args=[
+                    Str(s='search'),
+                    Str(s='plugin_model'),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

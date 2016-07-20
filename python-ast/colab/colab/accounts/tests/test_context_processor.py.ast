@@ -1,0 +1,107 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='Mock', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='override_settings', asname=None),
+      ], level=0),
+    ImportFrom(module='django.http', names=[
+        alias(name='HttpRequest', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.urlresolvers', names=[
+        alias(name='reverse', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.accounts.context_processors', names=[
+        alias(name='redirect_login', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.middlewares.redirect_login', names=[
+        alias(name='RedirectLoginMiddleware', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.middlewares.cookie_middleware', names=[
+        alias(name='CookiePreHandlerMiddleware', asname=None),
+      ], level=0),
+    ClassDef(name='ContextProcessorTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Store()),
+              ], value=Call(func=Name(id='HttpRequest', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='middleware', ctx=Store()),
+              ], value=Call(func=Name(id='RedirectLoginMiddleware', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_redirect_login_previous_path', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='user', ctx=Load()), attr='is_authenticated', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=NameConstant(value=False)),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Name(id='user', ctx=Load())),
+            Assign(targets=[
+                Subscript(value=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()), attr='META', ctx=Load()), slice=Index(value=Str(s='HTTP_ACCEPT')), ctx=Store()),
+              ], value=Str(s='text/html; charset=utf-8')),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()), attr='path', ctx=Store()),
+              ], value=Str(s='/other/url')),
+            Expr(value=Call(func=Attribute(value=Call(func=Name(id='CookiePreHandlerMiddleware', ctx=Load()), args=[], keywords=[]), attr='process_request', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='middleware', ctx=Load()), attr='process_request', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='previous_path'),
+                  ], values=[
+                    Str(s='/other/url'),
+                  ]),
+                Call(func=Name(id='redirect_login', ctx=Load()), args=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='override_settings', ctx=Load()), args=[], keywords=[
+                keyword(arg='COLAB_APPS_LOGIN_URLS', value=List(elts=[
+                    Str(s='/login/url'),
+                  ], ctx=Load())),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_redirect_login_home', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='user', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='user', ctx=Load()), attr='is_authenticated', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=NameConstant(value=True)),
+            Assign(targets=[
+                Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()), attr='user', ctx=Store()),
+              ], value=Name(id='user', ctx=Load())),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='middleware', ctx=Load()), attr='process_request', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='previous_path'),
+                  ], values=[
+                    Call(func=Name(id='reverse', ctx=Load()), args=[
+                        Str(s='home'),
+                      ], keywords=[]),
+                  ]),
+                Call(func=Name(id='redirect_login', ctx=Load()), args=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='request', ctx=Load()),
+                  ], keywords=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

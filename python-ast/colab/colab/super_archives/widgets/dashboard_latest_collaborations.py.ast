@@ -1,0 +1,15 @@
+Module(body=[
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='Widget', asname=None),
+      ], level=0),
+    ClassDef(name='DashboardLatestCollaborationsWidget', bases=[
+        Name(id='Widget', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='name', ctx=Store()),
+          ], value=Str(s='Latest Collaborations')),
+        Assign(targets=[
+            Name(id='template', ctx=Store()),
+          ], value=Str(s='widgets/dashboard_latest_collaborations.html')),
+      ], decorator_list=[]),
+  ])

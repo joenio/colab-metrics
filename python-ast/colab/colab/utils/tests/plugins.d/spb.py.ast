@@ -1,0 +1,24 @@
+Module(body=[
+    ImportFrom(module='colab.plugins.utils.menu', names=[
+        alias(name='colab_url_factory', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='verbose_name', ctx=Store()),
+      ], value=Str(s='SPB Plugin')),
+    Assign(targets=[
+        Name(id='urls', ctx=Store()),
+      ], value=Dict(keys=[
+        Str(s='include'),
+        Str(s='prefix'),
+        Str(s='namespace'),
+      ], values=[
+        Str(s='colab_spb.urls'),
+        Str(s='^spb/'),
+        Str(s='colab_spb'),
+      ])),
+    Assign(targets=[
+        Name(id='url', ctx=Store()),
+      ], value=Call(func=Name(id='colab_url_factory', ctx=Load()), args=[
+        Str(s='colab_spb'),
+      ], keywords=[])),
+  ])

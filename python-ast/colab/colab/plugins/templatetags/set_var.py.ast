@@ -1,0 +1,22 @@
+Module(body=[
+    ImportFrom(module='django', names=[
+        alias(name='template', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='register', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='template', ctx=Load()), attr='Library', ctx=Load()), args=[], keywords=[])),
+    FunctionDef(name='set', args=arguments(args=[
+        arg(arg='context', annotation=None),
+        arg(arg='var_name', annotation=None),
+        arg(arg='var_value', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Name(id='var_name', ctx=Load())), ctx=Store()),
+          ], value=Name(id='var_value', ctx=Load())),
+        Return(value=Str(s='')),
+      ], decorator_list=[
+        Call(func=Attribute(value=Name(id='register', ctx=Load()), attr='simple_tag', ctx=Load()), args=[], keywords=[
+            keyword(arg='takes_context', value=NameConstant(value=True)),
+          ]),
+      ], returns=None),
+  ])

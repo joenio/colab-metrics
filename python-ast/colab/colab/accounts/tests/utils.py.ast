@@ -1,0 +1,19 @@
+Module(body=[
+    ImportFrom(module='django.forms', names=[
+        alias(name='ValidationError', asname=None),
+      ], level=0),
+    FunctionDef(name='password_validator', args=arguments(args=[
+        arg(arg='password', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Raise(exc=Call(func=Name(id='ValidationError', ctx=Load()), args=[
+            Str(s='Test error'),
+          ], keywords=[]), cause=None),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='username_validator', args=arguments(args=[
+        arg(arg='username', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Raise(exc=Call(func=Name(id='ValidationError', ctx=Load()), args=[
+            Str(s='Test error'),
+          ], keywords=[]), cause=None),
+      ], decorator_list=[], returns=None),
+  ])

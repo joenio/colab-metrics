@@ -1,0 +1,148 @@
+Module(body=[
+    ImportFrom(module='django.contrib.syndication.views', names=[
+        alias(name='Feed', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils.translation', names=[
+        alias(name='ugettext', asname='_'),
+      ], level=0),
+    ImportFrom(module='haystack.query', names=[
+        alias(name='SearchQuerySet', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.models', names=[
+        alias(name='Thread', asname=None),
+      ], level=0),
+    ClassDef(name='LatestThreadsFeeds', bases=[
+        Name(id='Feed', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='title', ctx=Store()),
+          ], value=Call(func=Name(id='_', ctx=Load()), args=[
+            Str(s='Latest Discussions'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='link', ctx=Store()),
+          ], value=Str(s='/rss/threads/latest/')),
+        FunctionDef(name='items', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Subscript(value=Call(func=Attribute(value=Attribute(value=Name(id='Thread', ctx=Load()), attr='objects', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[]), slice=Slice(lower=None, upper=Num(n=20), step=None), ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_link', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='latest_message', ctx=Load()), attr='url', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_title', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='title', ctx=Store()),
+              ], value=BinOp(left=BinOp(left=Str(s='['), op=Add(), right=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='mailinglist', ctx=Load()), attr='name', ctx=Load())), op=Add(), right=Str(s='] '))),
+            AugAssign(target=Name(id='title', ctx=Store()), op=Add(), value=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='latest_message', ctx=Load()), attr='subject_clean', ctx=Load())),
+            Return(value=Name(id='title', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_description', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='latest_message', ctx=Load()), attr='body', ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='HottestThreadsFeeds', bases=[
+        Name(id='Feed', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='title', ctx=Store()),
+          ], value=Call(func=Name(id='_', ctx=Load()), args=[
+            Str(s='Discussions Most Relevance'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='link', ctx=Store()),
+          ], value=Str(s='/rss/threads/hottest/')),
+        FunctionDef(name='items', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Subscript(value=Call(func=Attribute(value=Attribute(value=Name(id='Thread', ctx=Load()), attr='highest_score', ctx=Load()), attr='all', ctx=Load()), args=[], keywords=[]), slice=Slice(lower=None, upper=Num(n=20), step=None), ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_link', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='latest_message', ctx=Load()), attr='url', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_title', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='title', ctx=Store()),
+              ], value=BinOp(left=BinOp(left=Str(s='['), op=Add(), right=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='mailinglist', ctx=Load()), attr='name', ctx=Load())), op=Add(), right=Str(s='] '))),
+            AugAssign(target=Name(id='title', ctx=Store()), op=Add(), value=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='latest_message', ctx=Load()), attr='subject_clean', ctx=Load())),
+            Return(value=Name(id='title', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_description', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Attribute(value=Name(id='item', ctx=Load()), attr='latest_message', ctx=Load()), attr='body', ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='LatestColabFeeds', bases=[
+        Name(id='Feed', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='title', ctx=Store()),
+          ], value=Call(func=Name(id='_', ctx=Load()), args=[
+            Str(s='Latest collaborations'),
+          ], keywords=[])),
+        Assign(targets=[
+            Name(id='link', ctx=Store()),
+          ], value=Str(s='/rss/colab/latest/')),
+        FunctionDef(name='items', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='items', ctx=Store()),
+              ], value=Subscript(value=Call(func=Attribute(value=Call(func=Name(id='SearchQuerySet', ctx=Load()), args=[], keywords=[]), attr='order_by', ctx=Load()), args=[
+                Str(s='-modified'),
+                Str(s='-created'),
+              ], keywords=[]), slice=Slice(lower=None, upper=Num(n=20), step=None), ctx=Load())),
+            Return(value=Name(id='items', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_title', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='type_', ctx=Store()),
+              ], value=BinOp(left=Attribute(value=Name(id='item', ctx=Load()), attr='type', ctx=Load()), op=Add(), right=Str(s=': '))),
+            Assign(targets=[
+                Name(id='mailinglist', ctx=Store()),
+              ], value=Attribute(value=Name(id='item', ctx=Load()), attr='tag', ctx=Load())),
+            If(test=Name(id='mailinglist', ctx=Load()), body=[
+                Assign(targets=[
+                    Name(id='prefix', ctx=Store()),
+                  ], value=BinOp(left=BinOp(left=Name(id='type_', ctx=Load()), op=Add(), right=Name(id='mailinglist', ctx=Load())), op=Add(), right=Str(s=' - '))),
+              ], orelse=[
+                Assign(targets=[
+                    Name(id='prefix', ctx=Store()),
+                  ], value=Name(id='type_', ctx=Load())),
+              ]),
+            Return(value=BinOp(left=Name(id='prefix', ctx=Load()), op=Add(), right=Attribute(value=Name(id='item', ctx=Load()), attr='title', ctx=Load()))),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_description', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Name(id='item', ctx=Load()), attr='latest_description', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='item_link', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='item', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=Attribute(value=Name(id='item', ctx=Load()), attr='url', ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

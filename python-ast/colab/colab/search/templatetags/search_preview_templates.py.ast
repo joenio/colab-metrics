@@ -1,0 +1,32 @@
+Module(body=[
+    ImportFrom(module='django', names=[
+        alias(name='template', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='register', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='template', ctx=Load()), attr='Library', ctx=Load()), args=[], keywords=[])),
+    FunctionDef(name='get_search_preview_templates', args=arguments(args=[
+        arg(arg='model_indexed', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='app_type', ctx=Store()),
+          ], value=Attribute(value=Name(id='model_indexed', ctx=Load()), attr='type', ctx=Load())),
+        Return(value=Call(func=Attribute(value=Str(s='search/{}_search_preview.html'), attr='format', ctx=Load()), args=[
+            Name(id='app_type', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[
+        Attribute(value=Name(id='register', ctx=Load()), attr='assignment_tag', ctx=Load()),
+      ], returns=None),
+    FunctionDef(name='get_dashboard_search_preview_templates', args=arguments(args=[
+        arg(arg='model_indexed', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='app_type', ctx=Store()),
+          ], value=Attribute(value=Name(id='model_indexed', ctx=Load()), attr='type', ctx=Load())),
+        Return(value=Call(func=Attribute(value=Str(s='dashboard/{}_search_preview.html'), attr='format', ctx=Load()), args=[
+            Name(id='app_type', ctx=Load()),
+          ], keywords=[])),
+      ], decorator_list=[
+        Attribute(value=Name(id='register', ctx=Load()), attr='assignment_tag', ctx=Load()),
+      ], returns=None),
+  ])

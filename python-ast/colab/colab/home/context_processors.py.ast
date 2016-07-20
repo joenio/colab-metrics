@@ -1,0 +1,82 @@
+Module(body=[
+    ImportFrom(module='django.conf', names=[
+        alias(name='settings', asname=None),
+      ], level=0),
+    ImportFrom(module='django.utils.translation', names=[
+        alias(name='ugettext_lazy', asname='_'),
+      ], level=0),
+    FunctionDef(name='robots', args=arguments(args=[
+        arg(arg='request', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Return(value=Dict(keys=[
+            Str(s='ROBOTS_NOINDEX'),
+          ], values=[
+            Call(func=Name(id='getattr', ctx=Load()), args=[
+                Name(id='settings', ctx=Load()),
+                Str(s='ROBOTS_NOINDEX'),
+                NameConstant(value=False),
+              ], keywords=[]),
+          ])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='google_analytics', args=arguments(args=[
+        arg(arg='request', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='key', ctx=Store()),
+          ], value=Str(s='GOOGLE_ANALYTICS_TRACKING_ID')),
+        Return(value=Dict(keys=[
+            Name(id='key', ctx=Load()),
+          ], values=[
+            Call(func=Name(id='getattr', ctx=Load()), args=[
+                Name(id='settings', ctx=Load()),
+                Name(id='key', ctx=Load()),
+                NameConstant(value=False),
+              ], keywords=[]),
+          ])),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='ribbon', args=arguments(args=[
+        arg(arg='request', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Assign(targets=[
+            Name(id='enabled', ctx=Store()),
+          ], value=Call(func=Name(id='getattr', ctx=Load()), args=[
+            Name(id='settings', ctx=Load()),
+            Str(s='RIBBON_ENABLED'),
+            NameConstant(value=True),
+          ], keywords=[])),
+        If(test=UnaryOp(op=Not(), operand=Name(id='enabled', ctx=Load())), body=[
+            Return(value=Dict(keys=[
+                Str(s='ribbon'),
+              ], values=[
+                NameConstant(value=False),
+              ])),
+          ], orelse=[]),
+        Assign(targets=[
+            Name(id='url', ctx=Store()),
+          ], value=Str(s='http://github.com/colab/colab')),
+        Assign(targets=[
+            Name(id='text', ctx=Store()),
+          ], value=Call(func=Name(id='_', ctx=Load()), args=[
+            Str(s='Fork me!'),
+          ], keywords=[])),
+        Return(value=Dict(keys=[
+            Str(s='ribbon'),
+          ], values=[
+            Dict(keys=[
+                Str(s='text'),
+                Str(s='url'),
+              ], values=[
+                Call(func=Name(id='getattr', ctx=Load()), args=[
+                    Name(id='settings', ctx=Load()),
+                    Str(s='RIBBON_TEXT'),
+                    Name(id='text', ctx=Load()),
+                  ], keywords=[]),
+                Call(func=Name(id='getattr', ctx=Load()), args=[
+                    Name(id='settings', ctx=Load()),
+                    Str(s='RIBBON_URL'),
+                    Name(id='url', ctx=Load()),
+                  ], keywords=[]),
+              ]),
+          ])),
+      ], decorator_list=[], returns=None),
+  ])

@@ -1,0 +1,262 @@
+Module(body=[
+    Import(names=[
+        alias(name='re', asname=None),
+      ]),
+    Import(names=[
+        alias(name='pytz', asname=None),
+      ]),
+    Import(names=[
+        alias(name='email', asname=None),
+      ]),
+    Import(names=[
+        alias(name='codecs', asname=None),
+      ]),
+    Import(names=[
+        alias(name='mailbox', asname=None),
+      ]),
+    Import(names=[
+        alias(name='datetime', asname=None),
+      ]),
+    ImportFrom(module='email.iterators', names=[
+        alias(name='typed_subpart_iterator', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='chardet', asname=None),
+      ]),
+    FunctionDef(name='get_charset', args=arguments(args=[
+        arg(arg='message', annotation=None),
+        arg(arg='default', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+        Str(s='ASCII'),
+      ]), body=[
+        Expr(value=Str(s='Get the message charset')),
+        Assign(targets=[
+            Name(id='charset', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='message', ctx=Load()), attr='get_content_charset', ctx=Load()), args=[], keywords=[])),
+        If(test=UnaryOp(op=Not(), operand=Name(id='charset', ctx=Load())), body=[
+            Assign(targets=[
+                Name(id='charset', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='message', ctx=Load()), attr='get_charset', ctx=Load()), args=[], keywords=[])),
+          ], orelse=[]),
+        If(test=UnaryOp(op=Not(), operand=Name(id='charset', ctx=Load())), body=[
+            Assign(targets=[
+                Name(id='charset', ctx=Store()),
+              ], value=Name(id='default', ctx=Load())),
+          ], orelse=[]),
+        Try(body=[
+            Expr(value=Call(func=Attribute(value=Name(id='codecs', ctx=Load()), attr='lookup', ctx=Load()), args=[
+                Name(id='charset', ctx=Load()),
+              ], keywords=[])),
+          ], handlers=[
+            ExceptHandler(type=Name(id='LookupError', ctx=Load()), name=None, body=[
+                Assign(targets=[
+                    Name(id='charset', ctx=Store()),
+                  ], value=Name(id='default', ctx=Load())),
+              ]),
+          ], orelse=[], finalbody=[]),
+        Return(value=Name(id='charset', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    ClassDef(name='Message', bases=[
+        Attribute(value=Name(id='mailbox', ctx=Load()), attr='mboxMessage', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='RECEIVED_DELIMITER', ctx=Store()),
+          ], value=Call(func=Attribute(value=Name(id='re', ctx=Load()), attr='compile', ctx=Load()), args=[
+            Str(s='\n|;'),
+          ], keywords=[])),
+        FunctionDef(name='get_subject', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='subject', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='header', ctx=Load()), attr='decode_header', ctx=Load()), args=[
+                Subscript(value=Name(id='self', ctx=Load()), slice=Index(value=Str(s='Subject')), ctx=Load()),
+              ], keywords=[])),
+            If(test=Call(func=Name(id='isinstance', ctx=Load()), args=[
+                Name(id='subject', ctx=Load()),
+                Name(id='list', ctx=Load()),
+              ], keywords=[]), body=[
+                Assign(targets=[
+                    Name(id='new_subject', ctx=Store()),
+                  ], value=Str(s='')),
+                For(target=Tuple(elts=[
+                    Name(id='text_part', ctx=Store()),
+                    Name(id='encoding', ctx=Store()),
+                  ], ctx=Store()), iter=Name(id='subject', ctx=Load()), body=[
+                    If(test=UnaryOp(op=Not(), operand=Name(id='encoding', ctx=Load())), body=[
+                        Assign(targets=[
+                            Name(id='encoding', ctx=Store()),
+                          ], value=Call(func=Name(id='get_charset', ctx=Load()), args=[
+                            Name(id='self', ctx=Load()),
+                          ], keywords=[])),
+                      ], orelse=[]),
+                    Try(body=[
+                        AugAssign(target=Name(id='new_subject', ctx=Store()), op=Add(), value=Call(func=Name(id='unicode', ctx=Load()), args=[
+                            Name(id='text_part', ctx=Load()),
+                            Name(id='encoding', ctx=Load()),
+                          ], keywords=[])),
+                      ], handlers=[
+                        ExceptHandler(type=Tuple(elts=[
+                            Name(id='UnicodeDecodeError', ctx=Load()),
+                            Name(id='LookupError', ctx=Load()),
+                          ], ctx=Load()), name=None, body=[
+                            Try(body=[
+                                AugAssign(target=Name(id='new_subject', ctx=Store()), op=Add(), value=Call(func=Name(id='unicode', ctx=Load()), args=[
+                                    Name(id='text_part', ctx=Load()),
+                                    Call(func=Name(id='get_charset', ctx=Load()), args=[
+                                        Name(id='self', ctx=Load()),
+                                      ], keywords=[]),
+                                  ], keywords=[])),
+                              ], handlers=[
+                                ExceptHandler(type=Tuple(elts=[
+                                    Name(id='UnicodeDecodeError', ctx=Load()),
+                                    Name(id='LookupError', ctx=Load()),
+                                  ], ctx=Load()), name=None, body=[
+                                    Assign(targets=[
+                                        Name(id='encoding', ctx=Store()),
+                                      ], value=Subscript(value=Call(func=Attribute(value=Name(id='chardet', ctx=Load()), attr='detect', ctx=Load()), args=[
+                                        Name(id='text_part', ctx=Load()),
+                                      ], keywords=[]), slice=Index(value=Str(s='encoding')), ctx=Load())),
+                                    AugAssign(target=Name(id='new_subject', ctx=Store()), op=Add(), value=Call(func=Name(id='unicode', ctx=Load()), args=[
+                                        Name(id='text_part', ctx=Load()),
+                                        Name(id='encoding', ctx=Load()),
+                                      ], keywords=[])),
+                                  ]),
+                              ], orelse=[], finalbody=[]),
+                          ]),
+                      ], orelse=[], finalbody=[]),
+                  ], orelse=[]),
+              ], orelse=[]),
+            Return(value=Call(func=Attribute(value=Str(s=''), attr='join', ctx=Load()), args=[
+                Name(id='new_subject', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='get_body', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Str(s='Get the body of the email message')),
+            If(test=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='is_multipart', ctx=Load()), args=[], keywords=[]), body=[
+                Assign(targets=[
+                    Name(id='text_parts', ctx=Store()),
+                  ], value=ListComp(elt=Name(id='part', ctx=Load()), generators=[
+                    comprehension(target=Name(id='part', ctx=Store()), iter=Call(func=Name(id='typed_subpart_iterator', ctx=Load()), args=[
+                        Name(id='self', ctx=Load()),
+                        Str(s='text'),
+                        Str(s='plain'),
+                      ], keywords=[]), ifs=[]),
+                  ])),
+                Assign(targets=[
+                    Name(id='body', ctx=Store()),
+                  ], value=List(elts=[], ctx=Load())),
+                For(target=Name(id='part', ctx=Store()), iter=Name(id='text_parts', ctx=Load()), body=[
+                    Assign(targets=[
+                        Name(id='charset', ctx=Store()),
+                      ], value=Call(func=Name(id='get_charset', ctx=Load()), args=[
+                        Name(id='part', ctx=Load()),
+                        Call(func=Name(id='get_charset', ctx=Load()), args=[
+                            Name(id='self', ctx=Load()),
+                          ], keywords=[]),
+                      ], keywords=[])),
+                    Expr(value=Call(func=Attribute(value=Name(id='body', ctx=Load()), attr='append', ctx=Load()), args=[
+                        Call(func=Name(id='unicode', ctx=Load()), args=[
+                            Call(func=Attribute(value=Name(id='part', ctx=Load()), attr='get_payload', ctx=Load()), args=[], keywords=[
+                                keyword(arg='decode', value=NameConstant(value=True)),
+                              ]),
+                            Name(id='charset', ctx=Load()),
+                            Str(s='replace'),
+                          ], keywords=[]),
+                      ], keywords=[])),
+                  ], orelse=[]),
+                Return(value=Call(func=Attribute(value=Call(func=Attribute(value=Str(s='\n'), attr='join', ctx=Load()), args=[
+                    Name(id='body', ctx=Load()),
+                  ], keywords=[]), attr='strip', ctx=Load()), args=[], keywords=[])),
+              ], orelse=[
+                Assign(targets=[
+                    Name(id='body', ctx=Store()),
+                  ], value=Call(func=Name(id='unicode', ctx=Load()), args=[
+                    Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='get_payload', ctx=Load()), args=[], keywords=[
+                        keyword(arg='decode', value=NameConstant(value=True)),
+                      ]),
+                    Call(func=Name(id='get_charset', ctx=Load()), args=[
+                        Name(id='self', ctx=Load()),
+                      ], keywords=[]),
+                    Str(s='replace'),
+                  ], keywords=[])),
+                Return(value=Call(func=Attribute(value=Name(id='body', ctx=Load()), attr='strip', ctx=Load()), args=[], keywords=[])),
+              ]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='get_received_datetime', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            If(test=Compare(left=Str(s='Received'), ops=[
+                NotIn(),
+              ], comparators=[
+                Name(id='self', ctx=Load()),
+              ]), body=[
+                Return(value=NameConstant(value=None)),
+              ], orelse=[]),
+            Assign(targets=[
+                Name(id='received_header', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='RECEIVED_DELIMITER', ctx=Load()), attr='split', ctx=Load()), args=[
+                Subscript(value=Name(id='self', ctx=Load()), slice=Index(value=Str(s='Received')), ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='received_time_header', ctx=Store()),
+              ], value=Call(func=Attribute(value=Subscript(value=Name(id='received_header', ctx=Load()), slice=Index(value=UnaryOp(op=USub(), operand=Num(n=1))), ctx=Load()), attr='strip', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='date_tuple', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='utils', ctx=Load()), attr='parsedate_tz', ctx=Load()), args=[
+                Name(id='received_time_header', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='utc_timestamp', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='utils', ctx=Load()), attr='mktime_tz', ctx=Load()), args=[
+                Name(id='date_tuple', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='utc_datetime', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='datetime', ctx=Load()), attr='datetime', ctx=Load()), attr='fromtimestamp', ctx=Load()), args=[
+                Name(id='utc_timestamp', ctx=Load()),
+                Attribute(value=Name(id='pytz', ctx=Load()), attr='utc', ctx=Load()),
+              ], keywords=[])),
+            Return(value=Name(id='utc_datetime', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='get_from_addr', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='real_name_raw', ctx=Store()),
+                    Name(id='from_', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='utils', ctx=Load()), attr='parseaddr', ctx=Load()), args=[
+                Subscript(value=Name(id='self', ctx=Load()), slice=Index(value=Str(s='From')), ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Tuple(elts=[
+                    Name(id='real_name_str', ctx=Store()),
+                    Name(id='encoding', ctx=Store()),
+                  ], ctx=Store()),
+              ], value=Subscript(value=Call(func=Attribute(value=Attribute(value=Name(id='email', ctx=Load()), attr='header', ctx=Load()), attr='decode_header', ctx=Load()), args=[
+                Name(id='real_name_raw', ctx=Load()),
+              ], keywords=[]), slice=Index(value=Num(n=0)), ctx=Load())),
+            If(test=UnaryOp(op=Not(), operand=Name(id='encoding', ctx=Load())), body=[
+                Assign(targets=[
+                    Name(id='encoding', ctx=Store()),
+                  ], value=Str(s='ascii')),
+              ], orelse=[]),
+            Assign(targets=[
+                Name(id='real_name', ctx=Store()),
+              ], value=Call(func=Name(id='unicode', ctx=Load()), args=[
+                Name(id='real_name_str', ctx=Load()),
+                Name(id='encoding', ctx=Load()),
+              ], keywords=[
+                keyword(arg='errors', value=Str(s='replace')),
+              ])),
+            Return(value=Tuple(elts=[
+                Name(id='real_name', ctx=Load()),
+                Name(id='from_', ctx=Load()),
+              ], ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

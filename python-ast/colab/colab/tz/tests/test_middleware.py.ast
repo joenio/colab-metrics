@@ -1,0 +1,106 @@
+Module(body=[
+    ImportFrom(module='mock', names=[
+        alias(name='Mock', asname=None),
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.tz.middleware', names=[
+        alias(name='TimezoneMiddleware', asname=None),
+      ], level=0),
+    ClassDef(name='TimezoneMiddlewareTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_process_request_with_utc_offset', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock_timezone', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='mock_timezone', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Dict(keys=[], values=[])),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='COOKIES', value=Dict(keys=[
+                    Str(s='utc_offset'),
+                  ], values=[
+                    Num(n=120),
+                  ])),
+              ])),
+            Assign(targets=[
+                Name(id='timezonemiddleware', ctx=Store()),
+              ], value=Call(func=Name(id='TimezoneMiddleware', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='timezonemiddleware', ctx=Load()), attr='process_request', ctx=Load()), args=[
+                Name(id='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='mock_timezone', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.tz.middleware.timezone.activate'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_process_request_without_utc_offset', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock_timezone', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='mock_timezone', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Dict(keys=[], values=[])),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='COOKIES', value=Dict(keys=[], values=[])),
+              ])),
+            Assign(targets=[
+                Name(id='timezonemiddleware', ctx=Store()),
+              ], value=Call(func=Name(id='TimezoneMiddleware', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='timezonemiddleware', ctx=Load()), attr='process_request', ctx=Load()), args=[
+                Name(id='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='mock_timezone', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.tz.middleware.timezone.deactivate'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_process_request_value_error', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock_timezone', annotation=None),
+            arg(arg='mock_pytz', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='mock_pytz', ctx=Load()), attr='side_effect', ctx=Store()),
+              ], value=Name(id='ValueError', ctx=Load())),
+            Assign(targets=[
+                Name(id='request', ctx=Store()),
+              ], value=Call(func=Name(id='Mock', ctx=Load()), args=[], keywords=[
+                keyword(arg='COOKIES', value=Dict(keys=[
+                    Str(s='utc_offset'),
+                  ], values=[
+                    Num(n=120),
+                  ])),
+              ])),
+            Assign(targets=[
+                Name(id='timezonemiddleware', ctx=Store()),
+              ], value=Call(func=Name(id='TimezoneMiddleware', ctx=Load()), args=[], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='timezonemiddleware', ctx=Load()), attr='process_request', ctx=Load()), args=[
+                Name(id='request', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertTrue', ctx=Load()), args=[
+                Attribute(value=Name(id='mock_timezone', ctx=Load()), attr='called', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.tz.middleware.pytz.FixedOffset'),
+              ], keywords=[]),
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.tz.middleware.timezone.deactivate'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

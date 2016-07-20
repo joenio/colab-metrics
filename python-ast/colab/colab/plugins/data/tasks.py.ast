@@ -1,0 +1,144 @@
+Module(body=[
+    Import(names=[
+        alias(name='importlib', asname=None),
+      ]),
+    Import(names=[
+        alias(name='logging', asname=None),
+      ]),
+    ImportFrom(module='django.conf', names=[
+        alias(name='settings', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.celery', names=[
+        alias(name='app', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='LOGGER', ctx=Store()),
+      ], value=Call(func=Attribute(value=Name(id='logging', ctx=Load()), attr='getLogger', ctx=Load()), args=[
+        Str(s='colab.plugins.data'),
+      ], keywords=[])),
+    Assign(targets=[
+        Name(id='TASKS', ctx=Store()),
+      ], value=Call(func=Name(id='set', ctx=Load()), args=[], keywords=[])),
+    FunctionDef(name='lock', args=arguments(args=[
+        arg(arg='method', annotation=None),
+        arg(arg='name', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        FunctionDef(name='wrapped_method', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=arg(arg='args', annotation=None), kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+            Assign(targets=[
+                Name(id='lock_id', ctx=Store()),
+              ], value=Call(func=Attribute(value=Str(s='colab-data-importer-{}'), attr='format', ctx=Load()), args=[
+                Name(id='name', ctx=Load()),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='lock', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Attribute(value=Name(id='app', ctx=Load()), attr='backend', ctx=Load()), attr='client', ctx=Load()), attr='lock', ctx=Load()), args=[
+                Name(id='lock_id', ctx=Load()),
+              ], keywords=[])),
+            If(test=Call(func=Attribute(value=Name(id='lock', ctx=Load()), attr='acquire', ctx=Load()), args=[], keywords=[
+                keyword(arg='blocking', value=NameConstant(value=False)),
+              ]), body=[
+                Try(body=[
+                    Return(value=Call(func=Name(id='method', ctx=Load()), args=[
+                        Starred(value=Name(id='args', ctx=Load()), ctx=Load()),
+                      ], keywords=[
+                        keyword(arg=None, value=Name(id='kwargs', ctx=Load())),
+                      ])),
+                  ], handlers=[], orelse=[], finalbody=[
+                    Expr(value=Call(func=Attribute(value=Name(id='lock', ctx=Load()), attr='release', ctx=Load()), args=[], keywords=[])),
+                  ]),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+        Return(value=Name(id='wrapped_method', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='register_tasks', args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        Global(names=[
+            'TASKS',
+          ]),
+        For(target=Name(id='app_name', ctx=Store()), iter=Attribute(value=Name(id='settings', ctx=Load()), attr='INSTALLED_APPS', ctx=Load()), body=[
+            Assign(targets=[
+                Name(id='module_name', ctx=Store()),
+              ], value=Call(func=Attribute(value=Str(s='{}.data_importer'), attr='format', ctx=Load()), args=[
+                Name(id='app_name', ctx=Load()),
+              ], keywords=[])),
+            Try(body=[
+                Assign(targets=[
+                    Name(id='module', ctx=Store()),
+                  ], value=Call(func=Attribute(value=Name(id='importlib', ctx=Load()), attr='import_module', ctx=Load()), args=[
+                    Name(id='module_name', ctx=Load()),
+                  ], keywords=[])),
+              ], handlers=[
+                ExceptHandler(type=Name(id='ImportError', ctx=Load()), name=None, body=[
+                    Continue(),
+                  ]),
+              ], orelse=[], finalbody=[]),
+            For(target=Name(id='item_name', ctx=Store()), iter=Call(func=Name(id='dir', ctx=Load()), args=[
+                Name(id='module', ctx=Load()),
+              ], keywords=[]), body=[
+                Assign(targets=[
+                    Name(id='item', ctx=Store()),
+                  ], value=Call(func=Name(id='getattr', ctx=Load()), args=[
+                    Name(id='module', ctx=Load()),
+                    Name(id='item_name', ctx=Load()),
+                  ], keywords=[])),
+                If(test=Call(func=Name(id='callable', ctx=Load()), args=[
+                    Call(func=Name(id='getattr', ctx=Load()), args=[
+                        Name(id='item', ctx=Load()),
+                        Str(s='fetch_data'),
+                        NameConstant(value=None),
+                      ], keywords=[]),
+                  ], keywords=[]), body=[
+                    If(test=Call(func=Name(id='getattr', ctx=Load()), args=[
+                        Attribute(value=Name(id='item', ctx=Load()), attr='fetch_data', ctx=Load()),
+                        Str(s='is_abstract'),
+                        NameConstant(value=False),
+                      ], keywords=[]), body=[
+                        Continue(),
+                      ], orelse=[]),
+                    Assign(targets=[
+                        Name(id='instance', ctx=Store()),
+                      ], value=Call(func=Name(id='item', ctx=Load()), args=[], keywords=[])),
+                    Assign(targets=[
+                        Name(id='task_name', ctx=Store()),
+                      ], value=Call(func=Attribute(value=Str(s='{}.{}'), attr='format', ctx=Load()), args=[
+                        Attribute(value=Name(id='module', ctx=Load()), attr='__name__', ctx=Load()),
+                        Name(id='item_name', ctx=Load()),
+                      ], keywords=[])),
+                    Assign(targets=[
+                        Name(id='thread_safe_method', ctx=Store()),
+                      ], value=Call(func=Name(id='lock', ctx=Load()), args=[
+                        Attribute(value=Name(id='instance', ctx=Load()), attr='fetch_data', ctx=Load()),
+                        Name(id='task_name', ctx=Load()),
+                      ], keywords=[])),
+                    Assign(targets=[
+                        Name(id='task', ctx=Store()),
+                      ], value=Call(func=Call(func=Attribute(value=Name(id='app', ctx=Load()), attr='task', ctx=Load()), args=[], keywords=[
+                        keyword(arg='name', value=Name(id='task_name', ctx=Load())),
+                        keyword(arg='bind', value=NameConstant(value=True)),
+                      ]), args=[
+                        Name(id='thread_safe_method', ctx=Load()),
+                      ], keywords=[])),
+                    Expr(value=Call(func=Attribute(value=Name(id='TASKS', ctx=Load()), attr='add', ctx=Load()), args=[
+                        Name(id='task', ctx=Load()),
+                      ], keywords=[])),
+                    Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='debug', ctx=Load()), args=[
+                        Str(s='Registered task: %s'),
+                        Name(id='task_name', ctx=Load()),
+                      ], keywords=[])),
+                  ], orelse=[]),
+              ], orelse=[]),
+          ], orelse=[]),
+        Expr(value=Call(func=Attribute(value=Name(id='LOGGER', ctx=Load()), attr='debug', ctx=Load()), args=[
+            Name(id='TASKS', ctx=Load()),
+          ], keywords=[])),
+        Return(value=Name(id='TASKS', ctx=Load())),
+      ], decorator_list=[], returns=None),
+    FunctionDef(name='data_import', args=arguments(args=[
+        arg(arg='self', annotation=None),
+      ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        For(target=Name(id='task', ctx=Store()), iter=Name(id='TASKS', ctx=Load()), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='task', ctx=Load()), attr='delay', ctx=Load()), args=[], keywords=[])),
+          ], orelse=[]),
+      ], decorator_list=[], returns=None),
+  ])

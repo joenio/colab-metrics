@@ -1,0 +1,59 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='unicode_literals', asname=None),
+      ], level=0),
+    ImportFrom(module='django.db', names=[
+        alias(name='models', asname=None),
+        alias(name='migrations', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='datetime', asname=None),
+      ]),
+    ClassDef(name='Migration', bases=[
+        Attribute(value=Name(id='migrations', ctx=Load()), attr='Migration', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='dependencies', ctx=Store()),
+          ], value=List(elts=[], ctx=Load())),
+        Assign(targets=[
+            Name(id='operations', ctx=Store()),
+          ], value=List(elts=[
+            Call(func=Attribute(value=Name(id='migrations', ctx=Load()), attr='CreateModel', ctx=Load()), args=[], keywords=[
+                keyword(arg='name', value=Str(s='TimeStampPlugin')),
+                keyword(arg='fields', value=List(elts=[
+                    Tuple(elts=[
+                        Str(s='id'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='IntegerField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='serialize', value=NameConstant(value=False)),
+                            keyword(arg='primary_key', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='name'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='CharField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='unique', value=NameConstant(value=True)),
+                            keyword(arg='max_length', value=Num(n=255)),
+                          ]),
+                      ], ctx=Load()),
+                    Tuple(elts=[
+                        Str(s='timestamp'),
+                        Call(func=Attribute(value=Name(id='models', ctx=Load()), attr='DateTimeField', ctx=Load()), args=[], keywords=[
+                            keyword(arg='default', value=Call(func=Attribute(value=Name(id='datetime', ctx=Load()), attr='datetime', ctx=Load()), args=[
+                                Num(n=1),
+                                Num(n=1),
+                                Num(n=1),
+                                Num(n=0),
+                                Num(n=0),
+                              ], keywords=[])),
+                            keyword(arg='blank', value=NameConstant(value=True)),
+                          ]),
+                      ], ctx=Load()),
+                  ], ctx=Load())),
+                keyword(arg='options', value=Dict(keys=[], values=[])),
+                keyword(arg='bases', value=Tuple(elts=[
+                    Attribute(value=Name(id='models', ctx=Load()), attr='Model', ctx=Load()),
+                  ], ctx=Load())),
+              ]),
+          ], ctx=Load())),
+      ], decorator_list=[]),
+  ])

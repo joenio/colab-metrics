@@ -1,0 +1,279 @@
+Module(body=[
+    ImportFrom(module='__future__', names=[
+        alias(name='absolute_import', asname=None),
+      ], level=0),
+    Import(names=[
+        alias(name='celery', asname=None),
+      ]),
+    Import(names=[
+        alias(name='os', asname=None),
+      ]),
+    Import(names=[
+        alias(name='sys', asname=None),
+      ]),
+    ImportFrom(module='django.core.management.base', names=[
+        alias(name='BaseCommand', asname=None),
+      ], level=0),
+    Assign(targets=[
+        Name(id='DB_SHARED_THREAD', ctx=Store()),
+      ], value=Str(s="DatabaseWrapper objects created in a thread can only be used in that same thread.  The object with alias '%s' was created in thread id %s and this is thread id %s.")),
+    FunctionDef(name='patch_thread_ident', args=arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+        If(test=Call(func=Name(id='getattr', ctx=Load()), args=[
+            Name(id='patch_thread_ident', ctx=Load()),
+            Str(s='called'),
+            NameConstant(value=False),
+          ], keywords=[]), body=[
+            Return(value=None),
+          ], orelse=[]),
+        Try(body=[
+            ImportFrom(module='django.db.backends', names=[
+                alias(name='BaseDatabaseWrapper', asname=None),
+                alias(name='DatabaseError', asname=None),
+              ], level=0),
+            If(test=Compare(left=Str(s='validate_thread_sharing'), ops=[
+                In(),
+              ], comparators=[
+                Attribute(value=Name(id='BaseDatabaseWrapper', ctx=Load()), attr='__dict__', ctx=Load()),
+              ]), body=[
+                Import(names=[
+                    alias(name='thread', asname=None),
+                  ]),
+                Assign(targets=[
+                    Name(id='_get_ident', ctx=Store()),
+                  ], value=Attribute(value=Name(id='thread', ctx=Load()), attr='get_ident', ctx=Load())),
+                Assign(targets=[
+                    Name(id='__old__init__', ctx=Store()),
+                  ], value=Attribute(value=Name(id='BaseDatabaseWrapper', ctx=Load()), attr='__init__', ctx=Load())),
+                FunctionDef(name='_init', args=arguments(args=[
+                    arg(arg='self', annotation=None),
+                  ], vararg=arg(arg='args', annotation=None), kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+                    Expr(value=Call(func=Name(id='__old__init__', ctx=Load()), args=[
+                        Name(id='self', ctx=Load()),
+                        Starred(value=Name(id='args', ctx=Load()), ctx=Load()),
+                      ], keywords=[
+                        keyword(arg=None, value=Name(id='kwargs', ctx=Load())),
+                      ])),
+                    Assign(targets=[
+                        Attribute(value=Name(id='self', ctx=Load()), attr='_thread_ident', ctx=Store()),
+                      ], value=Call(func=Name(id='_get_ident', ctx=Load()), args=[], keywords=[])),
+                  ], decorator_list=[], returns=None),
+                FunctionDef(name='_validate_thread_sharing', args=arguments(args=[
+                    arg(arg='self', annotation=None),
+                  ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+                    If(test=BoolOp(op=And(), values=[
+                        UnaryOp(op=Not(), operand=Attribute(value=Name(id='self', ctx=Load()), attr='allow_thread_sharing', ctx=Load())),
+                        Compare(left=Attribute(value=Name(id='self', ctx=Load()), attr='_thread_ident', ctx=Load()), ops=[
+                            NotEq(),
+                          ], comparators=[
+                            Call(func=Name(id='_get_ident', ctx=Load()), args=[], keywords=[]),
+                          ]),
+                      ]), body=[
+                        Raise(exc=Call(func=Name(id='DatabaseError', ctx=Load()), args=[
+                            BinOp(left=Name(id='DB_SHARED_THREAD', ctx=Load()), op=Mod(), right=Tuple(elts=[
+                                Attribute(value=Name(id='self', ctx=Load()), attr='alias', ctx=Load()),
+                                Attribute(value=Name(id='self', ctx=Load()), attr='_thread_ident', ctx=Load()),
+                                Call(func=Name(id='_get_ident', ctx=Load()), args=[], keywords=[]),
+                              ], ctx=Load())),
+                          ], keywords=[]), cause=None),
+                      ], orelse=[]),
+                  ], decorator_list=[], returns=None),
+                Assign(targets=[
+                    Attribute(value=Name(id='BaseDatabaseWrapper', ctx=Load()), attr='__init__', ctx=Store()),
+                  ], value=Name(id='_init', ctx=Load())),
+                Assign(targets=[
+                    Attribute(value=Name(id='BaseDatabaseWrapper', ctx=Load()), attr='validate_thread_sharing', ctx=Store()),
+                  ], value=Name(id='_validate_thread_sharing', ctx=Load())),
+              ], orelse=[]),
+            Assign(targets=[
+                Attribute(value=Name(id='patch_thread_ident', ctx=Load()), attr='called', ctx=Store()),
+              ], value=NameConstant(value=True)),
+          ], handlers=[
+            ExceptHandler(type=Name(id='ImportError', ctx=Load()), name=None, body=[
+                Pass(),
+              ]),
+          ], orelse=[], finalbody=[]),
+      ], decorator_list=[], returns=None),
+    Expr(value=Call(func=Name(id='patch_thread_ident', ctx=Load()), args=[], keywords=[])),
+    ClassDef(name='CeleryCommand', bases=[
+        Name(id='BaseCommand', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='options', ctx=Store()),
+          ], value=Attribute(value=Name(id='BaseCommand', ctx=Load()), attr='option_list', ctx=Load())),
+        Assign(targets=[
+            Name(id='skip_opts', ctx=Store()),
+          ], value=List(elts=[
+            Str(s='--app'),
+            Str(s='--loader'),
+            Str(s='--config'),
+          ], ctx=Load())),
+        Assign(targets=[
+            Name(id='keep_base_opts', ctx=Store()),
+          ], value=NameConstant(value=False)),
+        FunctionDef(name='get_version', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=BinOp(left=Str(s='celery %s'), op=Mod(), right=Attribute(value=Name(id='celery', ctx=Load()), attr='__version__', ctx=Load()))),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='execute', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=arg(arg='args', annotation=None), kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='options', annotation=None), defaults=[]), body=[
+            Assign(targets=[
+                Name(id='broker', ctx=Store()),
+              ], value=Call(func=Attribute(value=Name(id='options', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='broker'),
+              ], keywords=[])),
+            If(test=Name(id='broker', ctx=Load()), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='set_broker', ctx=Load()), args=[
+                    Name(id='broker', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+            Expr(value=Call(func=Attribute(value=Call(func=Name(id='super', ctx=Load()), args=[
+                Name(id='CeleryCommand', ctx=Load()),
+                Name(id='self', ctx=Load()),
+              ], keywords=[]), attr='execute', ctx=Load()), args=[
+                Starred(value=Name(id='args', ctx=Load()), ctx=Load()),
+              ], keywords=[
+                keyword(arg=None, value=Name(id='options', ctx=Load())),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='set_broker', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='broker', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Subscript(value=Attribute(value=Name(id='os', ctx=Load()), attr='environ', ctx=Load()), slice=Index(value=Str(s='CELERY_BROKER_URL')), ctx=Store()),
+              ], value=Name(id='broker', ctx=Load())),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='run_from_argv', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='argv', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='handle_default_options', ctx=Load()), args=[
+                Subscript(value=Name(id='argv', ctx=Load()), slice=Slice(lower=Num(n=2), upper=None, step=None), ctx=Load()),
+              ], keywords=[])),
+            Return(value=Call(func=Attribute(value=Call(func=Name(id='super', ctx=Load()), args=[
+                Name(id='CeleryCommand', ctx=Load()),
+                Name(id='self', ctx=Load()),
+              ], keywords=[]), attr='run_from_argv', ctx=Load()), args=[
+                Name(id='argv', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='handle_default_options', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='argv', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='acc', ctx=Store()),
+              ], value=List(elts=[], ctx=Load())),
+            Assign(targets=[
+                Name(id='broker', ctx=Store()),
+              ], value=NameConstant(value=None)),
+            For(target=Tuple(elts=[
+                Name(id='i', ctx=Store()),
+                Name(id='arg', ctx=Store()),
+              ], ctx=Store()), iter=Call(func=Name(id='enumerate', ctx=Load()), args=[
+                Name(id='argv', ctx=Load()),
+              ], keywords=[]), body=[
+                If(test=Compare(left=Str(s='--settings='), ops=[
+                    In(),
+                  ], comparators=[
+                    Name(id='arg', ctx=Load()),
+                  ]), body=[
+                    Assign(targets=[
+                        Tuple(elts=[
+                            Name(id='_', ctx=Store()),
+                            Name(id='settings_module', ctx=Store()),
+                          ], ctx=Store()),
+                      ], value=Call(func=Attribute(value=Name(id='arg', ctx=Load()), attr='split', ctx=Load()), args=[
+                        Str(s='='),
+                      ], keywords=[])),
+                    Assign(targets=[
+                        Subscript(value=Attribute(value=Name(id='os', ctx=Load()), attr='environ', ctx=Load()), slice=Index(value=Str(s='DJANGO_SETTINGS_MODULE')), ctx=Store()),
+                      ], value=Name(id='settings_module', ctx=Load())),
+                  ], orelse=[
+                    If(test=Compare(left=Str(s='--pythonpath='), ops=[
+                        In(),
+                      ], comparators=[
+                        Name(id='arg', ctx=Load()),
+                      ]), body=[
+                        Assign(targets=[
+                            Tuple(elts=[
+                                Name(id='_', ctx=Store()),
+                                Name(id='pythonpath', ctx=Store()),
+                              ], ctx=Store()),
+                          ], value=Call(func=Attribute(value=Name(id='arg', ctx=Load()), attr='split', ctx=Load()), args=[
+                            Str(s='='),
+                          ], keywords=[])),
+                        Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='sys', ctx=Load()), attr='path', ctx=Load()), attr='insert', ctx=Load()), args=[
+                            Num(n=0),
+                            Name(id='pythonpath', ctx=Load()),
+                          ], keywords=[])),
+                      ], orelse=[
+                        If(test=Compare(left=Str(s='--broker='), ops=[
+                            In(),
+                          ], comparators=[
+                            Name(id='arg', ctx=Load()),
+                          ]), body=[
+                            Assign(targets=[
+                                Tuple(elts=[
+                                    Name(id='_', ctx=Store()),
+                                    Name(id='broker', ctx=Store()),
+                                  ], ctx=Store()),
+                              ], value=Call(func=Attribute(value=Name(id='arg', ctx=Load()), attr='split', ctx=Load()), args=[
+                                Str(s='='),
+                              ], keywords=[])),
+                          ], orelse=[
+                            If(test=Compare(left=Name(id='arg', ctx=Load()), ops=[
+                                Eq(),
+                              ], comparators=[
+                                Str(s='-b'),
+                              ]), body=[
+                                Assign(targets=[
+                                    Name(id='broker', ctx=Store()),
+                                  ], value=Subscript(value=Name(id='argv', ctx=Load()), slice=Index(value=BinOp(left=Name(id='i', ctx=Load()), op=Add(), right=Num(n=1))), ctx=Load())),
+                              ], orelse=[
+                                Expr(value=Call(func=Attribute(value=Name(id='acc', ctx=Load()), attr='append', ctx=Load()), args=[
+                                    Name(id='arg', ctx=Load()),
+                                  ], keywords=[])),
+                              ]),
+                          ]),
+                      ]),
+                  ]),
+              ], orelse=[]),
+            If(test=Name(id='broker', ctx=Load()), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='set_broker', ctx=Load()), args=[
+                    Name(id='broker', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+            Return(value=IfExp(test=Attribute(value=Name(id='self', ctx=Load()), attr='keep_base_opts', ctx=Load()), body=Name(id='argv', ctx=Load()), orelse=Name(id='acc', ctx=Load()))),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='die', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='msg', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='sys', ctx=Load()), attr='stderr', ctx=Load()), attr='write', ctx=Load()), args=[
+                Name(id='msg', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='sys', ctx=Load()), attr='stderr', ctx=Load()), attr='write', ctx=Load()), args=[
+                Str(s='\n'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='sys', ctx=Load()), attr='exit', ctx=Load()), args=[], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='option_list', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Return(value=ListComp(elt=Name(id='x', ctx=Load()), generators=[
+                comprehension(target=Name(id='x', ctx=Store()), iter=Attribute(value=Name(id='self', ctx=Load()), attr='options', ctx=Load()), ifs=[
+                    Compare(left=Subscript(value=Attribute(value=Name(id='x', ctx=Load()), attr='_long_opts', ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), ops=[
+                        NotIn(),
+                      ], comparators=[
+                        Attribute(value=Name(id='self', ctx=Load()), attr='skip_opts', ctx=Load()),
+                      ]),
+                  ]),
+              ])),
+          ], decorator_list=[
+            Name(id='property', ctx=Load()),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

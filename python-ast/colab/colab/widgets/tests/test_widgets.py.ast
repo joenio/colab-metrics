@@ -1,0 +1,119 @@
+Module(body=[
+    Import(names=[
+        alias(name='unittest', asname=None),
+      ]),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.widgets.templatetags.widgets_tag', names=[
+        alias(name='import_widgets', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.widgets.widget_manager', names=[
+        alias(name='WidgetManager', asname=None),
+        alias(name='Widget', asname=None),
+      ], level=0),
+    ImportFrom(module='django.template', names=[
+        alias(name='Context', asname=None),
+      ], level=0),
+    ClassDef(name='WidgetMock', bases=[
+        Name(id='Widget', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='__init__', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='content', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[
+            Str(s=''),
+          ]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='content', ctx=Store()),
+              ], value=Name(id='content', ctx=Load())),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+    ClassDef(name='WidgetsTest', bases=[
+        Attribute(value=Name(id='unittest', ctx=Load()), attr='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='test_import_widgets_tag', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='get_widgets', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='return_list', ctx=Store()),
+              ], value=List(elts=[
+                Call(func=Name(id='WidgetMock', ctx=Load()), args=[], keywords=[]),
+                Call(func=Name(id='WidgetMock', ctx=Load()), args=[], keywords=[]),
+                Call(func=Name(id='WidgetMock', ctx=Load()), args=[], keywords=[]),
+              ], ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='get_widgets', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='return_list', ctx=Load())),
+            Assign(targets=[
+                Name(id='context', ctx=Store()),
+              ], value=Call(func=Name(id='Context', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='request'),
+                  ], values=[
+                    Str(s=''),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Name(id='import_widgets', ctx=Load()), args=[
+                Name(id='context', ctx=Load()),
+                Str(s='area'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='widgets_area'),
+                Name(id='context', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='widgets_area')), ctx=Load()),
+                Name(id='return_list', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='WidgetManager', ctx=Load()),
+                Str(s='get_widgets'),
+              ], keywords=[]),
+          ], returns=None),
+        FunctionDef(name='test_import_widgets_tag_with_named_var', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='get_widgets', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='return_list', ctx=Store()),
+              ], value=List(elts=[
+                Call(func=Name(id='WidgetMock', ctx=Load()), args=[], keywords=[]),
+                Call(func=Name(id='WidgetMock', ctx=Load()), args=[], keywords=[]),
+                Call(func=Name(id='WidgetMock', ctx=Load()), args=[], keywords=[]),
+              ], ctx=Load())),
+            Assign(targets=[
+                Attribute(value=Name(id='get_widgets', ctx=Load()), attr='return_value', ctx=Store()),
+              ], value=Name(id='return_list', ctx=Load())),
+            Assign(targets=[
+                Name(id='context', ctx=Store()),
+              ], value=Call(func=Name(id='Context', ctx=Load()), args=[
+                Dict(keys=[
+                    Str(s='request'),
+                  ], values=[
+                    Str(s=''),
+                  ]),
+              ], keywords=[])),
+            Expr(value=Call(func=Name(id='import_widgets', ctx=Load()), args=[
+                Name(id='context', ctx=Load()),
+                Str(s='area'),
+                Str(s='var'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='var'),
+                Name(id='context', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEquals', ctx=Load()), args=[
+                Subscript(value=Name(id='context', ctx=Load()), slice=Index(value=Str(s='var')), ctx=Load()),
+                Name(id='return_list', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Attribute(value=Name(id='patch', ctx=Load()), attr='object', ctx=Load()), args=[
+                Name(id='WidgetManager', ctx=Load()),
+                Str(s='get_widgets'),
+              ], keywords=[]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

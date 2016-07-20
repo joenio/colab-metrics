@@ -1,0 +1,260 @@
+Module(body=[
+    ImportFrom(module='django.test', names=[
+        alias(name='TestCase', asname=None),
+        alias(name='Client', asname=None),
+      ], level=0),
+    ImportFrom(module='django.core.urlresolvers', names=[
+        alias(name='reverse', asname=None),
+      ], level=0),
+    ImportFrom(module='mock', names=[
+        alias(name='patch', asname=None),
+      ], level=0),
+    ClassDef(name='MailingListViewTest', bases=[
+        Name(id='TestCase', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='fixtures', ctx=Store()),
+          ], value=List(elts=[
+            Str(s='mailinglistviewdata.json'),
+            Str(s='test_user.json'),
+          ], ctx=Load())),
+        FunctionDef(name='setUp', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Store()),
+              ], value=Call(func=Name(id='Client', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='username', ctx=Store()),
+              ], value=Str(s='chucknorris')),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='authenticate_user', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='login', ctx=Load()), args=[], keywords=[
+                keyword(arg='username', value=Attribute(value=Name(id='self', ctx=Load()), attr='username', ctx=Load())),
+                keyword(arg='password', value=Str(s='admin')),
+              ])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_query_set_with_latest_order', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/mailinglist/publiclist?order=latest'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+                Num(n=200),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()),
+                  ], keywords=[]),
+                Num(n=3),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='expected_order', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='Subject6'),
+                Str(s='Subject5'),
+                Str(s='Subject4'),
+              ], ctx=Load())),
+            For(target=Name(id='i', ctx=Store()), iter=Call(func=Name(id='range', ctx=Load()), args=[
+                Num(n=3),
+              ], keywords=[]), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                    Str(s='publiclist'),
+                    Attribute(value=Attribute(value=Subscript(value=Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()), slice=Index(value=Name(id='i', ctx=Load())), ctx=Load()), attr='mailinglist', ctx=Load()), attr='name', ctx=Load()),
+                  ], keywords=[])),
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                    Subscript(value=Name(id='expected_order', ctx=Load()), slice=Index(value=Name(id='i', ctx=Load())), ctx=Load()),
+                    Attribute(value=Subscript(value=Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()), slice=Index(value=Name(id='i', ctx=Load())), ctx=Load()), attr='subject_token', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_query_set_with_rating_order', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/mailinglist/publiclist?order=rating'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+                Num(n=200),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()),
+                  ], keywords=[]),
+                Num(n=3),
+              ], keywords=[])),
+            Assign(targets=[
+                Name(id='expected_order', ctx=Store()),
+              ], value=List(elts=[
+                Str(s='Subject4'),
+                Str(s='Subject5'),
+                Str(s='Subject6'),
+              ], ctx=Load())),
+            For(target=Name(id='i', ctx=Store()), iter=Call(func=Name(id='range', ctx=Load()), args=[
+                Num(n=3),
+              ], keywords=[]), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                    Str(s='publiclist'),
+                    Attribute(value=Attribute(value=Subscript(value=Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()), slice=Index(value=Name(id='i', ctx=Load())), ctx=Load()), attr='mailinglist', ctx=Load()), attr='name', ctx=Load()),
+                  ], keywords=[])),
+                Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                    Subscript(value=Name(id='expected_order', ctx=Load()), slice=Index(value=Name(id='i', ctx=Load())), ctx=Load()),
+                    Attribute(value=Subscript(value=Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()), slice=Index(value=Name(id='i', ctx=Load())), ctx=Load()), attr='subject_token', ctx=Load()),
+                  ], keywords=[])),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_get_context_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/mailinglist/publiclist?order=rating'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+                Num(n=200),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='publiclist'),
+                Attribute(value=Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='mailinglist')), ctx=Load()), attr='name', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Str(s='rating'),
+                Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='selected')), ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='rating'),
+                Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='order_data')), ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Str(s='latest'),
+                Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='order_data')), ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_private_list_access_with_user_not_logged_in', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/mailinglist/privatelist'),
+              ], keywords=[
+                keyword(arg='follow', value=NameConstant(value=True)),
+              ])),
+            Assign(targets=[
+                Name(id='expected_url', ctx=Store()),
+              ], value=Str(s='http://testserver/account/login')),
+            Assign(targets=[
+                Name(id='expected_message', ctx=Store()),
+              ], value=Str(s='You are not logged in')),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertIn', ctx=Load()), args=[
+                Name(id='expected_message', ctx=Load()),
+                Attribute(value=Name(id='response', ctx=Load()), attr='content', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRedirects', ctx=Load()), args=[
+                Name(id='response', ctx=Load()),
+                Name(id='expected_url', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='test_private_list_access_with_user_without_permission', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/mailinglist/privatelist'),
+              ], keywords=[
+                keyword(arg='follow', value=NameConstant(value=True)),
+              ])),
+            Assign(targets=[
+                Name(id='expected_url', ctx=Store()),
+              ], value=Str(s='http://testserver')),
+            AugAssign(target=Name(id='expected_url', ctx=Store()), op=Add(), value=Call(func=Name(id='reverse', ctx=Load()), args=[
+                Str(s='user_list_subscriptions'),
+              ], keywords=[
+                keyword(arg='kwargs', value=Dict(keys=[
+                    Str(s='username'),
+                  ], values=[
+                    Attribute(value=Name(id='self', ctx=Load()), attr='username', ctx=Load()),
+                  ])),
+              ])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertRedirects', ctx=Load()), args=[
+                Name(id='response', ctx=Load()),
+                Name(id='expected_url', ctx=Load()),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.mailman.get_user_mailinglists'),
+              ], keywords=[
+                keyword(arg='return_value', value=List(elts=[
+                    Dict(keys=[
+                        Str(s='listname'),
+                      ], values=[
+                        Str(s='colabtest'),
+                      ]),
+                  ], ctx=Load())),
+              ]),
+          ], returns=None),
+        FunctionDef(name='test_private_list_access_with_user_permission', args=arguments(args=[
+            arg(arg='self', annotation=None),
+            arg(arg='mock', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='authenticate_user', ctx=Load()), args=[], keywords=[])),
+            Assign(targets=[
+                Name(id='response', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='self', ctx=Load()), attr='client', ctx=Load()), attr='get', ctx=Load()), args=[
+                Str(s='/archives/mailinglist/privatelist'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Num(n=200),
+                Attribute(value=Name(id='response', ctx=Load()), attr='status_code', ctx=Load()),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Call(func=Name(id='len', ctx=Load()), args=[
+                    Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()),
+                  ], keywords=[]),
+                Num(n=1),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Attribute(value=Subscript(value=Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='mailinglist', ctx=Load()), attr='name', ctx=Load()),
+                Str(s='privatelist'),
+              ], keywords=[])),
+            Expr(value=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[
+                Attribute(value=Subscript(value=Subscript(value=Attribute(value=Name(id='response', ctx=Load()), attr='context', ctx=Load()), slice=Index(value=Str(s='thread_list')), ctx=Load()), slice=Index(value=Num(n=0)), ctx=Load()), attr='subject_token', ctx=Load()),
+                Str(s='Subject3'),
+              ], keywords=[])),
+          ], decorator_list=[
+            Call(func=Name(id='patch', ctx=Load()), args=[
+                Str(s='colab.super_archives.views.mailman.get_user_mailinglists'),
+              ], keywords=[
+                keyword(arg='return_value', value=List(elts=[
+                    Dict(keys=[
+                        Str(s='listname'),
+                      ], values=[
+                        Str(s='privatelist'),
+                      ]),
+                  ], ctx=Load())),
+              ]),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

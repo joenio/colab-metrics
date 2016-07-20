@@ -1,0 +1,22 @@
+Module(body=[
+    ImportFrom(module='django.core.management.base', names=[
+        alias(name='BaseCommand', asname=None),
+      ], level=0),
+    ImportFrom(module='colab.super_archives.models', names=[
+        alias(name='Thread', asname=None),
+      ], level=0),
+    ClassDef(name='Command', bases=[
+        Name(id='BaseCommand', ctx=Load()),
+      ], keywords=[], body=[
+        Assign(targets=[
+            Name(id='help', ctx=Store()),
+          ], value=Str(s='Update keywords used in tag cloud and related thread')),
+        FunctionDef(name='handle', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=arg(arg='args', annotation=None), kwonlyargs=[], kw_defaults=[], kwarg=arg(arg='kwargs', annotation=None), defaults=[]), body=[
+            For(target=Name(id='thread', ctx=Store()), iter=Call(func=Attribute(value=Attribute(value=Name(id='Thread', ctx=Load()), attr='objects', ctx=Load()), attr='iterator', ctx=Load()), args=[], keywords=[]), body=[
+                Expr(value=Call(func=Attribute(value=Name(id='thread', ctx=Load()), attr='update_keywords', ctx=Load()), args=[], keywords=[])),
+              ], orelse=[]),
+          ], decorator_list=[], returns=None),
+      ], decorator_list=[]),
+  ])

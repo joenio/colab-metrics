@@ -1,0 +1,39 @@
+Module(body=[
+    Import(names=[
+        alias(name='abc', asname=None),
+      ]),
+    ImportFrom(module='django.conf', names=[
+        alias(name='settings', asname=None),
+      ], level=0),
+    ClassDef(name='PluginDataImporter', bases=[
+        Name(id='object', ctx=Load()),
+      ], keywords=[], body=[
+        FunctionDef(name='__init__', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Assign(targets=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='config', ctx=Store()),
+              ], value=Call(func=Attribute(value=Attribute(value=Name(id='settings', ctx=Load()), attr='COLAB_APPS', ctx=Load()), attr='get', ctx=Load()), args=[
+                Attribute(value=Name(id='self', ctx=Load()), attr='app_label', ctx=Load()),
+                Dict(keys=[], values=[]),
+              ], keywords=[])),
+          ], decorator_list=[], returns=None),
+        FunctionDef(name='fetch_data', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Raise(exc=Name(id='NotImplementedError', ctx=Load()), cause=None),
+          ], decorator_list=[
+            Attribute(value=Name(id='abc', ctx=Load()), attr='abstractmethod', ctx=Load()),
+          ], returns=None),
+        Assign(targets=[
+            Attribute(value=Name(id='fetch_data', ctx=Load()), attr='is_abstract', ctx=Store()),
+          ], value=NameConstant(value=True)),
+        FunctionDef(name='app_label', args=arguments(args=[
+            arg(arg='self', annotation=None),
+          ], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[
+            Raise(exc=Name(id='NotImplementedError', ctx=Load()), cause=None),
+          ], decorator_list=[
+            Attribute(value=Name(id='abc', ctx=Load()), attr='abstractmethod', ctx=Load()),
+          ], returns=None),
+      ], decorator_list=[]),
+  ])

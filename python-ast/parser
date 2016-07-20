@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+
+"""
+usage: ./parser <colab-source-dir> <output-dir>
+"""
+
+import ast
+import sys
+import os.path
+from ast import *
+
+if len(sys.argv) < 3:
+    print("E: missing args!")
+    print("")
+    print("Usage: ./parser <colab-source-dir> <output-dir>")
+    print("")
+    sys.exit()
+
+project_dir = sys.argv[1]
+destination = sys.argv[2]
+
+if project_dir[-1] == '/':
+    project_dir = project_dir[:-1]
+
+def pp_dump(node, annotate_fields=True, include_attributes=False, indent='  '):
+    """
+    Return a formatted dump of the tree in *node*.  This is mainly useful for
+    debugging purposes.  The returned string will show the names and the values
+    for fields.  This makes the code impossible to evaluate, so if evaluation is
+    wanted *annotate_fields* must be set to False.  Attributes such as line
+    numbers and column offsets are not dumped by default.  If this is wanted,
+    *include_attributes* can be set to True.
+    """
+    def _format(node, level=0):
+        if isinstance(node, AST):
+            fields = [(a, _format(b, level)) for a, b in iter_fields(node)]
+            if include_attributes and node._attributes:
+                fields.extend([(a, _format(getattr(node, a), level))
+                               for a in node._attributes])
+            return ''.join([
+                node.__class__.__name__,
+                '(',
+                ', '.join(('%s=%s' % field for field in fields)
+                           if annotate_fields else
+                           (b for a, b in fields)),
+                ')'])
+        elif isinstance(node, list):
+            lines = ['[']
+            lines.extend((indent * (level + 2) + _format(x, level + 2) + ','
+                         for x in node))
+            if len(lines) > 1:
+                lines.append(indent * (level + 1) + ']')
+            else:
+                lines[-1] += ']'
+            return '\n'.join(lines)
+        return repr(node)
+
+    if not isinstance(node, AST):
+        raise TypeError('expected AST, got %r' % node.__class__.__name__)
+    return _format(node)
+
+def dump_ast(full_file_name):
+    extension = os.path.splitext(full_file_name)[1]
+    if extension == '.py':
+        with open(full_file_name) as x:
+            source = x.read()
+            try:
+                relative_dir = os.path.dirname(full_file_name).replace(project_dir, '')
+                if relative_dir and relative_dir[0] == '/':
+                    relative_dir = relative_dir[1:]
+                    os.makedirs(os.path.join(destination, relative_dir), 0o775, True)
+                node = ast.parse(source, filename=full_file_name)
+                with open(os.path.join(destination, relative_dir, os.path.basename(full_file_name)) + '.ast', 'w') as output:
+                    output.write(pp_dump(node))
+            except SyntaxError:
+                print("Erro de sintaxe no arquivo:", full_file_name)
+
+for dir_name, dirs, files in os.walk(project_dir):
+    if not dirs:
+        for file_name in files:
+            full_file_name = os.path.join(dir_name, file_name)
+            if os.path.isfile(full_file_name):
+                dump_ast(full_file_name)
